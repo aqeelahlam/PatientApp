@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import org.json.JSONArray;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,8 +45,41 @@ public class server {
   }
     
     public static void main(String[] args) throws IOException, JSONException {
-    JSONObject json = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=3689&_sort=date&_format=json");
-    System.out.println(json.toString());
+
+//    JSONObject json = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=3689&_sort=date&_format=json");
+        
+        
+//    For an Individual Patient:
+    JSONObject jsonPatient = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/1?_format=json");
+    
+//    I obtain the key to the array with all the unique identifiers for a patient
+    JSONArray extension = jsonPatient.getJSONArray("identifier");
+    
+    
+//    CODE TO Obtain the identifiers of the patient.
+//    for(int i = 0; i<extension.length(); i++){
+//        JSONObject value = extension.getJSONObject(i);
+//        
+//        String finalValue = value.getString("value");
+//        
+//        System.out.println(finalValue);
+//    }
+    JSONObject marital = jsonPatient.getJSONObject("maritalStatus");
+    JSONArray coding = marital.getJSONArray("coding");
+//    System.out.println(coding);
+    JSONObject code = coding.getJSONObject(0);
+    
+    String finalCode = code.getString("code");
+    
+    System.out.println("The patient is a " + finalCode);
+
+//    System.out.println(jsonPatient.toString());
+    
+    
+    
+    
+    
+    
 //    System.out.println(json.get("id"));
   }
 
