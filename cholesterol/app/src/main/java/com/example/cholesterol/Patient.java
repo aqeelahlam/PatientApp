@@ -2,18 +2,18 @@ package com.example.cholesterol;
 
 public class Patient {
 
-    private Double cholesterol;
+    private String cholesterol;
 
-    public Patient(Double cholesterol){
+    public Patient(String cholesterol){
         this.cholesterol = cholesterol;
 
     }
 
-    public void setCholesterol(Double cholesterol) {
+    public void setCholesterol(String cholesterol) {
         this.cholesterol = cholesterol;
     }
 
-    public Double getCholesterol() {
+    public String getCholesterol() {
         return cholesterol;
     }
 }

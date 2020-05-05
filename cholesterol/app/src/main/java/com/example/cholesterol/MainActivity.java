@@ -1,6 +1,7 @@
 package com.example.cholesterol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,18 +59,28 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tv;
 //    ArrayList<Patient> patients = new ArrayList<>();
+    ArrayList<String> cholesterol = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 //START
-
-
         recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setHasFixedSize(true);
+
+        CholesterolAdapter cholesterolAdapter = new CholesterolAdapter(cholesterol);
+        recyclerView.setAdapter(cholesterolAdapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+
+
+//        LinearLayoutManager manager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(manager);
+//        recyclerView.setHasFixedSize(true);
 //        layoutManager = new LinearLayoutManager(this);
 //        recyclerView.setLayoutManager(layoutManager);
 //END
@@ -96,41 +107,39 @@ public class MainActivity extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
                                     try {
 //                                Create an array of patient items
-//                                        ArrayList<Patient> patients = new ArrayList<>();
-
+                                        ArrayList<Patient> patients = new ArrayList<>();
                                         String test = null;
-                                        JSONObject entryList;
-                                        JSONObject resource;
-                                        JSONObject valueQuantity;
-                                        JSONObject value;
+                                        double cholValue;
                                         Patient patient;
-
-
+                                        String chol = null;
+                                        String CholLevel = null;
+                                        String unitValue;
                                         JSONArray entry = response.getJSONArray("entry");
                                         for (int i = 0; i < entry.length(); i++) {
                                             try {
-                                                entryList = entry.getJSONObject(i);
-                                                resource = entryList.getJSONObject("resource");
+                                                cholValue = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+                                                unitValue = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
+                                                chol = String.valueOf(cholValue);
 
-                                                //START
-//                                                valueQuantity = resource.getJSONObject("valueQuantity");
-//                                                value = valueQuantity.getJSONObject("value");
-//                                                double cholesterol = value.getDouble("value");
-//                                                patient = new Patient(cholesterol);
-//                                                patients.add(patient);
-                                                //END
+                                                CholLevel = chol + unitValue;
 
-                                                test = resource.getString("id");
+                                                patient = new Patient(chol);
+
+                                                cholesterol.add(CholLevel);
+
+                                                patients.add(patient);
+
+                                                Log.d("chol", String.valueOf(patients));
                                             } catch (Exception e) {
                                             }
+
                                         }
 
                                         //START
 //                                        adapter = new RecyclerAdapter(patients);
 //                                        recyclerView.setAdapter(adapter);
 
-
-                                        tv.setText(test.toString());
+//                                        tv.setText(chol.toString());
                                     } catch (Exception e) {
 
                                     }
