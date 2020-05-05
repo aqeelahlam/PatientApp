@@ -1,6 +1,8 @@
 package com.example.cholesterol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -33,23 +35,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+/*
+* Android: 9.0 (Pie)
+* API Level: 28
+*
+* Make sure the app is given "Internet" access within the AndroidManifest.xml  :-
+* Place the dependency right below "package"
+* <uses-permission android:name="android.permission.INTERNET" />
+*
+* I have used Volley to perform the relevant network requests.
+* https://developer.android.com/training/volley
+*
+*
+* */
 
-    EditText keyword;
-    ArrayList<Double> patientLevel = new ArrayList<>();
+public class MainActivity extends AppCompatActivity {
+//START
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
+//END
+
     TextView tv;
+//    ArrayList<Patient> patients = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.textView);
+//START
 
+
+        recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//END
+        tv = findViewById(R.id.tv);
     }
 
     public void trialBtn(View view) throws IOException, JSONException {
 
-        EditText blah;
+        EditText keyword;
         keyword = findViewById(R.id.editText);
         String patientID = keyword.getText().toString();
         makeRequest(patientID);
@@ -67,21 +96,40 @@ public class MainActivity extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
                                     try {
 //                                Create an array of patient items
-                                        ArrayList<Patient> items = new ArrayList<>();
+//                                        ArrayList<Patient> patients = new ArrayList<>();
 
                                         String test = null;
                                         JSONObject entryList;
                                         JSONObject resource;
+                                        JSONObject valueQuantity;
+                                        JSONObject value;
+                                        Patient patient;
+
 
                                         JSONArray entry = response.getJSONArray("entry");
                                         for (int i = 0; i < entry.length(); i++) {
                                             try {
                                                 entryList = entry.getJSONObject(i);
                                                 resource = entryList.getJSONObject("resource");
+
+                                                //START
+//                                                valueQuantity = resource.getJSONObject("valueQuantity");
+//                                                value = valueQuantity.getJSONObject("value");
+//                                                double cholesterol = value.getDouble("value");
+//                                                patient = new Patient(cholesterol);
+//                                                patients.add(patient);
+                                                //END
+
                                                 test = resource.getString("id");
                                             } catch (Exception e) {
                                             }
                                         }
+
+                                        //START
+//                                        adapter = new RecyclerAdapter(patients);
+//                                        recyclerView.setAdapter(adapter);
+
+
                                         tv.setText(test.toString());
                                     } catch (Exception e) {
 
