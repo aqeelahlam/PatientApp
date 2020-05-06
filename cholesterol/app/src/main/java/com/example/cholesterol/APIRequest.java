@@ -56,12 +56,6 @@ public class APIRequest {
                                         }
 
                                     }
-
-                                    //START
-//                                        adapter = new RecyclerAdapter(patients);
-//                                        recyclerView.setAdapter(adapter);
-
-//                                        tv.setText(chol.toString());
                                 } catch (Exception e) {
 
                                 }
