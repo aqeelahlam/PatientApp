@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.cholesterol.APIRequest;
+
 /*
 * Android: 9.0 (Pie)
 * API Level: 28
@@ -55,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
-//END
-
     TextView tv;
-//    ArrayList<Patient> patients = new ArrayList<>();
     ArrayList<String> cholesterol = new ArrayList<>();
 
     @Override
@@ -66,28 +65,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//START
         recyclerView = findViewById(R.id.recycler_view);
 
         CholesterolAdapter cholesterolAdapter = new CholesterolAdapter(cholesterol);
+
         recyclerView.setAdapter(cholesterolAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-
-
-//        LinearLayoutManager manager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(manager);
-//        recyclerView.setHasFixedSize(true);
-//        layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//END
         tv = findViewById(R.id.tv);
     }
 
-    public void trialBtn(View view) throws IOException, JSONException {
+    public void trialBtn(View view) {
 
         EditText keyword;
         keyword = findViewById(R.id.editText);
@@ -106,9 +97,8 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-//                                Create an array of patient items
+//                                      Create an array of patient items
                                         ArrayList<Patient> patients = new ArrayList<>();
-                                        String test = null;
                                         double cholValue;
                                         Patient patient;
                                         String chol = null;
@@ -125,21 +115,16 @@ public class MainActivity extends AppCompatActivity {
 
                                                 patient = new Patient(chol);
 
+//                                              The cholesterol Levels will be added to this ArrayList
                                                 cholesterol.add(CholLevel);
 
                                                 patients.add(patient);
 
+//                                              This is the sout:
                                                 Log.d("chol", String.valueOf(patients));
                                             } catch (Exception e) {
                                             }
-
                                         }
-
-                                        //START
-//                                        adapter = new RecyclerAdapter(patients);
-//                                        recyclerView.setAdapter(adapter);
-
-//                                        tv.setText(chol.toString());
                                     } catch (Exception e) {
 
                                     }
@@ -158,49 +143,4 @@ public class MainActivity extends AppCompatActivity {
 
             queue.add(stringRequest);
         }
-
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        return sb.toString();
-    }
-
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
-        } finally {
-            is.close();
-        }
-    }
-
-//    private void makeRequest(String keywords) throws IOException, JSONException {
-//        JSONObject json = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + keywords + "&_sort=date&_format=json");
-//        JSONArray entry = json.getJSONArray("entry");
-//
-//
-//        for(int i = 0; i < entry.length(); i++) {
-//            JSONObject resource = entry.getJSONObject(i);
-//            JSONObject valueQuantity = resource.getJSONObject("resource");
-//
-//            String id = valueQuantity.getString("id");
-//
-//            tv.setText(id);
-//
-//
-//            JSONObject value = valueQuantity.getJSONObject("valueQuantity");
-//            double cholesterol = value.getDouble("value");
-//
-//            patientLevel.add(cholesterol);
-//
-//
-//
-//        }
-//    }
 }
