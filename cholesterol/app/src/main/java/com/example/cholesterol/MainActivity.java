@@ -74,7 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> test_list = new ArrayList<>();
 
-        APIRequest.makeRequest(patientID, test_list, this, recyclerView);
+        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=date&_format=json";
+        APIRequest.makeRequest2(url, this);
+        JSONObject response = APIData.getResponse();
+        Log.d("test", String.valueOf(response));
+
+
+//        APIRequest.makeRequest(patientID, test_list, this, recyclerView);
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
