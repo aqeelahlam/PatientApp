@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +42,8 @@ import java.util.ArrayList;
 * */
 
 public class MainActivity extends AppCompatActivity {
-//START
+    public static Context context;
+    //START
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -73,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         String patientID = keyword.getText().toString();
 
         ArrayList<String> test_list = new ArrayList<>();
-
-        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=date&_format=json";
-        APIRequest.makeRequest2(url, this);
+        context = this;
+//        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=date&_format=json";
+        APIRequest.getCholesterol(patientID, test_list, recyclerView);
         JSONObject response = APIData.getResponse();
         Log.d("test", String.valueOf(response));
 

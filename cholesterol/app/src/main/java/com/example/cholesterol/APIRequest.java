@@ -3,6 +3,7 @@ package com.example.cholesterol;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,8 +24,8 @@ public class APIRequest {
 
 
 
-    public static void makeRequest2(String url, Context context) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+    private static void makeRequest2(String url) {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.context);
 
         JsonObjectRequest stringRequest =
                 new JsonObjectRequest(Request.Method.GET, url, null,
@@ -58,13 +59,52 @@ public class APIRequest {
 
 
 
-//    public static JSONObject getCholesterol(String patientID) {
-//        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=-date&_format=json";
-//
-//        makeRequest2(url);
-//        JSONObject results = APIData.getResponse();
-//
-//    }
+    public static JSONObject getCholesterol(String patientID, final ArrayList<String> CholList, final RecyclerView recyclerView) {
+        JSONObject results = null;
+        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=-date&_format=json";
+        try {
+            makeRequest2(url);
+            results = APIData.getResponse();
+        } catch(Exception e) {
+        }
+
+        if (results != null) {
+            try {
+                ArrayList<Patient> patients = new ArrayList<>();
+                String test = null;
+                double cholValue;
+                Patient patient;
+                String chol = null;
+                String CholLevel = null;
+                String unitValue;
+                JSONArray entry = results.getJSONArray("entry");
+                for (int i = 0; i < entry.length(); i++) {
+                    try {
+                        cholValue = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+                        unitValue = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
+                        chol = String.valueOf(cholValue);
+
+                        CholLevel = chol + unitValue;
+
+                        patient = new Patient(chol);
+
+                        CholList.add(CholLevel);
+
+                        patients.add(patient);
+
+                        Log.d("chol", String.valueOf(patients));
+                    } catch (Exception e) {
+                    }
+
+                }
+                CholesterolAdapter cholesterolAdapter = new CholesterolAdapter(CholList);
+                recyclerView.setAdapter(cholesterolAdapter);
+            } catch (Exception e) {
+
+            }
+        }
+        return results;
+    }
 
 
 
