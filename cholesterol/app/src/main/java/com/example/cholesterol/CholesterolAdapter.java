@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.CholesterolView> implements View.OnClickListener {
@@ -35,8 +37,16 @@ public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CholesterolView holder, int position) {
-        String currentChol = mCholLevel.get(position);
+        final String currentChol = mCholLevel.get(position);
         holder.cholLevel.setText(currentChol);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "The chol level is: " + currentChol + " Holy shit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
 
 
     }
@@ -50,6 +60,7 @@ public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.
     public void onClick(View v) {
 
     }
+
 
     public class CholesterolView extends RecyclerView.ViewHolder {
         TextView cholLevel;

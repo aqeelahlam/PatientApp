@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    Can you figure out how to put this into a different class?
         private void makeRequest(String keywords) {
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + keywords + "&_sort=date&_format=json";
@@ -116,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
                                         CholesterolAdapter cholesterolAdapter = new CholesterolAdapter(cholesterol);
                                         recyclerView.setAdapter(cholesterolAdapter);
-
-
 
                                     } catch (Exception e) {
 
