@@ -3,6 +3,8 @@ package com.example.cholesterol;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 
 public class APIRequest {
 
-    public static void makeRequest(String keywords, final ArrayList<String> CholList, Context context) {
+    public static void makeRequest(String keywords, final ArrayList<String> CholList, Context context, final RecyclerView recyclerView) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + keywords + "&_sort=date&_format=json";
 
@@ -56,6 +58,8 @@ public class APIRequest {
                                         }
 
                                     }
+                                    CholesterolAdapter cholesterolAdapter = new CholesterolAdapter(CholList);
+                                    recyclerView.setAdapter(cholesterolAdapter);
                                 } catch (Exception e) {
 
                                 }
