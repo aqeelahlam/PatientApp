@@ -2,6 +2,7 @@ package com.example.cholesterol;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,8 +64,13 @@ public class APIRequest {
         JSONObject results = null;
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=-date&_format=json";
         try {
-            makeRequest2(url);
-            results = APIData.getResponse();
+            if (patientID.isEmpty()){
+                Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
+            }else {
+                makeRequest2(url);
+                results = APIData.getResponse();
+            }
+
         } catch(Exception e) {
         }
 
