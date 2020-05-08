@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,10 +65,13 @@ public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.
 
     public class CholesterolView extends RecyclerView.ViewHolder {
         TextView cholLevel;
+        CheckBox selected;
 
         public CholesterolView(@NonNull View itemView) {
             super(itemView);
             cholLevel = itemView.findViewById(R.id.cholLevel);
+            selected = itemView.findViewById(R.id.checkBox);
+
 
         }
     }

@@ -37,7 +37,6 @@ public class APIRequest {
 //                                    Log.d("response", String.valueOf(response));
                                     APIData.setResponse(response);
                                 } catch (Exception e) {
-
                                 }
                             }
                         },
@@ -57,6 +56,8 @@ public class APIRequest {
 
         queue.add(stringRequest);
     }
+
+
 
 
 
