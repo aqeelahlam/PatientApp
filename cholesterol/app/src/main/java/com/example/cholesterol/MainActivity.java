@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -83,6 +84,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        APIRequest.makeRequest(patientID, test_list, this, recyclerView);
+
+    }
+
+//    Best to show this button after the results appear:
+    public void monitorBtn(View view){
+        EditText keyword;
+        keyword = findViewById(R.id.editText);
+        String practitionerID = keyword.getText().toString();
+
+        ObtainPractitionerID.getIdentifier(practitionerID);
+
+
+
+
+
 
     }
 }
