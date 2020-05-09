@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class patientList extends List{
 
 
-    public static void getIdentifier(String practitionerID){
+    public static String getIdentifier(String practitionerID){
         JSONObject results = null;
         String identifier = null;
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
@@ -44,25 +44,37 @@ public class patientList extends List{
                 e.printStackTrace();
             }
         }
+        return identifier;
     }
 
     public static JSONObject getPatientList(String practitionerID) {
 
-        getIdentifier(practitionerID);
-        String identifier = APIData.getHpIdentifier();
-
+        String identifier = null;
         JSONObject results = null;
 
-        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="  + identifier + "&_format=json";
         try {
-            APIRequest.makeRequest(url);
-
-            results = APIData.getResponse();
-
-
+            identifier = getIdentifier(practitionerID);
+//            identifier = APIData.getHpIdentifier();
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        if (identifier != null) {
+            try {
+                String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="
+                        + identifier + "&_format=json";
+                Log.d("url", String.valueOf(url));
+
+                APIRequest.makeRequest(url);
+
+                results = APIData.getResponse();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         return results;
     }
 

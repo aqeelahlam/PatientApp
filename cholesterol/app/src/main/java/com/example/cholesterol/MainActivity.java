@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         EditText keyword;
         keyword = findViewById(R.id.editText);
         String practitionerID = keyword.getText().toString();
+        practitionerID = "1381208";
 
         context = this;
         JSONObject test = patientList.getPatientList(practitionerID);
