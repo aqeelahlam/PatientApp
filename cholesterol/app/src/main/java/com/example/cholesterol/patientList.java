@@ -18,37 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ObtainPractitionerID {
+public class patientList extends List{
 
-    public static void makeRequest(String url){
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.context);
-
-        JsonObjectRequest jsonObjectRequest =
-                new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    APIData.setResponse(response);
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("stock", error.getMessage());
-                            }
-                        });
-
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        ));
-        queue.add(jsonObjectRequest);
-    }
 
     public static JSONObject getIdentifier(String practitionerID){
         JSONObject results = null;
@@ -57,12 +28,12 @@ public class ObtainPractitionerID {
         try {
             if(practitionerID.isEmpty()){
                 Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
-            }else {
-                makeRequest(url);
+            } else {
+                APIRequest.makeRequest(url);
                 results = APIData.getResponse();
             }
 
-        }catch (Exception e){
+        } catch (Exception e){
         }
 
         if (results != null){
@@ -77,10 +48,7 @@ public class ObtainPractitionerID {
                 identifier = identifier1 + "|" + identifier2;
 
 
-
                 Log.d("IDEN", identifier);
-
-
 
 
             } catch (JSONException e) {
@@ -89,10 +57,5 @@ public class ObtainPractitionerID {
         }
         return results;
     }
-
-
-
-
-
 
 }

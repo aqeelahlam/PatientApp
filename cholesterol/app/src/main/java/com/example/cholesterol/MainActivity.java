@@ -77,14 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> test_list = new ArrayList<>();
         context = this;
-//        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=date&_format=json";
-        APIRequest.getCholesterol(patientID, test_list, recyclerView);
+        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
         JSONObject response = APIData.getResponse();
         Log.d("test", String.valueOf(response));
-
-
-//        APIRequest.makeRequest(patientID, test_list, this, recyclerView);
-
     }
 
 //    Best to show this button after the results appear:
@@ -93,7 +88,14 @@ public class MainActivity extends AppCompatActivity {
         keyword = findViewById(R.id.editText);
         String practitionerID = keyword.getText().toString();
 
-        ObtainPractitionerID.getIdentifier(practitionerID);
+        context = this;
+        JSONObject test = patientList.getIdentifier(practitionerID);
+
+        Log.d("response", String.valueOf(test));
+
+
+
+
 
 
 
