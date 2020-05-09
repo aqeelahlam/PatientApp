@@ -83,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    Best to show this button after the results appear:
-    public void monitorBtn(View view){
+    public void monitorBtn(View view) {
         EditText keyword;
         keyword = findViewById(R.id.editText);
         String practitionerID = keyword.getText().toString();
 
         context = this;
-        JSONObject test = patientList.getIdentifier(practitionerID);
+        JSONObject test = patientList.getPatientList(practitionerID);
 
-        Log.d("response", String.valueOf(test));
+//        Log.d("response", String.valueOf(test));
+
 
 
 
