@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         JSONObject test = patientList.getPatientList(practitionerID);
 
-//        Log.d("response", String.valueOf(test));
+        Log.d("response", String.valueOf(test));
 
 
 

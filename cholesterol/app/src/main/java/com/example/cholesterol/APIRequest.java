@@ -33,7 +33,6 @@ public class APIRequest {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    Log.d("api", String.valueOf(response));
                                     APIData.setResponse(response);
                                 } catch (Exception e) {
                                 }

@@ -37,7 +37,7 @@ public class patientList extends List{
                 identifier1 = identify.getJSONObject(0).getString("system");
                 identifier2 = identify.getJSONObject(0).getString("value");
 
-                identifier = identifier1 + "|" + identifier2;
+                identifier = identifier1 + "%7C" + identifier2;
                 APIData.setHpIdentifier(identifier);
 
             } catch (JSONException e) {
@@ -48,21 +48,16 @@ public class patientList extends List{
 
     public static JSONObject getPatientList(String practitionerID) {
 
-//        getIdentifier(practitionerID);
-//        String identifier = APIData.getHpIdentifier();
-        String identifier = "http://hl7.org/fhir/sid/us-npi|500";
+        getIdentifier(practitionerID);
+        String identifier = APIData.getHpIdentifier();
 
         JSONObject results = null;
-
-//        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?participant.identifier=" + identifier + "&_include=Encounter.participant.individual&_include=Encounter.patient&_format=json";
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="  + identifier + "&_format=json";
         try {
             APIRequest.makeRequest(url);
-            Log.d("url", String.valueOf(url));
 
             results = APIData.getResponse();
-            Log.d("inner", String.valueOf(results));
 
 
         } catch (Exception e){
