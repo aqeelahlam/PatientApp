@@ -12,14 +12,6 @@ The forum : https://lms.monash.edu/mod/forum/discuss.php?d=1942563
 It says that we can obtain the patient list, however encounter is random, to fix this we have to sort by date to be consistent and also include a count = 100 to not flood server
 
 
-
-
-
-
-
-
-
-
 OTHER:
 // This link will return all encounters with patient and practitioner information: LIMIT OF 50 per page, we have to use link->relation->"next" for other 50
 
@@ -28,11 +20,6 @@ I feel like this will allow us to store all the encounters at once, but It might
 https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient
 
 The above link was from the forum, however we can use URL to filter for each practitioner, and monitor their patients.
-
-NOTES:
-
-If you found that there is only 1 patient assigned to a Practitioner, your application will just show that one patient info to be monitored.
-EG : Practitioner/1381208
 
 
 SO finally after obtaining the list of patients, we will then use OBSERVER to get the cholesterol values
@@ -44,3 +31,7 @@ SUCH A MESS, I hope you can understand.
 I HAVE CONCLUDED RESEARCH
 
 
+NOTES:
+
+If you found that there is only 1 patient assigned to a Practitioner, your application will just show that one patient info to be monitored.
+EG : Practitioner/1381208
