@@ -1,7 +1,6 @@
 package com.example.cholesterol;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,23 +8,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
 
 /*
@@ -43,6 +28,8 @@ import java.util.ArrayList;
 * */
 
 public class MainActivity extends AppCompatActivity {
+
+    public static int counter = 0;
     public static Context context;
     //START
     RecyclerView recyclerView;
@@ -67,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         tv = findViewById(R.id.tv);
+
+//        Log.d("onCreate", "setting context");
+//        patientList.setContext(this);
+//        Log.d("onCreate", "initializing requestQueue");
+//        patientList.initializeQueue();
     }
 
     public void trialBtn(View view) {
@@ -76,34 +68,31 @@ public class MainActivity extends AppCompatActivity {
         String patientID = keyword.getText().toString();
 
         ArrayList<String> test_list = new ArrayList<>();
-        context = this;
-        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
-        JSONObject response = APIData.getResponse();
-        Log.d("test", String.valueOf(response));
+
+//        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
+//        JSONObject response = APIData.getResponse();
+        Log.d("results", String.valueOf(patientList.getJsonResults()));
+
     }
 
 //    Best to show this button after the results appear:
+
+
+
+
     public void monitorBtn(View view) {
         EditText keyword;
         keyword = findViewById(R.id.editText);
         String practitionerID = keyword.getText().toString();
         practitionerID = "1381208";
 
-        context = this;
-        JSONObject test = patientList.getPatientList(practitionerID);
 
-        Log.d("response", String.valueOf(test));
+        patientList.getPatientList(practitionerID, this);
 
+        counter = counter + 1;
+        Log.d("counter", String.valueOf(counter));
 
-
-
-
-
-
-
-
-
-
+        Log.d("results", String.valueOf(patientList.getJsonResults()));
     }
 }
 
