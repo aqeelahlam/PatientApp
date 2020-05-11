@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
 //        JSONObject response = APIData.getResponse();
-        Log.d("results", String.valueOf(patientList.getJsonResults()));
 
     }
 
@@ -87,12 +86,9 @@ public class MainActivity extends AppCompatActivity {
         practitionerID = "1381208";
 
 
-        patientList.getPatientList(practitionerID, this);
+        patientList.getPatientList(practitionerID, this, recyclerView);
 
-        counter = counter + 1;
         Log.d("counter", String.valueOf(counter));
-
-        Log.d("results", String.valueOf(patientList.getJsonResults()));
     }
 }
 

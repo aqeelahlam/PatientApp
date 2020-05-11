@@ -2,7 +2,11 @@ package com.example.cholesterol;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -10,43 +14,45 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class patientList extends List {
 
-    private static JSONObject jsonResults;
+    private static ArrayList<ArrayList<String>> patientList;
 
 
-    public static JSONObject getJsonResults() {
-        return jsonResults;
+    public static ArrayList<ArrayList<String>> getPatientList() {
+        return patientList;
     }
 
-    public static void setJsonResults(JSONObject response) {
-        jsonResults = response;
+    public static void setPatientList(ArrayList<ArrayList<String>> ids) {
+        patientList = ids;
     }
 
 
-    public static void getPatientList(String practitionerID, final Context context){
+    public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
         RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
         try {
-            if(practitionerID.isEmpty()){
+            if (practitionerID.isEmpty()) {
                 Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
             } else {
 
                 JsonObjectRequest stringRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
-                                new Response.Listener<JSONObject>(){
+                                new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            aux_getPatientList(response, context);
+                                            aux_getPatientList(response, context, recyclerView);
                                         } catch (Exception e) {
                                         }
                                     }
@@ -68,17 +74,17 @@ public class patientList extends List {
                 queue2.add(stringRequest);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
 
-    public static void aux_getPatientList(JSONObject response, Context context){
+    public static void aux_getPatientList(JSONObject response, Context context, final RecyclerView recyclerView) {
         RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
 
         String identifier = null;
-        if (response != null){
-            try{
+        if (response != null) {
+            try {
                 String identifier1 = null;
                 String identifier2 = null;
                 JSONArray identify = response.getJSONArray("identifier");
@@ -95,17 +101,16 @@ public class patientList extends List {
         if (identifier != null) {
             try {
                 String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="
-                        + identifier + "&_format=json";
+                        + identifier + "&_sort=-date&_count=100&_format=json";
                 Log.d("url", url);
 
                 JsonObjectRequest stringRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
-                                new Response.Listener<JSONObject>(){
+                                new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            setJsonResults(response);
-                                            Log.d("setResponse", String.valueOf(response));
+                                            cleanPatientList(response, recyclerView);
                                         } catch (Exception e) {
                                         }
                                     }
@@ -133,4 +138,40 @@ public class patientList extends List {
         }
 
     }
+
+    public static void cleanPatientList(JSONObject response, final RecyclerView recyclerView) throws JSONException {
+        ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> idList = new ArrayList<>();
+
+        try {
+            String idString;
+            String patientID;
+            String name;
+            JSONArray entry = response.getJSONArray("entry");
+            for (int i = 0; i < entry.length(); i++) {
+                try {
+                    idString = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("reference");
+                    name = (entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("display")).replaceAll("[\\d]", "");
+                    patientID = idString.substring(8);
+
+                    if (!idList.contains(patientID)) {
+                        idList.add(patientID);
+                        nameList.add(name);
+                    }
+
+                } catch (Exception e) {
+                }
+            }
+        } catch (Exception e) {
+        }
+        patientDetailsList.add(idList);
+        patientDetailsList.add(nameList);
+        setPatientList(patientDetailsList);
+        Log.d("final", String.valueOf(patientDetailsList));
+        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
+        recyclerView.setAdapter(patientListAdapter);
+    }
+
+
 }
