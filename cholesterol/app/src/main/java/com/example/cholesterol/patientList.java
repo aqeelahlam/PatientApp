@@ -21,11 +21,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class patientList extends List {
 
     private static ArrayList<ArrayList<String>> patientList;
-
 
     public static ArrayList<ArrayList<String>> getPatientList() {
         return patientList;
@@ -35,8 +35,14 @@ public class patientList extends List {
         patientList = ids;
     }
 
-
+    /**
+     *
+     * @param practitionerID
+     * @param context
+     * @param recyclerView
+     */
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
+
         RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
@@ -46,6 +52,7 @@ public class patientList extends List {
                 Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
             } else {
 
+//              This will first use the url with practitioner ID to obtain the identifier for the practitioner.
                 JsonObjectRequest stringRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
@@ -70,6 +77,7 @@ public class patientList extends List {
                         100000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
                 queue2.start();
                 queue2.add(stringRequest);
             }
@@ -79,9 +87,8 @@ public class patientList extends List {
     }
 
 
-    public static void aux_getPatientList(JSONObject response, Context context, final RecyclerView recyclerView) {
+    public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView) {
         RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
-
         String identifier = null;
         if (response != null) {
             try {
@@ -110,7 +117,9 @@ public class patientList extends List {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            cleanPatientList(response, recyclerView);
+//                                            cleanPatientList(response, recyclerView);
+                                            CholesterolData.cleanPatientList(response, context, recyclerView);
+
                                         } catch (Exception e) {
                                         }
                                     }
@@ -139,39 +148,39 @@ public class patientList extends List {
 
     }
 
-    public static void cleanPatientList(JSONObject response, final RecyclerView recyclerView) throws JSONException {
-        ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> idList = new ArrayList<>();
-
-        try {
-            String idString;
-            String patientID;
-            String name;
-            JSONArray entry = response.getJSONArray("entry");
-            for (int i = 0; i < entry.length(); i++) {
-                try {
-                    idString = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("reference");
-                    name = (entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("display")).replaceAll("[\\d]", "");
-                    patientID = idString.substring(8);
-
-                    if (!idList.contains(patientID)) {
-                        idList.add(patientID);
-                        nameList.add(name);
-                    }
-
-                } catch (Exception e) {
-                }
-            }
-        } catch (Exception e) {
-        }
-        patientDetailsList.add(idList);
-        patientDetailsList.add(nameList);
-        setPatientList(patientDetailsList);
-        Log.d("final", String.valueOf(patientDetailsList));
-        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
-        recyclerView.setAdapter(patientListAdapter);
-    }
+//    public static void cleanPatientList(JSONObject response, final RecyclerView recyclerView) throws JSONException {
+//        ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
+//        ArrayList<String> nameList = new ArrayList<>();
+//        ArrayList<String> idList = new ArrayList<>();
+//
+//        try {
+//            String idString;
+//            String patientID;
+//            String name;
+//            JSONArray entry = response.getJSONArray("entry");
+//            for (int i = 0; i < entry.length(); i++) {
+//                try {
+//                    idString = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("reference");
+//                    name = (entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("display")).replaceAll("[\\d]", "");
+//                    patientID = idString.substring(8);
+//
+//                    if (!idList.contains(patientID)) {
+//                        idList.add(patientID);
+//                        nameList.add(name);
+//                    }
+//
+//                } catch (Exception e) {
+//                }
+//            }
+//        } catch (Exception e) {
+//        }
+//        patientDetailsList.add(idList);
+//        patientDetailsList.add(nameList);
+//        setPatientList(patientDetailsList);
+//        Log.d("final", String.valueOf(patientDetailsList));
+//        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
+//        recyclerView.setAdapter(patientListAdapter);
+//    }
 
 
 }
