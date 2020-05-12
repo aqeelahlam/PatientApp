@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package master;
+package Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +47,10 @@ public class server {
     public static void main(String[] args) throws IOException, JSONException {
 
 //    JSONObject json = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=3689&_sort=date&_format=json");
-        
+
+
+
+
         
 //    For an Individual Patient:
     JSONObject jsonPatient = readJsonFromUrl("https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/1?_format=json");
