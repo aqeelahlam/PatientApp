@@ -40,6 +40,10 @@ public class TestingPatientList extends List {
         }
     }
 
+    public static void setJsonData(ArrayList<JSONObject> response) {
+        jsonData = response;
+    }
+
 
     public static ArrayList<JSONObject> getJsonData() {
         return jsonData;
@@ -48,6 +52,9 @@ public class TestingPatientList extends List {
 
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
         RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+
+        ArrayList<JSONObject> jsonData = new ArrayList<>();
+        setJsonData(jsonData);
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
