@@ -68,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
         String patientID = keyword.getText().toString();
 
         ArrayList<String> test_list = new ArrayList<>();
+        Log.d("finalJSONDATA", String.valueOf(TestingPatientList.getJsonData()));
+        Log.d("index1", String.valueOf(TestingPatientList.getJsonData().get(0)));
+        Log.d("index2", String.valueOf(TestingPatientList.getJsonData().get(1)));
+//        Log.d("index3", String.valueOf(TestingPatientList.getJsonData().get(3)));
+        Log.d("length", String.valueOf(TestingPatientList.getJsonData().size()));
+
+
+
+
+
 
 //        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
 //        JSONObject response = APIData.getResponse();
@@ -86,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
         practitionerID = "1381208";
 
 
-        patientList.getPatientList(practitionerID, this, recyclerView);
+//        patientList.getPatientList(practitionerID, this, recyclerView);
+        TestingPatientList.getPatientList(practitionerID, this, recyclerView);
 
-        Log.d("counter", String.valueOf(counter));
     }
 }
 

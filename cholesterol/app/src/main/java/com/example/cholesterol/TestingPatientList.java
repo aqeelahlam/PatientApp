@@ -2,8 +2,6 @@ package com.example.cholesterol;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
-public class patientList extends List {
+public class TestingPatientList extends List {
 
     private static ArrayList<ArrayList<String>> patientList;
+    private static ArrayList<JSONObject> jsonData = new ArrayList<>();
+
 
     public static ArrayList<ArrayList<String>> getPatientList() {
         return patientList;
@@ -35,15 +33,21 @@ public class patientList extends List {
         patientList = ids;
     }
 
-    /**
-     *
-     * @param practitionerID
-     * @param context
-     * @param recyclerView
-     */
-    public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
 
-        RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
+    public static void addJsonData(JSONObject response) {
+        if (response != null) {
+            jsonData.add(response);
+        }
+    }
+
+
+    public static ArrayList<JSONObject> getJsonData() {
+        return jsonData;
+    }
+
+
+    public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
+        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
@@ -52,7 +56,6 @@ public class patientList extends List {
                 Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
             } else {
 
-//              This will first use the url with practitioner ID to obtain the identifier for the practitioner.
                 JsonObjectRequest stringRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
@@ -77,18 +80,26 @@ public class patientList extends List {
                         100000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-                queue2.start();
-                queue2.add(stringRequest);
+                queue.start();
+                queue.add(stringRequest);
             }
 
         } catch (Exception e) {
         }
+        Log.d("final", String.valueOf(getJsonData()));
+
     }
 
 
+
+
+
+
+
+
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView) {
-        RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+
         String identifier = null;
         if (response != null) {
             try {
@@ -106,21 +117,33 @@ public class patientList extends List {
         }
 
         if (identifier != null) {
+            String firstUrl = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="
+                    + identifier + "&_sort=-date&_count=100&_format=json";
+
+
             try {
-                String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Encounter?_include=Encounter.participant.individual&_include=Encounter.patient&participant.identifier="
-                        + identifier + "&_sort=-date&_count=100&_format=json";
-                Log.d("url", url);
+                Log.d("firstUrl", firstUrl);
 
                 JsonObjectRequest stringRequest =
-                        new JsonObjectRequest(Request.Method.GET, url, null,
+                        new JsonObjectRequest(Request.Method.GET, firstUrl, null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            cleanPatientList(response, recyclerView);
-//                                            CholesterolData.cleanPatientList(response, context, recyclerView);
+                                            addJsonData(response);
+                                            Log.d("1st", String.valueOf(response));
+                                            int counter = 1;
+                                            Log.d("counter", String.valueOf(counter));
+
+                                            JSONArray link = response.getJSONArray("link");
+                                            for (int i = 0; i < link.length(); i++) {
+                                                if (link.getJSONObject(i).getString("relation").equals("next")) {
+                                                    makeRequestRecursive(response, context, counter);
+                                                }
+                                            }
 
                                         } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
                                     }
                                 },
@@ -138,15 +161,99 @@ public class patientList extends List {
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                queue2.start();
-                queue2.add(stringRequest);
+                queue.start();
+                queue.add(stringRequest);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//            cleanPatientList(jsonData);
         }
-
     }
+
+
+
+    public static void makeRequestRecursive(JSONObject response, final Context context, int counter) throws JSONException {
+        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+
+        String url = null;
+
+        JSONArray link = response.getJSONArray("link");
+        for (int i = 0; i < link.length(); i++) {
+            if (link.getJSONObject(i).getString("relation").equals("next")) {
+                url = link.getJSONObject(i).getString("url");
+            }
+        }
+        Log.d("nextURL", url);
+        counter++;
+        Log.d("counter", String.valueOf(counter));
+
+
+        if (counter <= 20) {
+
+
+
+            try {
+                final int finalCounter = counter;
+                JsonObjectRequest stringRequest =
+                        new JsonObjectRequest(Request.Method.GET, url, null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            addJsonData(response);
+                                            Log.d("nextData", String.valueOf(response));
+
+                                            JSONArray link2 = response.getJSONArray("link");
+
+
+                                            for (int i = 0; i < link2.length(); i++) {
+                                                if (link2.getJSONObject(i).getString("relation").equals("next"))   {
+                                                    makeRequestRecursive(response, context, finalCounter);
+                                                }
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("stock", error.getMessage());
+                                    }
+                                });
+
+
+                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        100000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                queue.start();
+                queue.add(stringRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void cleanPatientList(JSONObject response, final RecyclerView recyclerView) throws JSONException {
         ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
@@ -181,6 +288,4 @@ public class patientList extends List {
         PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
         recyclerView.setAdapter(patientListAdapter);
     }
-
-
 }
