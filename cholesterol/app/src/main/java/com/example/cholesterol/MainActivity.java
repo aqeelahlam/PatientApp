@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tv;
     ArrayList<String> cholesterol = new ArrayList<>();
 
+    Practitioner HP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        tv = findViewById(R.id.tv);
+        tv = findViewById(R.id.testTv);
 
 //        Log.d("onCreate", "setting context");
 //        patientList.setContext(this);
@@ -76,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
 //        monitoredPatientsTable.getCholesterol(patientID, test_list, recyclerView);
 //        JSONObject response = APIData.getResponse();
 
@@ -92,12 +91,22 @@ public class MainActivity extends AppCompatActivity {
     public void monitorBtn(View view) {
         EditText keyword;
         keyword = findViewById(R.id.editText);
-        String practitionerID = keyword.getText().toString();
-        practitionerID = "1381208";
+//        String practitionerID = keyword.getText().toString();
+        String practitionerID = "1381208";
+
+        HP = PractitionerIdentifier.getPractitionerID(practitionerID, this);
 
 
-//        patientList.getPatientList(practitionerID, this, recyclerView);
-        TestingPatientList.getPatientList(practitionerID, this, recyclerView);
+        Log.d("print", HP.getIdentifier());
+
+
+
+
+
+
+//        patientList.getPatientList(practitionerID, this, recyclerView, tv);
+
+//        TestingPatientList.getPatientList(practitionerID, this, recyclerView);
 
     }
 }
