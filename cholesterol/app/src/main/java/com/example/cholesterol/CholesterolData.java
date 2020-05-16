@@ -50,6 +50,7 @@ public class CholesterolData extends List{
 
 
 
+
                 }
             });
 
@@ -110,15 +111,5 @@ public class CholesterolData extends List{
 
 
         }
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -76,7 +76,7 @@ public class patientList extends List{
                         counter = 100;
                     }
                     else {
-                        cleanPatientList(getJsonData(), recyclerView);
+                        cleanPatientList(getJsonData(), context, recyclerView);
                         break;
                     }
                 }
@@ -102,13 +102,13 @@ public class patientList extends List{
                         }
 
                         @Override
-                        public void onResponse(JSONObject response, int counter2) {
+                        public void onResponse(JSONObject response, int counter2) throws JSONException {
                             addJsonData(response);
                             ArrayList<JSONObject> results = getJsonData();
                             Log.d("currentResultsSize", String.valueOf(results.size()));
 
                             if (counter2 == max) {
-                                cleanPatientList(getJsonData(), recyclerView);
+                                cleanPatientList(getJsonData(), context, recyclerView);
                             }
                         }
                     });
@@ -270,7 +270,7 @@ public class patientList extends List{
 
 
 
-    public static void cleanPatientList(ArrayList<JSONObject> response, final RecyclerView recyclerView) {
+    public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView) throws JSONException {
         ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<String> idList = new ArrayList<>();
@@ -299,7 +299,7 @@ public class patientList extends List{
             }
         }
 
-
+        CholesterolData.setPatients(idList,context, recyclerView);
         patientDetailsList.add(idList);
         patientDetailsList.add(nameList);
         setPatientList(patientDetailsList);
