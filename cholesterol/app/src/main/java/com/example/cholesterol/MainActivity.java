@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        tv = findViewById(R.id.testTv);
+        tv = findViewById(R.id.tv);
 
 //        Log.d("onCreate", "setting context");
 //        patientList.setContext(this);
@@ -69,12 +69,14 @@ public class MainActivity extends AppCompatActivity {
         keyword = findViewById(R.id.editText);
         String patientID = keyword.getText().toString();
 
-        ArrayList<String> test_list = new ArrayList<>();
-        Log.d("finalJSONDATA", String.valueOf(TestingPatientList.getJsonData()));
-        Log.d("index1", String.valueOf(TestingPatientList.getJsonData().get(0)));
-        Log.d("index2", String.valueOf(TestingPatientList.getJsonData().get(1)));
-//        Log.d("index3", String.valueOf(TestingPatientList.getJsonData().get(3)));
-        Log.d("length", String.valueOf(TestingPatientList.getJsonData().size()));
+        Log.d("print", HP.getIdentifier());
+
+//        ArrayList<String> test_list = new ArrayList<>();
+//        Log.d("finalJSONDATA", String.valueOf(TestingPatientList.getJsonData()));
+//        Log.d("index1", String.valueOf(TestingPatientList.getJsonData().get(0)));
+//        Log.d("index2", String.valueOf(TestingPatientList.getJsonData().get(1)));
+////        Log.d("index3", String.valueOf(TestingPatientList.getJsonData().get(3)));
+//        Log.d("length", String.valueOf(TestingPatientList.getJsonData().size()));
 
 
 
@@ -94,19 +96,18 @@ public class MainActivity extends AppCompatActivity {
 //        String practitionerID = keyword.getText().toString();
         String practitionerID = "1381208";
 
-        HP = PractitionerIdentifier.getPractitionerID(practitionerID, this);
-
-
-        Log.d("print", HP.getIdentifier());
 
 
 
 
+        patientList.patientHandler(practitionerID, this, recyclerView);
 
 
-//        patientList.getPatientList(practitionerID, this, recyclerView, tv);
 
-//        TestingPatientList.getPatientList(practitionerID, this, recyclerView);
+//
+//        testingPatientList_V1.getPatientList(practitionerID, this, recyclerView, tv);
+//
+//        testingPatientList_V2.getPatientList(practitionerID, this, recyclerView);
 
     }
 }

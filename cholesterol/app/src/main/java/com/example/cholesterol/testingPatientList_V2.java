@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TestingPatientList extends List {
+public class testingPatientList_V2 extends List {
 
     private static ArrayList<ArrayList<String>> patientList;
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();

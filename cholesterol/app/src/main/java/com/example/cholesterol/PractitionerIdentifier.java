@@ -57,6 +57,8 @@ public class PractitionerIdentifier extends List {
                                             HPidentifier = ident1 + "%7C" + ident2;
 
                                             practitioner[0] = new Practitioner(HPidentifier);
+                                            Log.d("inner", String.valueOf(response));
+
 
 //                                            practitioners.add(practitioner);
 
