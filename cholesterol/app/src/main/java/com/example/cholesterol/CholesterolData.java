@@ -18,122 +18,98 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class CholesterolData extends List{
 
-    private static ArrayList<ArrayList<String>> cholesterolData;
+    private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
-    public static ArrayList<ArrayList<String>> getCholesterolData() {
-        return cholesterolData;
+    public static HashMap<String, Patient> getPatientDetail(){
+        return patientDetail;
     }
 
-    public static void setCholesterolData(ArrayList<ArrayList<String>> cholesterolData1){
-        cholesterolData = cholesterolData1;
-    }
-
-    public static String chol;
-
-    public static String getChol(){
-        return chol;
-    }
-    public static void setChol(String chol1){
-        chol = chol1;
+    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
+        patientDetail = patientDetail1;
     }
 
 
 
-    public static void cleanPatientList(JSONObject response, Context context, final RecyclerView recyclerView) throws JSONException {
-        ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> cholList = new ArrayList<>();
+    public static void setPatients(ArrayList<String> patients, Context context, final RecyclerView recyclerView) throws JSONException {
 
-        try {
-            String idString;
-            String patientID;
-            String name;
-            JSONArray entry = response.getJSONArray("entry");
-            for (int i = 0; i < entry.length(); i++) {
-                try {
-                    idString = entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("reference");
-                    name = (entry.getJSONObject(i).getJSONObject("resource").getJSONObject("subject").getString("display")).replaceAll("[\\d]", "");
-                    patientID = idString.substring(8);
+        for (int i=0; i<patients.size(); i++){
 
-                    if (!cholList.contains(patientID)) {
-
-                        getCholLevel(patientID, context);
-                        cholList.add(getChol());
-                        nameList.add(name);
-                    }
-
-                } catch (Exception e) {
+            getCholesterol(patients.get(i), context, recyclerView, new APIListener() {
+                @Override
+                public void onError(String message) {
                 }
-            }
-        } catch (Exception e) {
+
+                @Override
+                public void onResponse(JSONObject response, int counter) throws JSONException {
+
+
+
+
+                }
+            });
+
+
+
+
         }
-        patientDetailsList.add(cholList);
-        patientDetailsList.add(nameList);
-        setCholesterolData(patientDetailsList);
-        Log.d("final", String.valueOf(patientDetailsList));
-        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
-        recyclerView.setAdapter(patientListAdapter);
-    }
 
-    public static void getCholLevel(String patientID, final Context context) {
 
-        RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
+        }
 
-        String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=date&_format=json";
+        public static void getCholesterol(final String patientID, final Context context, final RecyclerView recyclerView, final APIListener listener){
+            RequestQueue queue = volleyHandler.getInstance(context).getQueue();
 
-        Log.d("url", url);
+            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=-date&_format=json";
 
-        try {
-            if (patientID.isEmpty()) {
-                Toast.makeText(MainActivity.context, "Cannot be left empty", Toast.LENGTH_LONG).show();
-            } else {
-                JsonObjectRequest stringRequest =
+
+            try {
+                JsonObjectRequest jsonObjectRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            JSONArray entry = response.getJSONArray("entry");
+                                            int total = response.getInt("total");
+                                            if (total>0){
+                                                JSONArray entry = response.getJSONArray("entry");
+                                                double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+                                                String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
 
-                                            double a = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
-                                            String b = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
+                                                Patient patient = new Patient(patientID, cholValue+cholUnit);
+                                                patientDetail.put(patientID, patient);
 
-                                            final String cholLevel = String.valueOf(a) + b;
 
-                                            Log.d("chol", cholLevel);
+                                            }
 
-                                            setChol(cholLevel);
-
-                                        } catch (Exception e) {
+                                        } catch (JSONException e) {
                                         }
+
+
                                     }
-                                },
-                                new Response.ErrorListener() {
+                                }, new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Log.d("stock", error.getMessage());
-                                    }
-                                });
+                            }
+                        });
 
-
-                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                         100000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                queue.start();
+                queue.add(jsonObjectRequest);
 
-                queue2.start();
-                queue2.add(stringRequest);
+            } catch (Exception e) {
             }
 
-        } catch (Exception e) {
-        }
 
-    }
+        }
 
 
 

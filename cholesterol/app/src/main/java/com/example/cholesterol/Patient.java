@@ -3,18 +3,21 @@ package com.example.cholesterol;
 public class Patient {
 
     private String cholesterol;
-    private int patientID;
+    private String patientID;
 
-    public Patient(int patientID, String cholesterol){
+    public Patient(String patientID, String cholesterol){
         this.patientID = patientID;
         this.cholesterol = cholesterol;
     }
 
-    public void setPatientID(int patientID) {
+    public Patient() {
+    }
+
+    public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
-    public int getPatientID() {
+    public String getPatientID() {
         return patientID;
     }
 
