@@ -65,40 +65,55 @@ public class patientList extends List{
             public void onResponse(JSONObject response, int temp) throws JSONException {
                 addJsonData(response);
 
-                ArrayList<JSONObject> results = getJsonData();
-                Log.d("initialResults", String.valueOf(results.size()));
+                JSONArray link = response.getJSONArray("link");
 
-                int counter = 1;
-                final int max = 7;
+                int counter = 100;
+                final int max = 700;
+
+
+                for (int i = 0; i < link.length(); i++) {
+                    if (link.getJSONObject(i).getString("relation").equals("next"))   {
+                        counter = 100;
+                    }
+                    else {
+                        cleanPatientList(getJsonData(), recyclerView);
+                        break;
+                    }
+                }
+
+
+                String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir?_getpages=10562330-95a4-4986-a0c0-544f34956870&_getpagesoffset=PAGE_ID&_count=100&_format=json&_pretty=true&_bundletype=searchset";
+                String[] tempArray = url.split("_getpagesoffset=");
+                url = tempArray[0] + "_getpagesoffset=";
+                String filters = "&_count=100&_format=json&_pretty=true&_bundletype=searchset";
 
 
                 while (counter < max) {
+                    String new_url = url + counter + filters;
+
                     Log.d("counter", String.valueOf(counter));
 
-                    JSONArray link = response.getJSONArray("link");
-                    for (int i = 0; i < link.length(); i++) {
-                        if (link.getJSONObject(i).getString("relation").equals("next")) {
-                            counter ++;
-                            String url = link.getJSONObject(i).getString("url");
-                            recursiveHandler(url, context, counter, new APIListener() {
-                                @Override
-                                public void onError(String message) {
+                    counter += 100;
+                    Log.d("url", new_url);
+                    recursiveHandler(new_url, context, counter, new APIListener() {
+                        @Override
+                        public void onError(String message) {
 
-                                }
-
-                                @Override
-                                public void onResponse(JSONObject response, int counter2) {
-                                    addJsonData(response);
-                                    ArrayList<JSONObject> results = getJsonData();
-                                    Log.d("currentResults", String.valueOf(results.size()));
-
-                                    if (counter2 == max) {
-                                        cleanPatientList(getJsonData(), recyclerView);
-                                    }
-                                }
-                            });
                         }
-                    }
+
+                        @Override
+                        public void onResponse(JSONObject response, int counter2) {
+                            addJsonData(response);
+                            ArrayList<JSONObject> results = getJsonData();
+                            Log.d("currentResultsSize", String.valueOf(results.size()));
+
+                            if (counter2 == max) {
+                                cleanPatientList(getJsonData(), recyclerView);
+                            }
+                        }
+                    });
+//                        }
+//                    }
                 }
             }
         });
