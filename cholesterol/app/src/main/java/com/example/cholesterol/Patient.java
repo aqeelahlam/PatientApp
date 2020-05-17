@@ -5,17 +5,19 @@ public class Patient {
     private String cholesterol;
     private String name;
     private String patientID;
-
-//    public Patient(String cholesterol){
-//        this.cholesterol = cholesterol;
-//    }
+    private String effectiveDate;
 
 //  Empty constructor if ever we need to initialize
     public Patient() {
     }
 
+//  Constructor to pass in ID and Name of Patient
     public Patient(String patientID, String name){
         this.patientID = patientID;
+        this.name = name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -23,17 +25,15 @@ public class Patient {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
+
 
     public String getPatientID() {
         return patientID;
     }
 
-    public void setPatientID(String patientID) {
-        this.patientID = patientID;
-    }
 
     public void setCholesterol(String cholesterol) {
         this.cholesterol = cholesterol;
@@ -41,5 +41,13 @@ public class Patient {
 
     public String getCholesterol() {
         return cholesterol;
+    }
+
+    public String getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(String effectiveDate) {
+        this.effectiveDate = effectiveDate;
     }
 }

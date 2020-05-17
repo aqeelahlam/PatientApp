@@ -45,8 +45,11 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
         String patientname = patientListHash.get(keys[position]).getName();
         String patientID = patientListHash.get(keys[position]).getPatientID();
-        holder.patList.setText(patientID + " : " + patientname);
+        String chol = patientListHash.get(keys[position]).getCholesterol();
+        String issuedDate = patientListHash.get(keys[position]).getEffectiveDate();
+        holder.patList.setText(patientname + " : " + chol + issuedDate);
 
+//        holder.patList.setText(" : " + chol + issuedDate);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

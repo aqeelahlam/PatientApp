@@ -301,9 +301,13 @@ public class patientList extends List{
 //      Set the HashMap
         setPatientListHash(patientListHash);
 
+        CholesterolData.getCholesterol(getPatientListHash(), context, recyclerView);
+
+
+
 //      Initialize the Adapter to work with the HashMap
-        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientListHash());
-        recyclerView.setAdapter(patientListAdapter);
+//        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientListHash());
+//        recyclerView.setAdapter(patientListAdapter);
 
     }
 
