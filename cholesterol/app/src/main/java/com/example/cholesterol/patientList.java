@@ -71,18 +71,13 @@ public class patientList extends List{
                 final int max = 700;
 
 
+                String url = null;
                 for (int i = 0; i < link.length(); i++) {
                     if (link.getJSONObject(i).getString("relation").equals("next"))   {
-                        counter = 100;
-                    }
-                    else {
-                        cleanPatientList(getJsonData(), context, recyclerView);
-                        break;
+                        url = link.getJSONObject(i).getString("url");
                     }
                 }
 
-
-                String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir?_getpages=10562330-95a4-4986-a0c0-544f34956870&_getpagesoffset=PAGE_ID&_count=100&_format=json&_pretty=true&_bundletype=searchset";
                 String[] tempArray = url.split("_getpagesoffset=");
                 url = tempArray[0] + "_getpagesoffset=";
                 String filters = "&_count=100&_format=json&_pretty=true&_bundletype=searchset";
