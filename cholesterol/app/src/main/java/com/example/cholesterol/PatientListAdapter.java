@@ -13,15 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListView> implements View.OnClickListener {
 
-    ArrayList<ArrayList<String>> patientDetails;
+    HashMap<String, Patient> patientListHash;
 
-    public PatientListAdapter(ArrayList<ArrayList<String>> patientDetails){
-        this.patientDetails = patientDetails;
+    public PatientListAdapter(HashMap<String, Patient> patientListHashA){
+        this.patientListHash = patientListHashA;
 
     }
 
@@ -40,10 +39,13 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull PatientListView holder, int position) {
-        final String name = patientDetails.get(0).get(position);
-        final String patientID = patientDetails.get(1).get(position);
-        holder.patList.setText(patientID + ": " + name);
 
+//      Here I obtain a the list of keys and convert it into an array in order to use "position" to access the correct card
+        Object[] keys = patientListHash.keySet().toArray();
+
+        String patientname = patientListHash.get(keys[position]).getName();
+        String patientID = patientListHash.get(keys[position]).getPatientID();
+        holder.patList.setText(patientID + " : " + patientname);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,18 +53,15 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
                 Snackbar.make(v,"", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
-        return patientDetails.get(1).size();
+        return patientListHash.size();
     }
 
     @Override
     public void onClick(View v) {
-
     }
 
 
@@ -74,7 +73,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
             super(itemView);
             patList = itemView.findViewById(R.id.cholLevel);
             selected = itemView.findViewById(R.id.checkBox);
-
 
         }
     }

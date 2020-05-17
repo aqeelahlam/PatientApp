@@ -18,21 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class patientList extends List{
 
-    private static ArrayList<ArrayList<String>> patientList;
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();
-
-
-    public static ArrayList<ArrayList<String>> getPatientList() {
-        return patientList;
-    }
-
-    public static void setPatientList(ArrayList<ArrayList<String>> ids) {
-        patientList = ids;
-    }
-
 
     public static void addJsonData(JSONObject response) {
         if (response != null) {
@@ -44,11 +34,21 @@ public class patientList extends List{
         jsonData = response;
     }
 
-
     public static ArrayList<JSONObject> getJsonData() {
         return jsonData;
     }
 
+//  This method is used to get the Patient HashMap
+    public static HashMap<String,Patient> getPatientListHash() {
+        return patientListHash;
+    }
+
+//  This method is used to set the HashMap
+    public static void setPatientListHash(HashMap<String, Patient> patientListHashA) {
+        patientListHash = patientListHashA;
+    }
+
+    private static HashMap<String, Patient> patientListHash;
 
 
     public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView) {
@@ -266,9 +266,9 @@ public class patientList extends List{
 
 
     public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView) throws JSONException {
-        ArrayList<ArrayList<String>> patientDetailsList = new ArrayList<>();
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> idList = new ArrayList<>();
+
+//      This Hashmap holds information regarding the patient where the key would be the patientID
+        HashMap<String, Patient> patientListHash = new HashMap<>();
 
         for (int i = 0; i < response.size(); i++) {
             try {
@@ -282,10 +282,14 @@ public class patientList extends List{
                         name = (entry.getJSONObject(j).getJSONObject("resource").getJSONObject("subject").getString("display")).replaceAll("[\\d]", "");
                         patientID = idString.substring(8);
 
-                        if (!idList.contains(patientID)) {
-                            idList.add(patientID);
-                            nameList.add(name);
+//                      Create a new Patient object to hold the information of the patient
+                        Patient patient = new Patient(patientID, name);
+
+//                      If the patient is already in the HashMap, we skip
+                        if (!patientListHash.containsKey(patientID)){
+                            patientListHash.put(patientID, patient);
                         }
+
 
                     } catch (Exception e) {
                     }
@@ -294,15 +298,13 @@ public class patientList extends List{
             }
         }
 
-        CholesterolData.setPatients(idList,context, recyclerView);
-        patientDetailsList.add(idList);
-        patientDetailsList.add(nameList);
-        setPatientList(patientDetailsList);
-        Log.d("final", String.valueOf(patientDetailsList));
-        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientList());
+//      Set the HashMap
+        setPatientListHash(patientListHash);
+
+//      Initialize the Adapter to work with the HashMap
+        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientListHash());
         recyclerView.setAdapter(patientListAdapter);
+
     }
-
-
 
 }

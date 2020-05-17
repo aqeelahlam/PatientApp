@@ -178,8 +178,8 @@ public class testingPatientList_V1 extends List {
         patientDetailsList.add(nameList);
         setPatientList(patientDetailsList);
         Log.d("final", String.valueOf(patientDetailsList));
-        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
-        recyclerView.setAdapter(patientListAdapter);
+//        PatientListAdapter patientListAdapter = new PatientListAdapter(patientDetailsList);
+//        recyclerView.setAdapter(patientListAdapter);
     }
 
 
