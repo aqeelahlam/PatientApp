@@ -2,6 +2,7 @@
 package com.example.cholesterol;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,16 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         holder.patList.setText(patientname + " : " + chol);
         holder.dateissued.setText(issuedDate);
 
-//        holder.patList.setText(" : " + chol + issuedDate);
+//        Intent intent = new Intent(MainActivity.context, Monitor.class);
+//        HashMap<String, Patient> monitoredPatients = new HashMap<>();
+//        if(holder.selected.isChecked()){
+//            Patient trial = new Patient(patientID, patientname, chol, issuedDate);
+//
+//
+//
+//
+//        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

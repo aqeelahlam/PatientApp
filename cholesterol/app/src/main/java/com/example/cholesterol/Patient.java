@@ -17,6 +17,13 @@ public class Patient {
         this.name = name;
     }
 
+    public Patient(String patientID, String name, String cholesterol, String effectiveDate){
+        this.patientID = patientID;
+        this.name = name;
+        this.cholesterol = cholesterol;
+        this.effectiveDate = effectiveDate;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
