@@ -47,7 +47,8 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         String patientID = patientListHash.get(keys[position]).getPatientID();
         String chol = patientListHash.get(keys[position]).getCholesterol();
         String issuedDate = patientListHash.get(keys[position]).getEffectiveDate();
-        holder.patList.setText(patientname + " : " + chol + issuedDate);
+        holder.patList.setText(patientname + " : " + chol);
+        holder.dateissued.setText(issuedDate);
 
 //        holder.patList.setText(" : " + chol + issuedDate);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,12 +71,14 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     public class PatientListView extends RecyclerView.ViewHolder {
         TextView patList;
+        TextView dateissued;
         CheckBox selected;
 
         public PatientListView(@NonNull View itemView) {
             super(itemView);
             patList = itemView.findViewById(R.id.cholLevel);
             selected = itemView.findViewById(R.id.checkBox);
+            dateissued = itemView.findViewById(R.id.textView2);
 
         }
     }
