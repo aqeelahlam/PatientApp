@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class CholesterolData extends List{
@@ -34,6 +35,16 @@ public class CholesterolData extends List{
     }
 
 
+    /**
+     * This Function is used to send a request to the server
+     * Request Type: Obtain Cholesterol Level of Patients
+     * @param patients - This holds the HashMap of the Patients
+     * @param context - Context
+     * @param recyclerView -This refers to the recycler view that has been passed in from the
+     *                      Main Activity
+     *
+     */
+
     public static void getCholesterol(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = volleyHandler.getInstance(context).getQueue();
 
@@ -44,7 +55,7 @@ public class CholesterolData extends List{
 
             String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientsBundle[i] + "&_sort=-date&_format=json";
 
-            Log.d("PatientID", (String) patientsBundle[i]);
+//            Log.d("PatientID", (String) patientsBundle[i]);
 
             final String patientID = patientsBundle[i].toString();
 
@@ -58,7 +69,11 @@ public class CholesterolData extends List{
                                         try {
                                             int total = response.getInt("total");
                                             if (total > 0){
-                                                cleanChol(response, patients, patientID, context ,recyclerView);
+//                                                Log.d("PeopleWithChol", patientID);
+                                                cleanChol(response, patients, patientID ,recyclerView);
+                                            }
+                                            else {
+                                                patients.remove(patientID);
                                             }
 
                                         } catch (JSONException e) {
@@ -83,106 +98,34 @@ public class CholesterolData extends List{
 
     }
 
+    /**
+     * This function is used to add the cholesterol levels into the hashmap & display it in the
+     * Recycler View
+     * @param response - This holds the JSON object which we use to parse
+     * @param patientHashMap - This holds the HashMap of the Patients
+     * @param patientID - This is used to access a Patient Object of the HashMap
+     * @param recyclerView - This refers to the recycler view that has been passed in from the
+     *                     Main Activity
+     * @throws JSONException
+     *
+     */
 
-    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final Context context, final RecyclerView recyclerView) throws JSONException {
+    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final RecyclerView recyclerView) throws JSONException {
 
+//      We use the response
         JSONArray entry = response.getJSONArray("entry");
         double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
         String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
         String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("issued");
 
+//      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
         patientHashMap.get(patientID).setCholesterol(cholValue + cholUnit);
         patientHashMap.get(patientID).setEffectiveDate(effectiveDate);
 
-
-
+//      We will then pass the hashmap to the recycler view to show the results.
         PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap);
         recyclerView.setAdapter(patientListAdapter);
 
-
-
     }
-
-
-
-
-
-
-
-
-//    public static void setPatients(ArrayList<String> patients, Context context) throws JSONException {
-//
-//        for (int i=0; i<patients.size(); i++){
-//
-//            getCholesterol(patients.get(i), context, new APIListener() {
-//                @Override
-//                public void onError(String message) {
-//                }
-//
-//                @Override
-//                public void onResponse(JSONObject response, int counter) throws JSONException {
-//
-//
-//
-//
-//
-//                }
-//            });
-//
-//        }
-//
-//
-//        }
-//
-//        public static void getCholesterol(final String patientID, final Context context, final APIListener listener){
-//            RequestQueue queue = volleyHandler.getInstance(context).getQueue();
-//
-//            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientID + "&_sort=-date&_format=json";
-//
-//
-//            try {
-//                JsonObjectRequest jsonObjectRequest =
-//                        new JsonObjectRequest(Request.Method.GET, url, null,
-//                                new Response.Listener<JSONObject>() {
-//                                    @Override
-//                                    public void onResponse(JSONObject response) {
-//                                        try {
-//                                            int total = response.getInt("total");
-//                                            if (total>0){
-//                                                JSONArray entry = response.getJSONArray("entry");
-//                                                double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
-//                                                String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
-//
-//                                                Patient patient = new Patient(patientID, cholValue+cholUnit);
-//                                                patientDetail.put(patientID, patient);
-//
-//
-//                                            }
-//
-//                                        } catch (JSONException e) {
-//                                        }
-//
-//
-//                                    }
-//                                }, new Response.ErrorListener(){
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//
-//
-//                            }
-//                        });
-//
-//                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-//                        100000,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                queue.start();
-//                queue.add(jsonObjectRequest);
-//
-//            } catch (Exception e) {
-//            }
-//
-//
-//        }
 
 }

@@ -38,16 +38,16 @@ public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CholesterolView holder, int position) {
-        final String currentChol = mCholLevel.get(position);
-        holder.cholLevel.setText(currentChol);
+//        final String currentChol = mCholLevel.get(position);
+//        holder.cholLevel.setText(currentChol);
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "The chol level is: " + currentChol + " Holy shit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(v, "The chol level is: " + currentChol + " Holy shit", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//            }
+//        });
 
 
     }
@@ -69,8 +69,8 @@ public class CholesterolAdapter extends RecyclerView.Adapter<CholesterolAdapter.
 
         public CholesterolView(@NonNull View itemView) {
             super(itemView);
-            cholLevel = itemView.findViewById(R.id.cholLevel);
-            selected = itemView.findViewById(R.id.checkBox);
+//            cholLevel = itemView.findViewById(R.id.cholLevel);
+//            selected = itemView.findViewById(R.id.checkBox);
 
 
         }

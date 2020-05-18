@@ -205,8 +205,8 @@ public class patientList extends List{
         String identifier = null;
         if (response != null) {
             try {
-                String identifier1 = null;
-                String identifier2 = null;
+                String identifier1 = "";
+                String identifier2 = "";
                 JSONArray identify = response.getJSONArray("identifier");
                 identifier1 = identify.getJSONObject(0).getString("system");
                 identifier2 = identify.getJSONObject(0).getString("value");
