@@ -1,8 +1,6 @@
 package com.example.cholesterol;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,14 +10,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.adapters.PatientListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 
 public class CholesterolData extends List{
@@ -125,6 +122,7 @@ public class CholesterolData extends List{
 //      We will then pass the hashmap to the recycler view to show the results.
         PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap);
         recyclerView.setAdapter(patientListAdapter);
+
 
     }
 

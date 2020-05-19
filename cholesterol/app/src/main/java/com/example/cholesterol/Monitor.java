@@ -7,15 +7,15 @@ import android.os.Bundle;
 
 public class Monitor extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    RecyclerView monitorRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_monitor);
+        setContentView(R.layout.activity_monitor);
 
-        recyclerView = findViewById(R.id.MonitorRecycle);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        monitorRecyclerView = findViewById(R.id.monitor_recycler);
+        monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 }

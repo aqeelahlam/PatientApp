@@ -5,8 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,20 +30,27 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     public static Context context;
-    RecyclerView recyclerView;
-    TextView tv;
+    RecyclerView patientRecyclerView;
+
+
+    Button monitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        patientRecyclerView = findViewById(R.id.recycler_view);
+        patientRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//        monitorRecyclerView = findViewById(R.id.monitor_recycler);
+//        monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        monitor = findViewById(R.id.btn_monitor);
 
     }
 
-    public void FindBtn(View view) {
+    public void FindBtn(final View view) {
 
         EditText keyword;
         keyword = findViewById(R.id.editText);
@@ -49,11 +59,27 @@ public class MainActivity extends AppCompatActivity {
         String practitionerID = "1381208";
 //        String practitionerID = "6832728";
 
-        patientList.patientHandler(practitionerID, this, recyclerView);
+        patientList.patientHandler(practitionerID, this, patientRecyclerView);
+//        monitor.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int position = patientRecyclerView.findContainingViewHolder(view).getAdapterPosition();
+//                CheckBox check = v.findViewById(R.id.checkBox);
+//                if(check.isChecked()){
+//                    patientRecyclerView.getAdapter().getItemId(position);
+//                    Intent intent = new Intent(MainActivity.context, Monitor.class);
+////                    intent.putExtra();
+//                    startActivity(intent);
+//                }
+//
+//            }
+//        });
+
 
     }
 
     public void monitorBtn(View view) {
+
 
     }
 }
