@@ -16,12 +16,11 @@ import java.util.HashMap;
 
 public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView>{
 
+    HashMap<String, Patient> patientListHash;
+
     public MonitorAdapter(HashMap<String, Patient> patientListHashA) {
         this.patientListHash = patientListHashA;
     }
-
-    HashMap<String, Patient> patientListHash;
-
 
 //  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below
     @NonNull
@@ -41,11 +40,15 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 //  This method binds data to viewholder
     @Override
     public void onBindViewHolder(@NonNull MonitorListView holder, int position) {
+        final Object[] keys = patientListHash.keySet().toArray();
 
+        final String patientname = patientListHash.get(keys[position]).getName();
+        final String chol = patientListHash.get(keys[position]).getCholesterol();
+        final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
 
-
-
-
+        holder.patient.setText(patientname);
+        holder.effectiveDate.setText(effectiveDate);
+        holder.cholLevel.setText(chol);
 
     }
 
@@ -57,13 +60,15 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     public class MonitorListView extends RecyclerView.ViewHolder{
 
         private TextView patient;
-        private TextView issuedDate;
+        private TextView effectiveDate;
+        private TextView cholLevel;
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
 
-            patient = itemView.findViewById(R.id.monitor_patient);
-            issuedDate = itemView.findViewById(R.id.monitor_issueDate);
+            patient = itemView.findViewById(R.id.monitor_PatientName);
+            effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
+            cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
 
         }
     }

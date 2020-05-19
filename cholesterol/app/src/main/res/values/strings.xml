@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Cholesterol</string>
     <string name="monitor">Monitor</string>
-    <string name="patient">Patient</string>
+    <string name="patient">Patient Name</string>
+    <string name="patient_id">Patient ID</string>
     <string name="issue_date">Issued Date</string>
     <string name="enter_prac">Practitioner ID:</string>
     <string name="find_patient">Find</string>
     <string name="hint">Enter Practitioner ID</string>
+    <string name="chol_level">Chol Level</string>
+
 
 
 

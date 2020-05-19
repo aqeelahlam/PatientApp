@@ -1,5 +1,6 @@
 package com.example.cholesterol;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,20 +17,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 
 public class CholesterolData extends List{
 
-    private static HashMap<String, Patient> patientDetail = new HashMap<>();
+//    private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
-    public static HashMap<String, Patient> getPatientDetail(){
-        return patientDetail;
-    }
-
-    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
-        patientDetail = patientDetail1;
-    }
+//    public static HashMap<String, Patient> getPatientDetail(){
+//        return patientDetail;
+//    }
+//
+//    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
+//        patientDetail = patientDetail1;
+//    }
 
 
     /**
@@ -42,7 +47,7 @@ public class CholesterolData extends List{
      *
      */
 
-    public static void getCholesterol(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
+    public static void getCholesterol(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = volleyHandler.getInstance(context).getQueue();
 
         final Object[] patientsBundle = patients.keySet().toArray();
@@ -67,13 +72,13 @@ public class CholesterolData extends List{
                                             int total = response.getInt("total");
                                             if (total > 0){
 //                                                Log.d("PeopleWithChol", patientID);
-                                                cleanChol(response, patients, patientID ,recyclerView);
+                                                cleanChol(response, patients, monitoredPatients, patientID ,recyclerView);
                                             }
                                             else {
                                                 patients.remove(patientID);
                                             }
 
-                                        } catch (JSONException e) {
+                                        } catch (JSONException | ParseException e) {
                                         }
                                     }
                                 }, new Response.ErrorListener() {
@@ -107,22 +112,27 @@ public class CholesterolData extends List{
      *
      */
 
-    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final RecyclerView recyclerView) throws JSONException {
+    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, final RecyclerView recyclerView) throws JSONException, ParseException {
 
 //      We use the response
         JSONArray entry = response.getJSONArray("entry");
         double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
         String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
-        String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("issued");
+        String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
+
+//      Change to appropiate format
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+        Date result;
+
+        result = df.parse(effectiveDate);
 
 //      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
         patientHashMap.get(patientID).setCholesterol(cholValue + cholUnit);
-        patientHashMap.get(patientID).setEffectiveDate(effectiveDate);
+        patientHashMap.get(patientID).setEffectiveDate(result.toString());
 
 //      We will then pass the hashmap to the recycler view to show the results.
-        PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap);
+        PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap, monitoredPatients);
         recyclerView.setAdapter(patientListAdapter);
-
 
     }
 

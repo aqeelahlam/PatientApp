@@ -1,5 +1,6 @@
 package com.example.cholesterol;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -38,31 +39,19 @@ public class patientList extends List{
         return jsonData;
     }
 
-//  This method is used to get the Patient HashMap
-    public static HashMap<String,Patient> getPatientListHash() {
-        return patientListHash;
-    }
 
-//  This method is used to set the HashMap
-    public static void setPatientListHash(HashMap<String, Patient> patientListHashA) {
-        patientListHash = patientListHashA;
-    }
-
-    private static HashMap<String, Patient> patientListHash;
-
-
-    public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView) {
+    public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView, final HashMap<String, Patient> patientListHash, final HashMap<String, Patient> monitoredPatients) {
         ArrayList<JSONObject> reset = new ArrayList<>();
         setJsonData(reset);
 
         getPatientList(practitionerID, context, recyclerView, new APIListener() {
             @Override
             public void onError(String message) {
-
             }
 
             @Override
             public void onResponse(JSONObject response, int temp) throws JSONException {
+
                 addJsonData(response);
 
                 JSONArray link = response.getJSONArray("link");
@@ -103,7 +92,7 @@ public class patientList extends List{
                             Log.d("currentResultsSize", String.valueOf(results.size()));
 
                             if (counter2 == max) {
-                                cleanPatientList(getJsonData(), context, recyclerView);
+                                cleanPatientList(getJsonData(), context, recyclerView, patientListHash, monitoredPatients);
                             }
                         }
                     });
@@ -265,10 +254,10 @@ public class patientList extends List{
 
 
 
-    public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView) throws JSONException {
+    public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView, HashMap<String, Patient> patientListHash, HashMap<String, Patient> monitoredPatients) throws JSONException {
 
 //      This Hashmap holds information regarding the patient where the key would be the patientID
-        HashMap<String, Patient> patientListHash = new HashMap<>();
+//        HashMap<String, Patient> patientListHash = new HashMap<>();
 
         for (int i = 0; i < response.size(); i++) {
             try {
@@ -298,16 +287,7 @@ public class patientList extends List{
             }
         }
 
-//      Set the HashMap
-        setPatientListHash(patientListHash);
-
-        CholesterolData.getCholesterol(getPatientListHash(), context, recyclerView);
-
-
-
-//      Initialize the Adapter to work with the HashMap
-//        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientListHash());
-//        recyclerView.setAdapter(patientListAdapter);
+        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
 
     }
 
