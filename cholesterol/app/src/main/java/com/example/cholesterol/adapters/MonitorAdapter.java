@@ -1,6 +1,7 @@
 package com.example.cholesterol.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cholesterol.CholesterolData;
+import com.example.cholesterol.NTimer;
 import com.example.cholesterol.Patient;
 import com.example.cholesterol.R;
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView>{
+import javax.security.auth.Subject;
+
+public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> {
 
     HashMap<String, Patient> patientListHash;
 
@@ -72,4 +79,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
         }
     }
+
+
 }

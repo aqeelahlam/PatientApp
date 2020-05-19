@@ -2,6 +2,7 @@ package com.example.cholesterol;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +23,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class CholesterolData extends List{
+public class CholesterolData implements Observer {
 
 //    private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
@@ -35,6 +38,12 @@ public class CholesterolData extends List{
 //    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
 //        patientDetail = patientDetail1;
 //    }
+
+    public static String placeHolder;
+
+    public CholesterolData() {
+        placeHolder = "Testing";
+    }
 
 
     /**
@@ -136,4 +145,10 @@ public class CholesterolData extends List{
 
     }
 
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Log.d("timer", "time is up!");
+
+    }
 }
