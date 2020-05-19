@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 /*
 * Android: 9.0 (Pie)
 * API Level: 28
@@ -78,8 +80,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void monitorBtn(View view) {
 
+        HashMap<String, Patient> patientListHash = new HashMap<>();
+        Patient patient = new Patient("29163", "Mr. Adan Rogahn");
+        patientListHash.put("29163", patient);
+
+        patientList.setPatientListHash(patientListHash);
+
+        detailedPatient.getDetailedPatient(patientList.getPatientListHash(), context, patientRecyclerView);
 
     }
 }
