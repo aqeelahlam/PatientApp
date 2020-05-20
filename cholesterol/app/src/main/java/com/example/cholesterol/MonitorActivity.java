@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class MonitorActivity extends AppCompatActivity {
 
-    RecyclerView monitorRecyclerView;
+    public static RecyclerView monitorRecyclerView;
     HashMap<String, Patient> monitored = new HashMap<>();
 
 
@@ -45,7 +45,27 @@ public class MonitorActivity extends AppCompatActivity {
             }
         });
 
+        NTimer.resetN();
+        NTimer nTimer = new NTimer();
+        nTimer.addObserver(monitorAdapter);
+        nTimer.startTimer();
+
     }
+
+
+
+
+
+    public static void refresh(MonitorAdapter monitorAdapter) {
+
+        monitorRecyclerView.setAdapter(monitorAdapter);
+
+        NTimer.resetN();
+        NTimer nTimer = new NTimer();
+        nTimer.addObserver(monitorAdapter);
+        nTimer.startTimer();
+    }
+
 
 
 

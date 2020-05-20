@@ -1,6 +1,7 @@
 package com.example.cholesterol.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.cholesterol.MainActivity;
 import com.example.cholesterol.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.CholesterolData;
 
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> {
+public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer {
 
     HashMap<String, Patient> patientListHash;
 
@@ -68,6 +74,12 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public int getItemCount() {
         return patientListHash.size();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Log.d("timer", "time is up!");
+        CholesterolData.getUpdate(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
     }
 
 
