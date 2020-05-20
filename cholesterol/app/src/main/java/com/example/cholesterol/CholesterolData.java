@@ -12,6 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.adapters.MonitorAdapter;
 import com.example.cholesterol.adapters.PatientListAdapter;
 
 import org.json.JSONArray;
@@ -21,13 +22,14 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 
-public class CholesterolData implements Observer {
+public class CholesterolData {
 
 //    private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
@@ -39,12 +41,21 @@ public class CholesterolData implements Observer {
 //        patientDetail = patientDetail1;
 //    }
 
-    public static String placeHolder;
+    private static ArrayList<JSONObject> updatedData = new ArrayList<>();
 
-    public CholesterolData() {
-        placeHolder = "Testing";
+    public static void addUpdatedData(JSONObject response) {
+        if (response != null) {
+            updatedData.add(response);
+        }
     }
 
+    public static ArrayList<JSONObject> getUpdatedData() {
+        return updatedData;
+    }
+
+    public static void resetUpdatedData() {
+        updatedData = new ArrayList<>();
+    }
 
     /**
      * This Function is used to send a request to the server
@@ -58,6 +69,7 @@ public class CholesterolData implements Observer {
 
     public static void getCholesterol(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+
 
         final Object[] patientsBundle = patients.keySet().toArray();
 
@@ -146,9 +158,127 @@ public class CholesterolData implements Observer {
     }
 
 
-    @Override
-    public void update(Observable o, Object arg) {
-        Log.d("timer", "time is up!");
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void getUpdate(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context){
+        resetUpdatedData();
+
+        final Object[] patientsBundle = monitoredPatients.keySet().toArray();
+
+        assert patientsBundle != null;
+        int counter = 0;
+        final int bundleLength = patientsBundle.length;
+
+
+
+        while (counter < bundleLength) {
+            counter++;
+            String patientId = patientsBundle[counter-1].toString();
+
+            Log.d("counter", String.valueOf(counter));
+
+            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientId + "&_sort=-date&_format=json";
+
+            updateHandler(url, context, counter, new APIListener() {
+                @Override
+                public void onError(String message) {
+
+                }
+
+                @Override
+                public void onResponse(JSONObject response, int counter2) throws JSONException, ParseException, InterruptedException {
+                    addUpdatedData(response);
+                    ArrayList<JSONObject> results = getUpdatedData();
+                    Log.d("currentResultsSize", String.valueOf(results.size()));
+
+
+                    if (getUpdatedData().size() == bundleLength) {
+                        Thread.sleep(5000);
+                        cleanUpdatedChol(getUpdatedData(), patients, monitoredPatients, patientsBundle);
+                    }
+                }
+            });
+
+        }
+
+    }
+
+
+    public static void updateHandler(final String url, final Context context, final int counter, final APIListener listener) {
+        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+
+        try {
+
+            JsonObjectRequest jsonObjectRequest =
+                    new JsonObjectRequest(Request.Method.GET, url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        listener.onResponse(response, counter);
+                                    } catch (JSONException | ParseException | InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    100000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.start();
+            queue.add(jsonObjectRequest);
+
+        } catch (Exception e) {
+        }
+    }
+
+
+    public static void cleanUpdatedChol(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle) throws JSONException, ParseException, InterruptedException {
+
+//      We use the response
+        for(int i = 0; i < responseList.size(); i++) {
+            JSONArray entry = responseList.get(i).getJSONArray("entry");
+//            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+            String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
+            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
+
+            double cholValue = Math.random()*100;
+
+            //      Change to appropiate format
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            Date result;
+
+            result = df.parse(effectiveDate);
+
+            String patientID = patientsBundle[i].toString();
+
+
+            //      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
+            patientHashMap.get(patientID).setCholesterol(cholValue + cholUnit);
+            patientHashMap.get(patientID).setEffectiveDate(result.toString());
+
+            monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
+            monitoredPatients.get(patientID).setEffectiveDate(result.toString());
+        }
+
+
+        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients);
+        Monitor.refresh(monitorAdapter);
 
     }
 }

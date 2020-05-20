@@ -287,13 +287,13 @@ public class patientList extends List{
             }
         }
 
-//        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
+        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
 
-        CholesterolData test = new CholesterolData();
-        test.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
-        NTimer nTimer = new NTimer();
-        nTimer.addObserver(test);
-        nTimer.startTimer();
+//        CholesterolData test = new CholesterolData();
+//        test.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
+//        NTimer nTimer = new NTimer();
+//        nTimer.addObserver(test);
+//        nTimer.startTimer();
 
     }
 

@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static HashMap<String, Patient> patientDetailsMap = new HashMap<>();
 
+    public static HashMap<String, Patient> getPatientDetailsMap() {
+        return patientDetailsMap;
+    }
+
     public static HashMap<String, Patient> getMonitoredPatients() {
         return monitoredPatients;
     }

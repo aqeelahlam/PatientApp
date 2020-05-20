@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Monitor extends AppCompatActivity {
 
-    RecyclerView monitorRecyclerView;
+    public static RecyclerView monitorRecyclerView;
     HashMap<String, Patient> monitored = new HashMap<>();
 
 
@@ -33,6 +33,28 @@ public class Monitor extends AppCompatActivity {
         MonitorAdapter monitorAdapter = new MonitorAdapter(monitored);
         monitorRecyclerView.setAdapter(monitorAdapter);
 
+        NTimer.resetN();
+        NTimer nTimer = new NTimer();
+        nTimer.addObserver(monitorAdapter);
+        nTimer.startTimer();
+
+    }
+
+
+    public static void refresh(MonitorAdapter monitorAdapter) throws InterruptedException {
+
+//        HashMap<String, Patient> testMap = new HashMap<>();
+//        MonitorAdapter test = new MonitorAdapter(testMap);
+//        monitorRecyclerView.setAdapter(test);
+//
+//        Thread.sleep(5000);
+
+        monitorRecyclerView.setAdapter(monitorAdapter);
+
+        NTimer.resetN();
+        NTimer nTimer = new NTimer();
+        nTimer.addObserver(monitorAdapter);
+        nTimer.startTimer();
     }
 
 

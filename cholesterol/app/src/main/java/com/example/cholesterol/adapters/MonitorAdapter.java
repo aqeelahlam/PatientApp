@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cholesterol.CholesterolData;
+import com.example.cholesterol.MainActivity;
 import com.example.cholesterol.NTimer;
 import com.example.cholesterol.Patient;
 import com.example.cholesterol.R;
@@ -21,7 +22,7 @@ import java.util.Observer;
 
 import javax.security.auth.Subject;
 
-public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> {
+public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer{
 
     HashMap<String, Patient> patientListHash;
 
@@ -62,6 +63,13 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public int getItemCount() {
         return patientListHash.size();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Log.d("timer", "time is up!");
+        CholesterolData.getUpdate(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
+
     }
 
     public class MonitorListView extends RecyclerView.ViewHolder{

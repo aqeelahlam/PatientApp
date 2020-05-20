@@ -13,6 +13,10 @@ public class NTimer extends Observable {
 
     public static int n = 0;
 
+    public static void resetN() {
+        n = 0;
+    }
+
     public static Timer timer = new Timer();
     public TimerTask task = new TimerTask() {
         @Override
@@ -21,7 +25,8 @@ public class NTimer extends Observable {
                 n++;
                 Log.d("timer", String.valueOf(n));
             } else {
-                timer.cancel();
+                task.cancel();
+                timer.purge();
                 Log.d("timer", "stopped");
                 setChanged();
                 notifyObservers();
