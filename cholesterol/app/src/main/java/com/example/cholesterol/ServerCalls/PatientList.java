@@ -1,6 +1,5 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +12,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.APIListener;
+import com.example.cholesterol.List;
+import com.example.cholesterol.MainActivity;
+import com.example.cholesterol.NTimer;
+import com.example.cholesterol.Patient;
+import com.example.cholesterol.ServerCalls.CholesterolData;
+import com.example.cholesterol.VolleyHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class patientList extends List{
+public class PatientList extends List {
 
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();
 
@@ -105,7 +111,7 @@ public class patientList extends List{
 
 
     private static void recursiveHandler(String url, final Context context, final int counter, final APIListener listener) throws JSONException {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         try {
             JsonObjectRequest stringRequest =
@@ -144,7 +150,7 @@ public class patientList extends List{
 
 
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView, final APIListener listener) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
@@ -189,7 +195,7 @@ public class patientList extends List{
 
 
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView, final APIListener listener) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String identifier = null;
         if (response != null) {

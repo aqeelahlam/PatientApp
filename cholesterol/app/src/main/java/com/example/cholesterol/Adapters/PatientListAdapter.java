@@ -1,11 +1,10 @@
 
-package com.example.cholesterol.adapters;
+package com.example.cholesterol.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +25,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         this.patientListHash = patientListHashA;
         this.monitoredPatients = monitoredPatients;
     }
+
 
     @NonNull
     @Override
@@ -62,7 +62,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
                 Patient patient = new Patient(patientID, patientname, chol, effectiveDate);
                 monitoredPatients.put(patientID, patient);
 
-                Snackbar.make(v,monitoredPatients.get(keys[position]).getName() + " is Selected", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(v,"You have Selected: " + monitoredPatients.get(keys[position]).getName(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }

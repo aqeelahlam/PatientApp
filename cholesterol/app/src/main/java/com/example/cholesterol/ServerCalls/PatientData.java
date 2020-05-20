@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,15 +11,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.cholesterol.adapters.PatientListAdapter;
+import com.example.cholesterol.List;
+import com.example.cholesterol.Patient;
+import com.example.cholesterol.VolleyHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class detailedPatient extends List {
+public class PatientData extends List {
 
     private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
@@ -45,7 +46,7 @@ public class detailedPatient extends List {
 
     public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
 
-            RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         final String patientID = "29163";
 

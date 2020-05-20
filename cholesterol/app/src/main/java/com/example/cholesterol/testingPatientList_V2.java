@@ -51,7 +51,7 @@ public class testingPatientList_V2 extends List {
 
 
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         ArrayList<JSONObject> jsonData = new ArrayList<>();
         setJsonData(jsonData);
@@ -105,7 +105,7 @@ public class testingPatientList_V2 extends List {
 
 
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String identifier = null;
         if (response != null) {
@@ -181,7 +181,7 @@ public class testingPatientList_V2 extends List {
 
 
     public static void makeRequestRecursive(JSONObject response, final Context context, int counter) throws JSONException {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String url = null;
 
