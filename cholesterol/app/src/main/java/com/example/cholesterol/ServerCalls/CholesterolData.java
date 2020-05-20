@@ -1,6 +1,5 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,7 +11,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.cholesterol.adapters.PatientListAdapter;
+import com.example.cholesterol.Patient;
+import com.example.cholesterol.VolleyHandler;
+import com.example.cholesterol.Adapters.PatientListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +58,7 @@ public class CholesterolData implements Observer {
      */
 
     public static void getCholesterol(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         final Object[] patientsBundle = patients.keySet().toArray();
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         String practitionerID = "1381208";
 //        String practitionerID = "6832728";
 
-        patientList.patientHandler(practitionerID, this, patientRecyclerView, patientDetailsMap, monitoredPatients);
+        PatientList.patientHandler(practitionerID, this, patientRecyclerView, patientDetailsMap, monitoredPatients);
 
     }
 

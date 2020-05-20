@@ -2,8 +2,6 @@ package com.example.cholesterol;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class testingPatientList_V1 extends List {
 
@@ -43,7 +39,7 @@ public class testingPatientList_V1 extends List {
      */
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView) {
 
-        RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue2 = VolleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
@@ -88,7 +84,7 @@ public class testingPatientList_V1 extends List {
 
 
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView) {
-        RequestQueue queue2 = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue2 = VolleyHandler.getInstance(context).getQueue();
         String identifier = null;
         if (response != null) {
             try {
