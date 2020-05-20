@@ -27,6 +27,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         this.monitoredPatients = monitoredPatients;
     }
 
+
     @NonNull
     @Override
     public PatientListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -62,7 +63,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
                 Patient patient = new Patient(patientID, patientname, chol, effectiveDate);
                 monitoredPatients.put(patientID, patient);
 
-                Snackbar.make(v,monitoredPatients.get(keys[position]).getName() + " is Selected", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(v,"You have Selected: " + monitoredPatients.get(keys[position]).getName(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }

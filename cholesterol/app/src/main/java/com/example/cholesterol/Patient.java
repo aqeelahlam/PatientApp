@@ -66,6 +66,34 @@ public class Patient {
     }
 
 
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
     public void setExtraDetails(String birthDate, String gender, String addressLine, String city,
                                 String postalCode, String state, String country) {
         this.birthDate = birthDate;
@@ -76,6 +104,8 @@ public class Patient {
         this.state = state;
         this.country = country;
     }
+
+
 }
 
 

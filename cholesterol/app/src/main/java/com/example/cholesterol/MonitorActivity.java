@@ -11,7 +11,7 @@ import com.example.cholesterol.adapters.MonitorAdapter;
 
 import java.util.HashMap;
 
-public class Monitor extends AppCompatActivity {
+public class MonitorActivity extends AppCompatActivity {
 
     RecyclerView monitorRecyclerView;
     HashMap<String, Patient> monitored = new HashMap<>();
@@ -22,6 +22,8 @@ public class Monitor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
 
+        getSupportActionBar().setTitle("Monitored Patients");
+
         monitorRecyclerView = findViewById(R.id.monitor_recycler);
         monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -30,8 +32,19 @@ public class Monitor extends AppCompatActivity {
     public void start(View view) {
         monitored = MainActivity.getMonitoredPatients();
 
-        MonitorAdapter monitorAdapter = new MonitorAdapter(monitored);
+        final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored);
         monitorRecyclerView.setAdapter(monitorAdapter);
+
+        monitorAdapter.setOnItemClickListener(new MonitorAdapter.onItemClickListener() {
+            @Override
+            public void onDeleteClick(String patientID, int position) {
+                final Object[] keys = monitored.keySet().toArray();
+
+//FIX HERE
+                monitored.remove(keys[position]);
+                monitorAdapter.notifyItemChanged(position);
+            }
+        });
 
     }
 
