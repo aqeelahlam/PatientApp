@@ -288,6 +288,7 @@ public class PatientList {
             }
         }
 
+//        PatientData.getDetailedPatient(patientListHash, context);
         CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
 
 //        CholesterolData test = new CholesterolData();

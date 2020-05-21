@@ -78,7 +78,7 @@ public class CholesterolData {
                                             int total = response.getInt("total");
                                             if (total > 0){
 //                                                Log.d("PeopleWithChol", patientID);
-                                                cleanChol(response, patients, monitoredPatients, patientID ,recyclerView);
+                                                cleanChol(response, patients, monitoredPatients, patientID ,recyclerView, context);
                                             }
                                             else {
                                                 patients.remove(patientID);
@@ -118,7 +118,7 @@ public class CholesterolData {
      *
      */
 
-    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, final RecyclerView recyclerView) throws JSONException, ParseException {
+    public static void cleanChol(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, final RecyclerView recyclerView, final Context context) throws JSONException, ParseException {
 
 //      We use the response
         JSONArray entry = response.getJSONArray("entry");
@@ -191,7 +191,7 @@ public class CholesterolData {
                     Log.d("currentResultsSize", String.valueOf(results.size()));
 
                     if (getUpdatedData().size() == monitoredPatients.size()) {
-                        cleanUpdatedChol(getUpdatedData(), patients, monitoredPatients, patientsBundle);
+                        cleanUpdatedChol(getUpdatedData(), patients, monitoredPatients, patientsBundle, context);
                     }
                 }
             });
@@ -234,7 +234,7 @@ public class CholesterolData {
     }
 
 
-    public static void cleanUpdatedChol(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle) throws JSONException, ParseException, InterruptedException {
+    public static void cleanUpdatedChol(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
 
 //      We use the response
         for(int i = 0; i < responseList.size(); i++) {
@@ -263,7 +263,7 @@ public class CholesterolData {
         }
 
 
-        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients);
+        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients, context);
         MonitorActivity.refresh(monitorAdapter);
 
     }
