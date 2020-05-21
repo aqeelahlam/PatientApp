@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
@@ -23,6 +27,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static TextView birthdate;
     private static TextView gender;
     private static TextView address;
+    private static EditText NRefresh;
 
 
     @Override
@@ -42,6 +47,7 @@ public class MonitorActivity extends AppCompatActivity {
         birthdate = findViewById(R.id.birthdate);
         gender = findViewById(R.id.gender);
         address = findViewById(R.id.address);
+        NRefresh = findViewById(R.id.refresh);
 
     }
 
@@ -50,14 +56,24 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view viewObject: Start Button
      */
     public void startBtn(View view) {
-        monitored = MainActivity.getMonitoredPatients();
-        final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
-        monitorRecyclerView.setAdapter(monitorAdapter);
+        String test = NRefresh.getText().toString();
+        int NValue = Integer.parseInt(test);
 
-        NTimer.resetN();
-        NTimer nTimer = new NTimer();
-        nTimer.addObserver(monitorAdapter);
-        nTimer.startTimer();
+        if(NValue > 0){
+            monitored = MainActivity.getMonitoredPatients();
+            final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
+            monitorRecyclerView.setAdapter(monitorAdapter);
+
+            NTimer.setN(NValue);
+            NTimer.resetN();
+            NTimer nTimer = new NTimer();
+            nTimer.addObserver(monitorAdapter);
+            nTimer.startTimer();
+        }
+        else {
+            Toast.makeText(this, "Enter a Refresh Value", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
