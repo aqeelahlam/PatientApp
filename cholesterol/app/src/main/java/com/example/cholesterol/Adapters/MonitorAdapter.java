@@ -25,31 +25,33 @@ import java.util.Observer;
 
 public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer {
 
-    HashMap<String, Patient> patientListHash;
-    Context context;
+    private HashMap<String, Patient> patientListHash;
+    private Context context;
 
+    /**
+     * Constructor for MonitorAdapter
+     * @param patientListHashA HashMap of Patients
+     * @param context Context
+     */
     public MonitorAdapter(HashMap<String, Patient> patientListHashA, Context context) {
         this.patientListHash = patientListHashA;
         this.context = context;
-
     }
 
-//  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below
+//  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below)
     @NonNull
     @Override
     public MonitorListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View monitorPatient = inflater.inflate(R.layout.monitor_patients, parent, false);
-
         MonitorListView view = new MonitorListView(monitorPatient);
 
         return view;
     }
 
-//  This method binds data to viewholder
+//  This method binds data to viewholder(Each Card in the recycler view)
     @Override
     public void onBindViewHolder(@NonNull final MonitorListView holder, final int position) {
         final Object[] keys = patientListHash.keySet().toArray();
@@ -66,16 +68,14 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         String numericChol = chol.replaceAll("[^\\d\\.]","");
         double finalChol = Double.parseDouble(numericChol);
 
-        try {
-            if(finalChol>AverageCholesterol){
-                holder.cholLevel.setText(chol);
-                holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
-            }else{
-                holder.cholLevel.setText(chol);
-            }
-        } catch (Exception e) {
+        if(finalChol>AverageCholesterol){
+            holder.cholLevel.setText(chol);
+            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
+        } else{
+            holder.cholLevel.setText(chol);
         }
 
+//      This method is used to delete a patient from the list of monitored Patients
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,11 +84,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             }
         });
 
+//      This method is used to obtain the details of each patient upon click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MonitorActivity.setDetails(patientID, context);
-                Toast.makeText(v.getContext(), patientID, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -99,8 +99,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
      * This Function is used to obtain the Average Cholesterol Level of all the Monitored Patients
      * @param patientListHash HashMap of Monitored Patients
      * @return Average Cholesterol Value
-     *
-     *
      */
     private double getAverageCholesterol(HashMap<String, Patient> patientListHash){
         ArrayList<Double> cholLevels = new ArrayList<>();
@@ -142,8 +140,9 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         CholesterolData.getUpdate(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
     }
 
-
-
+    /**
+     * Inner Class that will be used to obtain references to the views
+     */
     public class MonitorListView extends RecyclerView.ViewHolder{
 
         private TextView patient;
@@ -153,15 +152,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
-
             patient = itemView.findViewById(R.id.monitor_PatientName);
             effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
             cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
             imageView = itemView.findViewById(R.id.image_delete);
 
         }
-
     }
-
-
 }
