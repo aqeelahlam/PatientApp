@@ -2,27 +2,20 @@ package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 import android.util.Log;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.cholesterol.List;
-import com.example.cholesterol.MainActivity;
-import com.example.cholesterol.MonitorActivity;
-import com.example.cholesterol.Patient;
-import com.example.cholesterol.VolleyHandler;
+import com.example.cholesterol.Users.Patient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class PatientData extends List {
+public class PatientData {
 
     private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
@@ -44,7 +37,7 @@ public class PatientData extends List {
      *
      */
 
-//    public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
+//  public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
     public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context) {
 
 //        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();

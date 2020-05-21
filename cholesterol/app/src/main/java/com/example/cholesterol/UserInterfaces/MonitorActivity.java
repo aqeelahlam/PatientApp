@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.UserInterfaces;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.cholesterol.Adapters.MonitorAdapter;
-import com.example.cholesterol.ServerCalls.PatientData;
+import com.example.cholesterol.Observable.NTimer;
+import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.R;
 
 import java.util.HashMap;
 

@@ -12,13 +12,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.cholesterol.APIListener;
-import com.example.cholesterol.List;
-import com.example.cholesterol.MainActivity;
-import com.example.cholesterol.NTimer;
-import com.example.cholesterol.Patient;
-import com.example.cholesterol.ServerCalls.CholesterolData;
-import com.example.cholesterol.VolleyHandler;
+import com.example.cholesterol.UserInterfaces.MainActivity;
+import com.example.cholesterol.Users.Patient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PatientList extends List {
+public class PatientList {
 
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();
 

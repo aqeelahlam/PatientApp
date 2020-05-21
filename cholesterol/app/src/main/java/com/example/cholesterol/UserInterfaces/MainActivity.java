@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.UserInterfaces;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 

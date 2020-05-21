@@ -2,34 +2,26 @@ package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.cholesterol.APIListener;
 import com.example.cholesterol.Adapters.MonitorAdapter;
-import com.example.cholesterol.MonitorActivity;
-import com.example.cholesterol.Patient;
-import com.example.cholesterol.VolleyHandler;
+import com.example.cholesterol.UserInterfaces.MonitorActivity;
+import com.example.cholesterol.Users.Patient;
 import com.example.cholesterol.Adapters.PatientListAdapter;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 
 public class CholesterolData {

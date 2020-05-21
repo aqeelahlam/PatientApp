@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 

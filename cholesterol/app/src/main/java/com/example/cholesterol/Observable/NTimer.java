@@ -1,8 +1,6 @@
-package com.example.cholesterol;
+package com.example.cholesterol.Observable;
 
 import android.util.Log;
-
-
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;

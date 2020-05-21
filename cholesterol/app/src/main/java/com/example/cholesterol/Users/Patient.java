@@ -1,6 +1,6 @@
-package com.example.cholesterol;
+package com.example.cholesterol.Users;
 
-public class Patient {
+public class Patient extends User {
 
     private String cholesterol;
     private String name;
