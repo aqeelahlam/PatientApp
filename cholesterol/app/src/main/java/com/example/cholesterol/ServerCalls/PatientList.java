@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,6 +12,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.UserInterfaces.MainActivity;
+import com.example.cholesterol.Objects.Patient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class patientList extends List{
+public class PatientList {
 
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();
 
@@ -38,31 +40,19 @@ public class patientList extends List{
         return jsonData;
     }
 
-//  This method is used to get the Patient HashMap
-    public static HashMap<String,Patient> getPatientListHash() {
-        return patientListHash;
-    }
 
-//  This method is used to set the HashMap
-    public static void setPatientListHash(HashMap<String, Patient> patientListHashA) {
-        patientListHash = patientListHashA;
-    }
-
-    private static HashMap<String, Patient> patientListHash;
-
-
-    public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView) {
+    public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView, final HashMap<String, Patient> patientListHash, final HashMap<String, Patient> monitoredPatients) {
         ArrayList<JSONObject> reset = new ArrayList<>();
         setJsonData(reset);
 
         getPatientList(practitionerID, context, recyclerView, new APIListener() {
             @Override
             public void onError(String message) {
-
             }
 
             @Override
             public void onResponse(JSONObject response, int temp) throws JSONException {
+
                 addJsonData(response);
 
                 JSONArray link = response.getJSONArray("link");
@@ -103,7 +93,7 @@ public class patientList extends List{
                             Log.d("currentResultsSize", String.valueOf(results.size()));
 
                             if (counter2 == max) {
-                                cleanPatientList(getJsonData(), context, recyclerView);
+                                cleanPatientList(getJsonData(), context, recyclerView, patientListHash, monitoredPatients);
                             }
                         }
                     });
@@ -116,7 +106,7 @@ public class patientList extends List{
 
 
     private static void recursiveHandler(String url, final Context context, final int counter, final APIListener listener) throws JSONException {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         try {
             JsonObjectRequest stringRequest =
@@ -155,7 +145,7 @@ public class patientList extends List{
 
 
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView, final APIListener listener) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID + "?_format=json";
 
@@ -200,7 +190,7 @@ public class patientList extends List{
 
 
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView, final APIListener listener) {
-        RequestQueue queue = volleyHandler.getInstance(context).getQueue();
+        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         String identifier = null;
         if (response != null) {
@@ -265,10 +255,10 @@ public class patientList extends List{
 
 
 
-    public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView) throws JSONException {
+    public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView, HashMap<String, Patient> patientListHash, HashMap<String, Patient> monitoredPatients) throws JSONException {
 
 //      This Hashmap holds information regarding the patient where the key would be the patientID
-        HashMap<String, Patient> patientListHash = new HashMap<>();
+//        HashMap<String, Patient> patientListHash = new HashMap<>();
 
         for (int i = 0; i < response.size(); i++) {
             try {
@@ -298,16 +288,13 @@ public class patientList extends List{
             }
         }
 
-//      Set the HashMap
-        setPatientListHash(patientListHash);
+        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
 
-        CholesterolData.getCholesterol(getPatientListHash(), context, recyclerView);
-
-
-
-//      Initialize the Adapter to work with the HashMap
-//        PatientListAdapter patientListAdapter = new PatientListAdapter(getPatientListHash());
-//        recyclerView.setAdapter(patientListAdapter);
+//        CholesterolData test = new CholesterolData();
+//        test.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
+//        NTimer nTimer = new NTimer();
+//        nTimer.addObserver(test);
+//        nTimer.startTimer();
 
     }
 

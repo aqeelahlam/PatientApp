@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.UserInterfaces;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,10 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.cholesterol.Objects.Patient;
+import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.PatientList;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
 
 /*
 * Android: 9.0 (Pie)
@@ -32,8 +36,18 @@ public class MainActivity extends AppCompatActivity {
     public static Context context;
     RecyclerView patientRecyclerView;
 
+    private static HashMap<String, Patient> patientDetailsMap = new HashMap<>();
 
-    Button monitor;
+    public static HashMap<String, Patient> getPatientDetailsMap() {
+        return patientDetailsMap;
+    }
+
+    public static HashMap<String, Patient> getMonitoredPatients() {
+        return monitoredPatients;
+    }
+
+    private static HashMap<String, Patient> monitoredPatients = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         patientRecyclerView = findViewById(R.id.recycler_view);
         patientRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-//        monitorRecyclerView = findViewById(R.id.monitor_recycler);
-//        monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        monitor = findViewById(R.id.btn_monitor);
-
     }
+
 
     public void FindBtn(final View view) {
 
@@ -59,28 +68,20 @@ public class MainActivity extends AppCompatActivity {
         String practitionerID = "1381208";
 //        String practitionerID = "6832728";
 
-        patientList.patientHandler(practitionerID, this, patientRecyclerView);
-//        monitor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = patientRecyclerView.findContainingViewHolder(view).getAdapterPosition();
-//                CheckBox check = v.findViewById(R.id.checkBox);
-//                if(check.isChecked()){
-//                    patientRecyclerView.getAdapter().getItemId(position);
-//                    Intent intent = new Intent(MainActivity.context, Monitor.class);
-////                    intent.putExtra();
-//                    startActivity(intent);
-//                }
-//
-//            }
-//        });
-
+        PatientList.patientHandler(practitionerID, this, patientRecyclerView, patientDetailsMap, monitoredPatients);
 
     }
 
+
+
     public void monitorBtn(View view) {
 
-
+        if(monitoredPatients.isEmpty()){
+            Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }else {
+            Intent intent = new Intent(this, MonitorActivity.class);
+            startActivity(intent);
+        }
     }
 }
 

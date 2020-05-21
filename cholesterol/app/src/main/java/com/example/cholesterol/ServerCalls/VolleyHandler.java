@@ -1,4 +1,4 @@
-package com.example.cholesterol;
+package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 
@@ -7,19 +7,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 
-public class volleyHandler {
-    private static volleyHandler instance;
+public class VolleyHandler {
+    private static VolleyHandler instance;
     private RequestQueue queue;
     private static Context context;
 
-    private volleyHandler(Context context) {
-        volleyHandler.context = context;
+    private VolleyHandler(Context context) {
+        VolleyHandler.context = context;
         queue = getQueue();
     }
 
-    public static synchronized volleyHandler getInstance(Context context) {
+    public static synchronized VolleyHandler getInstance(Context context) {
         if (instance == null) {
-            instance = new volleyHandler(context);
+            instance = new VolleyHandler(context);
         }
         return instance;
     }

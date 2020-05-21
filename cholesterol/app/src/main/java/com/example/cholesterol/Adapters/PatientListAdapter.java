@@ -1,19 +1,14 @@
 
-package com.example.cholesterol.adapters;
+package com.example.cholesterol.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.cholesterol.Patient;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,13 +16,14 @@ import java.util.HashMap;
 
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListView> implements View.OnClickListener {
 
-    HashMap<String, Patient> patientListHash;
+    private HashMap<String, Patient> patientListHash;
+    private HashMap<String, Patient> monitoredPatients;
 
-    public PatientListAdapter(HashMap<String, Patient> patientListHashA){
+    public PatientListAdapter(HashMap<String, Patient> patientListHashA, HashMap<String, Patient> monitoredPatients){
         this.patientListHash = patientListHashA;
+        this.monitoredPatients = monitoredPatients;
     }
 
-    HashMap<String, Patient> patientHashMonitor;
 
     @NonNull
     @Override
@@ -43,28 +39,28 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PatientListView holder, int position) {
+    public void onBindViewHolder(@NonNull PatientListView holder, final int position) {
 
 //      Here I obtain a the list of keys and convert it into an array in order to use "position" to access the correct card
-        Object[] keys = patientListHash.keySet().toArray();
+        final Object[] keys = patientListHash.keySet().toArray();
 
         final String patientname = patientListHash.get(keys[position]).getName();
         final String patientID = patientListHash.get(keys[position]).getPatientID();
         final String chol = patientListHash.get(keys[position]).getCholesterol();
-        final String issuedDate = patientListHash.get(keys[position]).getEffectiveDate();
+        final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
 
 
-        holder.patList.setText(patientname + " : " + chol);
-        holder.dateissued.setText(issuedDate);
+        holder.patientID.setText(patientID);
+        holder.patientName.setText(patientname);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Patient patient = new Patient(patientID, patientname, chol, issuedDate);
-//                patientHashMonitor.put(patientID, patient);
+                Patient patient = new Patient(patientID, patientname, chol, effectiveDate);
+                monitoredPatients.put(patientID, patient);
 
-                Snackbar.make(v,"", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(v,"You have Selected: " + monitoredPatients.get(keys[position]).getName(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
@@ -81,15 +77,13 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
 
     public class PatientListView extends RecyclerView.ViewHolder {
-        TextView patList;
-        TextView dateissued;
-        CheckBox selected;
+        TextView patientID;
+        TextView patientName;
 
         public PatientListView(@NonNull View itemView) {
             super(itemView);
-            patList = itemView.findViewById(R.id.patient);
-            selected = itemView.findViewById(R.id.checkBox);
-            dateissued = itemView.findViewById(R.id.issueDate);
+            patientID = itemView.findViewById(R.id.patient_id);
+            patientName = itemView.findViewById(R.id.patient_name);
 
         }
     }
