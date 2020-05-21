@@ -11,7 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
-import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.Adapters.PatientListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;

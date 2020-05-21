@@ -13,7 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cholesterol.UserInterfaces.MainActivity;
-import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.Objects.Patient;
 
 import org.json.JSONArray;
 import org.json.JSONException;

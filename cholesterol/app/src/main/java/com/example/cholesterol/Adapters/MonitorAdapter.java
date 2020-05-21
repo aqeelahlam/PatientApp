@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.cholesterol.UserInterfaces.MainActivity;
-import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.CholesterolData;
 import java.util.ArrayList;

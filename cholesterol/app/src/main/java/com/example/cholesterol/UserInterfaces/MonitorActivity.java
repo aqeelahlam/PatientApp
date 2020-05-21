@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
-import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 
 import java.util.HashMap;

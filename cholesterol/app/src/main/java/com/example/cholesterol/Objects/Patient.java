@@ -1,10 +1,10 @@
-package com.example.cholesterol.Users;
+package com.example.cholesterol.Objects;
 
-public class Patient extends User {
+public class Patient {
 
-    private String cholesterol;
-    private String name;
     private String patientID;
+    private String name;
+    private String cholesterol;
     private String effectiveDate;
     private String birthDate;
     private String gender;
@@ -18,7 +18,8 @@ public class Patient extends User {
     public Patient() {
     }
 
-//  Constructor to pass in ID and Name of Patient
+
+
     public Patient(String patientID, String name){
         this.patientID = patientID;
         this.name = name;

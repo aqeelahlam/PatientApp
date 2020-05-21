@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.cholesterol.Users.Patient;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.google.android.material.snackbar.Snackbar;
 
