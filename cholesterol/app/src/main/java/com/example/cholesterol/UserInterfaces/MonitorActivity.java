@@ -84,9 +84,19 @@ public class MonitorActivity extends AppCompatActivity {
             String Birthdate = current.getBirthDate();
             String Gender = current.getGender();
 
+
+            String addressLine = current.getAddressLine();
+            String city = current.getCity();
+            String state = current.getState();
+            String postalCode = current.getPostalCode();
+            String country = current.getCountry();
+            String fullAddress = addressLine + ", " + city + ", " + state + ", " + postalCode + ", " + country;
+
             name.setText(Name);
             birthdate.setText(Birthdate);
             gender.setText(Gender);
+            address.setText(fullAddress);
+
         }else {
             name.setText("waiting for server");
             birthdate.setText("waiting for server");
