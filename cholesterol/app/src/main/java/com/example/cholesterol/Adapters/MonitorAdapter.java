@@ -15,6 +15,8 @@ import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.CholesterolData;
+import com.example.cholesterol.UserInterfaces.MonitorActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -24,9 +26,12 @@ import java.util.Observer;
 public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer {
 
     HashMap<String, Patient> patientListHash;
+    Context context;
 
-    public MonitorAdapter(HashMap<String, Patient> patientListHashA) {
+    public MonitorAdapter(HashMap<String, Patient> patientListHashA, Context context) {
         this.patientListHash = patientListHashA;
+        this.context = context;
+
     }
 
 //  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below
@@ -74,7 +79,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Stopped Monitoring "+ patientname +", click Refresh", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "Stopped Monitoring "+ patientname +", click Refresh", Toast.LENGTH_SHORT).show();
                 removeItem(patientListHash, patientID);
             }
         });
@@ -82,6 +87,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MonitorActivity.setDetails(patientID, context);
                 Toast.makeText(v.getContext(), patientID, Toast.LENGTH_SHORT).show();
             }
         });

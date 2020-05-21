@@ -1,6 +1,6 @@
 package com.example.cholesterol.Objects;
 
-public class User {
+public class Individual {
 
     private String id;
     private String name;
@@ -10,7 +10,7 @@ public class User {
     private String postalCode;
     private String country;
 
-    public User(String id, String name, String addressLine, String city, String state, String postalCode, String country) {
+    public Individual(String id, String name, String addressLine, String city, String state, String postalCode, String country) {
         setId(id);
         setName(name);
         setAddressLine(addressLine);
@@ -20,10 +20,10 @@ public class User {
         setCountry(country);
     }
 
-    public User() {
+    public Individual() {
     }
 
-    public User(String patientID, String name) {
+    public Individual(String patientID, String name) {
         setId(patientID);
         setName(name);
     }

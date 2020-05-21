@@ -17,17 +17,6 @@ import java.util.HashMap;
 
 public class PatientData {
 
-    private static HashMap<String, Patient> patientDetail = new HashMap<>();
-
-//    public static HashMap<String, Patient> getPatientDetail(){
-//        return patientDetail;
-//    }
-//
-//    public static void setPatientDetail(HashMap<String, Patient> patientDetail){
-//        patientDetail = patientDetail;
-//    }
-
-
 
     /**
      * This Function is used to send a request to the server
@@ -38,19 +27,20 @@ public class PatientData {
      */
 
 //  public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
-    public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context) {
+    public static void getDetailedPatient(final HashMap<String, Patient> patients, final String patientID, final Context context) {
 
 //        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
-        final Object[] patientsBundle = patients.keySet().toArray();
+//        final Object[] patientsBundle = patients.keySet().toArray();
 
-        assert patientsBundle != null;
-        for (int i = 0; i < patientsBundle.length; i++) {
+//        assert patientsBundle != null;
+//        for (int i = 0; i < patientsBundle.length; i++) {
 
-            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientsBundle[i] + "?_format=json";
+//            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientsBundle[i] + "?_format=json";
+            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientID + "?_format=json";
 
-            final String patientID = patientsBundle[i].toString();
+//            final String patientID = patientsBundle[i].toString();
 
             try {
 
@@ -82,7 +72,7 @@ public class PatientData {
             } catch (Exception e) {
             }
         }
-    }
+//    }
 
     /**
      * This function is used to add the cholesterol levels into the hashmap & display it in the
