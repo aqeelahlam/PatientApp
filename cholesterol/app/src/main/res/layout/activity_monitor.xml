@@ -19,7 +19,7 @@
         android:id="@+id/button"
         android:layout_width="79dp"
         android:layout_height="wrap_content"
-        android:onClick="start"
+        android:onClick="startBtn"
         android:text="@string/begin"
         app:layout_constraintBottom_toTopOf="@+id/monitor_recycler"
         app:layout_constraintEnd_toEndOf="parent"

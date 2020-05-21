@@ -12,6 +12,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cholesterol.List;
+import com.example.cholesterol.MainActivity;
+import com.example.cholesterol.MonitorActivity;
 import com.example.cholesterol.Patient;
 import com.example.cholesterol.VolleyHandler;
 
@@ -24,13 +26,13 @@ public class PatientData extends List {
 
     private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
-    public static HashMap<String, Patient> getPatientDetail(){
-        return patientDetail;
-    }
-
-    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
-        patientDetail = patientDetail1;
-    }
+//    public static HashMap<String, Patient> getPatientDetail(){
+//        return patientDetail;
+//    }
+//
+//    public static void setPatientDetail(HashMap<String, Patient> patientDetail){
+//        patientDetail = patientDetail;
+//    }
 
 
 
@@ -39,47 +41,53 @@ public class PatientData extends List {
      * Request Type: Obtain Cholesterol Level of Patients
      * @param patients - This holds the HashMap of the Patients
      * @param context - Context
-     * @param recyclerView -This refers to the recycler view that has been passed in from the
-     *                      Main Activity
      *
      */
 
-    public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
+//    public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
+    public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context) {
 
+//        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
-        final String patientID = "29163";
+        final Object[] patientsBundle = patients.keySet().toArray();
 
+        assert patientsBundle != null;
+        for (int i = 0; i < patientsBundle.length; i++) {
 
-        String url ="https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientID + "?_format=json";
+            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientsBundle[i] + "?_format=json";
 
-        try {
+            final String patientID = patientsBundle[i].toString();
 
-            JsonObjectRequest jsonObjectRequest =
-                    new JsonObjectRequest(Request.Method.GET, url, null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        cleanDetails(response, patients, patientID ,recyclerView);
+            try {
 
-                                    } catch (JSONException e) {
+                JsonObjectRequest jsonObjectRequest =
+                        new JsonObjectRequest(Request.Method.GET, url, null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+//                                        cleanDetails(response, patients, patientID ,recyclerView);
+                                            cleanDetails(response, patients, patientID);
+
+                                        } catch (JSONException e) {
+                                        }
                                     }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    });
-            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    100000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.start();
-            queue.add(jsonObjectRequest);
+                            }
+                        });
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        100000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                queue.start();
+                queue.add(jsonObjectRequest);
 
-        } catch (Exception e) {
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -95,7 +103,8 @@ public class PatientData extends List {
      *
      */
 
-    public static void cleanDetails(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final RecyclerView recyclerView) throws JSONException {
+//    public static void cleanDetails(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final RecyclerView recyclerView) throws JSONException {
+    public static void cleanDetails(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID) throws JSONException {
 
         String gender = response.getString("gender");
         String birthDate = response.getString("birthDate");

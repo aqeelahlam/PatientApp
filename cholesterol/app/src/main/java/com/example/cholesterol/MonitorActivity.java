@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.cholesterol.Adapters.MonitorAdapter;
+import com.example.cholesterol.ServerCalls.PatientData;
 
 import java.util.HashMap;
 
@@ -28,22 +29,12 @@ public class MonitorActivity extends AppCompatActivity {
 
     }
 
-    public void start(View view) {
+    public void startBtn(View view) {
         monitored = MainActivity.getMonitoredPatients();
 
         final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored);
         monitorRecyclerView.setAdapter(monitorAdapter);
 
-        monitorAdapter.setOnItemClickListener(new MonitorAdapter.onItemClickListener() {
-            @Override
-            public void onDeleteClick(String patientID, int position) {
-                final Object[] keys = monitored.keySet().toArray();
-
-//FIX HERE
-                monitored.remove(keys[position]);
-                monitorAdapter.notifyItemChanged(position);
-            }
-        });
 
         NTimer.resetN();
         NTimer nTimer = new NTimer();
@@ -51,10 +42,6 @@ public class MonitorActivity extends AppCompatActivity {
         nTimer.startTimer();
 
     }
-
-
-
-
 
     public static void refresh(MonitorAdapter monitorAdapter) {
 
