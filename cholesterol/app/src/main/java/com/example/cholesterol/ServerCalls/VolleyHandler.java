@@ -17,6 +17,10 @@ public class VolleyHandler {
         queue = getQueue();
     }
 
+    /**
+     * This Function gets the instance
+     * @param context - Context
+     */
     public static synchronized VolleyHandler getInstance(Context context) {
         if (instance == null) {
             instance = new VolleyHandler(context);
@@ -24,15 +28,22 @@ public class VolleyHandler {
         return instance;
     }
 
+    /**
+     * This Function gets the volley queue
+     *
+     */
     public RequestQueue getQueue() {
         if (queue == null) {
-            // getApplicationContext() is key. It should not be activity context,
-            // or else RequestQueue won’t last for the lifetime of your app
             queue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return queue;
     }
 
+    /**
+     * This Function adds to the volley queue
+     * @param x - the Request
+     *
+     */
     public  void addToQueue(Request x) {
         getQueue().add(x);
     }

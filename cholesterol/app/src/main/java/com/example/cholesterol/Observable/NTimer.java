@@ -13,10 +13,19 @@ public class NTimer extends Observable {
 
     public static int N = 100;
 
+    /**
+     * This Function is used to set the value of N
+     * @param value - The value to set
+     *
+     */
     public static void setN(int value) {
         N = value;
     }
 
+    /**
+     * This Function is used to reset the value of n to 0(the counter)
+     *
+     */
     public static void resetN() {
         n = 0;
     }
@@ -40,6 +49,10 @@ public class NTimer extends Observable {
         }
     };
 
+    /**
+     * This Function is used to start the time and run it at a fixed rate
+     *
+     */
     public void startTimer() {
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }

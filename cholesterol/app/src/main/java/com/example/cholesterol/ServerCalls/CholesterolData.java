@@ -146,21 +146,41 @@ public class CholesterolData {
 
     private static ArrayList<JSONObject> updatedData = new ArrayList<>();
 
+    /**
+     * This Function is used to add API responses to updatedData
+     * @param response - This is the API response
+     *
+     */
     public static void addUpdatedData(JSONObject response) {
         if (response != null) {
             updatedData.add(response);
         }
     }
 
+    /**
+     * This Function is used to get updatedData
+     *
+     */
     public static ArrayList<JSONObject> getUpdatedData() {
         return updatedData;
     }
 
+    /**
+     * This Function is used to reset updatedDate
+     *
+     */
     public static void resetUpdatedData() {
         updatedData = new ArrayList<>();
     }
 
 
+    /**
+     * This Function is used to call the API to get the latest cholesterol levels for the monitored patients
+     * @param patients - This holds the HashMap of the Patients
+     * @param monitoredPatients - This holds the HashMap of the monitored patients
+     * @param context - Context
+     *
+     */
     public static void getUpdate(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context) {
 
         resetUpdatedData();
@@ -200,6 +220,14 @@ public class CholesterolData {
     }
 
 
+    /**
+     * This Function is used to handle the API calls from getUpdate(), since we need to make multiple API calls
+     * @param url - The url to call
+     * @param context - Context
+     * @param counter - a counter
+     * @param listner - the APIListener
+     *
+     */
     public static void updateHandler(final String url, final Context context, final int counter, final APIListener listener) {
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
@@ -234,6 +262,15 @@ public class CholesterolData {
     }
 
 
+    /**
+     * This Function is used to clean the API responses from getUpdate() and updateHandler()
+     * @param responseList - This holds the list of API responses
+     * @param patientHashMap - This holds the HashMap of all patients
+     * @param monitoredPatients - This holds the HashMap of the monitored patients
+     * @param patientsBundle - This holds the list of keys of patients needed
+     * @param context - Context
+     *
+     */
     public static void cleanUpdatedChol(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
 
 //      We use the response
