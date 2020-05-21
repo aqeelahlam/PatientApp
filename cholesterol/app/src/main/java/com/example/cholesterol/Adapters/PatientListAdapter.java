@@ -11,14 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.HashMap;
 
-public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListView> implements View.OnClickListener {
+public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListView> {
 
     private HashMap<String, Patient> patientListHash;
     private HashMap<String, Patient> monitoredPatients;
 
+    /**
+     * Constructor for PatientListAdapter
+     * @param patientListHashA HashMap of Patients
+     * @param monitoredPatients HashMap of Monitored Patients
+     */
     public PatientListAdapter(HashMap<String, Patient> patientListHashA, HashMap<String, Patient> monitoredPatients){
         this.patientListHash = patientListHashA;
         this.monitoredPatients = monitoredPatients;
@@ -49,12 +53,14 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         final String chol = patientListHash.get(keys[position]).getCholesterol();
         final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
 
-
         holder.patientID.setText(patientID);
         holder.patientName.setText(patientname);
 
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This function is used to add patients to be Monitored
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Patient patient = new Patient(patientID, patientname, chol, effectiveDate);
@@ -70,12 +76,9 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         return patientListHash.size();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
+    /**
+     * Inner Class that will be used to obtain references to the views
+     */
     public class PatientListView extends RecyclerView.ViewHolder {
         TextView patientID;
         TextView patientName;

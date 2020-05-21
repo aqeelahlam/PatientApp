@@ -3,26 +3,22 @@ package com.example.cholesterol.UserInterfaces;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.PatientData;
-
-import java.text.BreakIterator;
 import java.util.HashMap;
 
 public class MonitorActivity extends AppCompatActivity {
 
-    public static RecyclerView monitorRecyclerView;
-    static HashMap<String, Patient> monitored = new HashMap<>();
+    private static RecyclerView monitorRecyclerView;
+    private static HashMap<String, Patient> monitored = new HashMap<>();
     private static TextView name;
     private static TextView birthdate;
     private static TextView gender;
@@ -34,11 +30,14 @@ public class MonitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
 
+//      This will set the title of the toolbar
         getSupportActionBar().setTitle("Monitored Patients");
 
+//      This is used to obtain the recyclerView
         monitorRecyclerView = findViewById(R.id.monitor_recycler);
         monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+//      This is used to obtain the TextViews
         name = findViewById(R.id.name);
         birthdate = findViewById(R.id.birthdate);
         gender = findViewById(R.id.gender);
@@ -46,13 +45,15 @@ public class MonitorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This is function that will be invoked when the start button is clicked
+     * @param view viewObject: Start Button
+     */
     public void startBtn(View view) {
         monitored = MainActivity.getMonitoredPatients();
-
         final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
         monitorRecyclerView.setAdapter(monitorAdapter);
 
-
         NTimer.resetN();
         NTimer nTimer = new NTimer();
         nTimer.addObserver(monitorAdapter);
@@ -60,31 +61,32 @@ public class MonitorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function is used to subscribe to the observable and starts the timer
+     * @param monitorAdapter The adapter for the recycler View
+     */
     public static void refresh(MonitorAdapter monitorAdapter) {
-
         monitorRecyclerView.setAdapter(monitorAdapter);
-
         NTimer.resetN();
         NTimer nTimer = new NTimer();
         nTimer.addObserver(monitorAdapter);
         nTimer.startTimer();
     }
 
+    /**
+     * This function is used to obtain the details of a patient once it has been selected
+     * @param patientID Patient Identification
+     * @param context Context
+     */
     public static void setDetails(String patientID, Context context){
-//        monitored = MainActivity.getMonitoredPatients();
         monitored = MainActivity.getPatientDetailsMap();
-        try {
-            PatientData.getDetailedPatient(monitored, patientID, context);
-        } catch (Exception e) {
-        }
+        PatientData.getDetailedPatient(monitored, patientID, context);
 
         Patient current = monitored.get(patientID);
         if(current.getGender() != null){
             String Name = current.getName();
             String Birthdate = current.getBirthDate();
             String Gender = current.getGender();
-
-
             String addressLine = current.getAddressLine();
             String city = current.getCity();
             String state = current.getState();
@@ -92,25 +94,18 @@ public class MonitorActivity extends AppCompatActivity {
             String country = current.getCountry();
             String fullAddress = addressLine + ", " + city + ", " + state + ", " + postalCode + ", " + country;
 
+//          Here we bind the details to the TextView
             name.setText(Name);
             birthdate.setText(Birthdate);
             gender.setText(Gender);
             address.setText(fullAddress);
 
-        }else {
-            name.setText("waiting for server");
-            birthdate.setText("waiting for server");
-            gender.setText("waiting for server");
-            address.setText("waiting for server");
+        } else {
+            String Waiting = "waiting for server";
+            name.setText(Waiting);
+            birthdate.setText(Waiting);
+            gender.setText(Waiting);
+            address.setText(Waiting);
         }
-
-
-
-
-
     }
-
-
-
-
 }

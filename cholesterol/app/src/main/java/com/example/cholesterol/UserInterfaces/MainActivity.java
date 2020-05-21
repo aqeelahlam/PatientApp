@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
-import com.example.cholesterol.ServerCalls.PatientData;
 import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -55,11 +54,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//      This is used to obtain the recyclerView
         patientRecyclerView = findViewById(R.id.recycler_view);
         patientRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
+    /**
+     * This is function that will be invoked when the Find button is clicked
+     * @param view viewObject: Find Button
+     */
     public void FindBtn(final View view) {
 
         EditText keyword;
@@ -70,16 +73,19 @@ public class MainActivity extends AppCompatActivity {
 //        String practitionerID = "6832728";
 
         PatientList.patientHandler(practitionerID, this, patientRecyclerView, patientDetailsMap, monitoredPatients);
-
     }
 
 
-
+    /**
+     * This is function that will be invoked when the Monitor button is clicked
+     * @param view viewObject: Monitor Button
+     */
     public void monitorBtn(View view) {
 
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        }else {
+        } else {
+//          We move to the next activity:
             Intent intent = new Intent(this, MonitorActivity.class);
             startActivity(intent);
         }
