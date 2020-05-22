@@ -10,6 +10,16 @@ public class Individual {
     private String postalCode;
     private String country;
 
+    /**
+     * Constructor for Individual Object
+     * @param id Identification
+     * @param name Patient Name
+     * @param addressLine - address line
+     * @param city - city
+     * @param state - state
+     * @param postalCode - postal code
+     * @param country - country
+     */
     public Individual(String id, String name, String addressLine, String city, String state, String postalCode, String country) {
         setId(id);
         setName(name);
@@ -20,14 +30,25 @@ public class Individual {
         setCountry(country);
     }
 
+    /**
+     * Constructor for Individual Object
+     */
     public Individual() {
     }
 
+    /**
+     * Constructor for Patient Object
+     * @param patientID Patient Identification
+     * @param name Patient Name
+     */
     public Individual(String patientID, String name) {
         setId(patientID);
         setName(name);
     }
 
+/*
+Below are the Accessors and Mutators required to update or get an item from a Individual Object
+ */
 
     public String getId() {
         return id;

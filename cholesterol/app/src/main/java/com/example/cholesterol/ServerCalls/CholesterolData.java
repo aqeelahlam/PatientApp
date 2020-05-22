@@ -26,15 +26,7 @@ import java.util.HashMap;
 
 public class CholesterolData {
 
-//    private static HashMap<String, Patient> patientDetail = new HashMap<>();
 
-//    public static HashMap<String, Patient> getPatientDetail(){
-//        return patientDetail;
-//    }
-//
-//    public static void setPatientDetail(HashMap<String, Patient> patientDetail1){
-//        patientDetail = patientDetail1;
-//    }
 
     public static String placeHolder;
 

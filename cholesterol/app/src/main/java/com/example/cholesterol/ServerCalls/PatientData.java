@@ -26,10 +26,8 @@ public class PatientData {
      *
      */
 
-//  public static void getDetailedPatient(final HashMap<String, Patient> patients, final Context context, final RecyclerView recyclerView){
     public static void getDetailedPatient(final HashMap<String, Patient> patients, final String patientID, final Context context) {
 
-//        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
          String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientID + "?_format=json";

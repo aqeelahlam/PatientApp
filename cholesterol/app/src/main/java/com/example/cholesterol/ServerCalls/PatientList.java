@@ -312,7 +312,6 @@ public class PatientList {
     public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView, HashMap<String, Patient> patientListHash, HashMap<String, Patient> monitoredPatients) throws JSONException {
 
 //      This Hashmap holds information regarding the patient where the key would be the patientID
-//        HashMap<String, Patient> patientListHash = new HashMap<>();
 
         for (int i = 0; i < response.size(); i++) {
             try {
