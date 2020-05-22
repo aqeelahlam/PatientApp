@@ -32,15 +32,8 @@ public class PatientData {
 //        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
-//        final Object[] patientsBundle = patients.keySet().toArray();
+         String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientID + "?_format=json";
 
-//        assert patientsBundle != null;
-//        for (int i = 0; i < patientsBundle.length; i++) {
-
-//            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientsBundle[i] + "?_format=json";
-            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Patient/" + patientID + "?_format=json";
-
-//            final String patientID = patientsBundle[i].toString();
 
             try {
 
@@ -50,9 +43,8 @@ public class PatientData {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-//                                        cleanDetails(response, patients, patientID ,recyclerView);
+//                                          Here we send the JSON response to be Parsed
                                             cleanDetails(response, patients, patientID);
-
                                         } catch (JSONException e) {
                                         }
                                     }
@@ -72,23 +64,19 @@ public class PatientData {
             } catch (Exception e) {
             }
         }
-//    }
+
 
     /**
-     * This function is used to add the cholesterol levels into the hashmap & display it in the
-     * Recycler View
-     * @param response - This holds the JSON object which we use to parse
-     * @param patientHashMap - This holds the HashMap of the Patients
-     * @param patientID - This is used to access a Patient Object of the HashMap
-     * @param recyclerView - This refers to the recycler view that has been passed in from the
-     *                     Main Activity
+     * This class is used to clean and Parse the JSON response to obtain the value we need
+     * @param response JSON object with the response from the server
+     * @param patientHashMap The Hashmap with patient details existing
+     * @param patientID The patient ID
      * @throws JSONException
-     *
      */
-
-//    public static void cleanDetails(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID, final RecyclerView recyclerView) throws JSONException {
     public static void cleanDetails(JSONObject response, HashMap<String, Patient> patientHashMap, String patientID) throws JSONException {
 
+
+//      We Parse the JSON to get the required values here:
         String gender = response.getString("gender");
         String birthDate = response.getString("birthDate");
 
@@ -99,7 +87,7 @@ public class PatientData {
         String postalCode = address.getString("postalCode");
         String country = address.getString("country");
 
-
+//      This shows you patient details in the console
         Log.d("gender", gender);
         Log.d("birthDate", birthDate);
         Log.d("addressLine", addressLine);
@@ -108,17 +96,7 @@ public class PatientData {
         Log.d("postalCode", postalCode);
         Log.d("country", country);
 
-
+//      Here we set the details to the HashMap:
         patientHashMap.get(patientID).setExtraDetails(birthDate, gender, addressLine, city, postalCode, state, country);
-
-
-
-
-//      We will then pass the hashmap to the recycler view to show the results.
-//        PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap);
-//        recyclerView.setAdapter(patientListAdapter);
-
     }
-
-
 }

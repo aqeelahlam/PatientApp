@@ -56,6 +56,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         holder.patientID.setText(patientID);
         holder.patientName.setText(patientname);
 
+//      This will add a patient to the montiored HashMap when we click it
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             /**
              * This function is used to add patients to be Monitored
