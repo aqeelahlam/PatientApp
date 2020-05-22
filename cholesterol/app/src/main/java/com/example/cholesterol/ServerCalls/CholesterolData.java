@@ -126,7 +126,7 @@ public class CholesterolData {
         String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
         String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-//      Change to appropiate format
+//      Change to appropriate format
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
         Date result;
 
@@ -238,21 +238,24 @@ public class CholesterolData {
 
 //      We use the response
         for(int i = 0; i < responseList.size(); i++) {
+
+//          We Parse the JSON to get the required values here:
             JSONArray entry = responseList.get(i).getJSONArray("entry");
-//            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
             String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
             String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-            double cholValue = Math.random()*100;
 
-            //      Change to appropiate format
+//          If you want to see the observer changing, UnComment this line below and comment the above 'cholValue'
+//            double cholValue = Math.random()*100;
+
+            // Change to appropriate format
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
             Date result;
 
             result = df.parse(effectiveDate);
 
             String patientID = patientsBundle[i].toString();
-
 
             //      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
             patientHashMap.get(patientID).setCholesterol(cholValue + cholUnit);

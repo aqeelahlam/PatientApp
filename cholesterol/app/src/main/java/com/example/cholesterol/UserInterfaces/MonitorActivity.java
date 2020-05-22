@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class MonitorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//      Inflates the layout:
         setContentView(R.layout.activity_monitor);
 
 //      This will set the title of the toolbar
@@ -56,25 +58,26 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view viewObject: Start Button
      */
     public void startBtn(View view) {
-        String test = NRefresh.getText().toString();
-        int NValue = Integer.parseInt(test);
-
-        if(NValue > 0){
+        String N_Value = NRefresh.getText().toString();
+//      If we don't put a value for:
+        if(N_Value.isEmpty()){
+            Toast.makeText(this, "Please enter a Refresh Value", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+//          Obtaining the HashMap of Monitored Patients
             monitored = MainActivity.getMonitoredPatients();
+//          Passing the HashMap to the MonitorAdapter to populate the RecyclerView
             final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
             monitorRecyclerView.setAdapter(monitorAdapter);
-
+//          This is used to update the cholesterol levels at N_value (second(s)) intervals
+            int NValue = Integer.parseInt(N_Value);
             NTimer.setN(NValue);
             NTimer.resetN();
             NTimer nTimer = new NTimer();
             nTimer.addObserver(monitorAdapter);
             nTimer.startTimer();
         }
-        else {
-            Toast.makeText(this, "Enter a Refresh Value", Toast.LENGTH_SHORT).show();
-        }
-
-
     }
 
     /**
