@@ -70,7 +70,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.effectiveDate.setText(effectiveDate);
 
         double AverageCholesterol = getAverageCholesterol(patientListHash);
-        String numericChol = chol.replaceAll("[^\\d\\.]","");
+        String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
         if(finalChol>AverageCholesterol){

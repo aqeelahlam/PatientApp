@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.CholesterolData;
 import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
         return monitoredPatients;
     }
 
+
+    public static void setMonitoredPatients(String key, Patient patientDetails) {
+        monitoredPatients.put(key, patientDetails);
+    }
+
     /**
      * This method is used to "inflate" the layout and controls the
      * @param savedInstanceState The current state of the device
@@ -80,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         EditText keyword;
         keyword = findViewById(R.id.editText);
-        String practitionerID = keyword.getText().toString();
+//        String practitionerID = keyword.getText().toString();
+        String practitionerID = "1381208";
 //      This will make sure we have entered practitioner id
         if(practitionerID.isEmpty()){
             Toast.makeText(this, "Please Enter Practitioner ID", Toast.LENGTH_LONG).show();
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
+            CholesterolData.getCholesterol(monitoredPatients, patientDetailsMap, this, patientRecyclerView);
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);
             startActivity(intent);

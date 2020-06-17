@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cholesterol.Adapters.MonitorAdapter;
+import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.Adapters.PatientListAdapter;
@@ -55,7 +56,7 @@ public class CholesterolData {
 
             String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientsBundle[i] + "&_sort=-date&_format=json";
 
-//            Log.d("PatientID", (String) patientsBundle[i]);
+            Log.d("PatientID", (String) patientsBundle[i]);
 
             final String patientID = patientsBundle[i].toString();
 
@@ -69,7 +70,7 @@ public class CholesterolData {
                                         try {
                                             int total = response.getInt("total");
                                             if (total > 0){
-//                                                Log.d("PeopleWithChol", patientID);
+                                                Log.d("PeopleWithChol", patientID);
                                                 cleanChol(response, patients, monitoredPatients, patientID ,recyclerView, context);
                                             }
                                             else {
@@ -128,9 +129,15 @@ public class CholesterolData {
         patientHashMap.get(patientID).setCholesterol(cholValue + cholUnit);
         patientHashMap.get(patientID).setEffectiveDate(result.toString());
 
-//      We will then pass the hashmap to the recycler view to show the results.
-        PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap, monitoredPatients);
-        recyclerView.setAdapter(patientListAdapter);
+        try {
+            MainActivity.setMonitoredPatients(patientID, patientHashMap.get(patientID));
+        } catch ( Exception e) {
+
+        }
+
+////      We will then pass the hashmap to the recycler view to show the results.
+//        PatientListAdapter patientListAdapter = new PatientListAdapter(patientHashMap, monitoredPatients);
+//        recyclerView.setAdapter(patientListAdapter);
 
     }
 
@@ -270,13 +277,13 @@ public class CholesterolData {
 
 //          We Parse the JSON to get the required values here:
             JSONArray entry = responseList.get(i).getJSONArray("entry");
-            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+//            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
             String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
             String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
 
 //          If you want to see the observer changing, UnComment this line below and comment the above 'cholValue'
-//            double cholValue = Math.random()*100;
+            double cholValue = Math.random()*100;
 
             // Change to appropriate format
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");

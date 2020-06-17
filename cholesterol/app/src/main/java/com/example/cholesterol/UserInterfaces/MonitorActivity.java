@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -67,6 +68,7 @@ public class MonitorActivity extends AppCompatActivity {
         else {
 //          Obtaining the HashMap of Monitored Patients
             monitored = MainActivity.getMonitoredPatients();
+            Log.d("monitor length", String.valueOf(monitored.size()));
 //          Passing the HashMap to the MonitorAdapter to populate the RecyclerView
             final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
             monitorRecyclerView.setAdapter(monitorAdapter);
