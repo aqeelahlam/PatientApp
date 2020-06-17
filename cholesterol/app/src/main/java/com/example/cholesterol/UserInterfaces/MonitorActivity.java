@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,6 +20,8 @@ import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.PatientData;
+import com.example.cholesterol.graphs.graphActivity;
+
 import java.util.HashMap;
 
 public class MonitorActivity extends AppCompatActivity {
@@ -53,6 +56,16 @@ public class MonitorActivity extends AppCompatActivity {
         NRefresh = findViewById(R.id.refresh);
 
     }
+
+    public void graphButton(View view){
+
+        Intent intent = new Intent(this, graphActivity.class);
+        startActivity(intent);
+
+    }
+
+
+
 
     /**
      * This is function that will be invoked when the start button is clicked
