@@ -26,44 +26,21 @@ public class PatientList {
 
     private static ArrayList<JSONObject> jsonData = new ArrayList<>();
 
-    /**
-     * This Function is used to add the API response to the jsonData
-     * @param response - the response
-     *
-     */
     public static void addJsonData(JSONObject response) {
         if (response != null) {
             jsonData.add(response);
         }
     }
 
-    /**
-     * This Function is used to set jsonData
-     * @param response - the response to set
-     *
-     */
     public static void setJsonData(ArrayList<JSONObject> response) {
         jsonData = response;
     }
 
-    /**
-     * This Function is used to get jsonData
-     *
-     */
     public static ArrayList<JSONObject> getJsonData() {
         return jsonData;
     }
 
 
-    /**
-     * This Function handles the API calls needed to get the HP identifier, then to get all his patients from all the API pages
-     * @param practitionerID - the practitioner id
-     * @param context - Context
-     * @param recyclerView - the recyler View
-     * @param patientListHash - This holds the HashMap of the patients
-     * @param monitoredPatients - This holds the HashMap of the monitored patients
-     *
-     */
     public static void patientHandler(String practitionerID, final Context context, final RecyclerView recyclerView, final HashMap<String, Patient> patientListHash, final HashMap<String, Patient> monitoredPatients) {
         ArrayList<JSONObject> reset = new ArrayList<>();
         setJsonData(reset);
@@ -128,14 +105,6 @@ public class PatientList {
     }
 
 
-    /**
-     * This Function handles the recursive API calls that iterates the pages of the Encounter API
-     * @param url - the url to call
-     * @param context - Context
-     * @param counter - the counter to keep track of the pages called
-     * @param listener - the APIListener to handle the callback
-     *
-     */
     private static void recursiveHandler(String url, final Context context, final int counter, final APIListener listener) throws JSONException {
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
@@ -175,14 +144,6 @@ public class PatientList {
 
 
 
-    /**
-     * This Function gets the practitioners identifier
-     * @param practitionerID - the practitioner id
-     * @param context - Context
-     * @param recyclerView - the recycler View
-     * @param listener - the APIListener to handle the callback
-     *
-     */
     public static void getPatientList(String practitionerID, final Context context, final RecyclerView recyclerView, final APIListener listener) {
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
@@ -227,14 +188,7 @@ public class PatientList {
     }
 
 
-    /**
-     * This Function gets the first page of encounter api of the practitioner
-     * @param response - the API response
-     * @param context - Context
-     * @param recyclerView - the recycler View
-     * @param listener - the APIListener to handle the callback
-     *
-     */
+
     public static void aux_getPatientList(JSONObject response, final Context context, final RecyclerView recyclerView, final APIListener listener) {
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
@@ -300,18 +254,11 @@ public class PatientList {
 
 
 
-    /**
-     * This Function cleans the responses from all the encounter api calls
-     * @param response - list of responses
-     * @param context - Context
-     * @param recyclerView - the recycler View
-     * @param patientListHash - This holds the HashMap of the patients
-     * @param monitoredPatients - This holds the HashMap of the monitored patients
-     *
-     */
+
     public static void cleanPatientList(ArrayList<JSONObject> response, final Context context, final RecyclerView recyclerView, HashMap<String, Patient> patientListHash, HashMap<String, Patient> monitoredPatients) throws JSONException {
 
 //      This Hashmap holds information regarding the patient where the key would be the patientID
+//        HashMap<String, Patient> patientListHash = new HashMap<>();
 
         for (int i = 0; i < response.size(); i++) {
             try {
@@ -341,8 +288,19 @@ public class PatientList {
             }
         }
 
+//        PatientData.getDetailedPatient(patientListHash, context);
         CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
 
+
+//        Crashes from here
+//        BloodPressureData.getBloodPressure(patientListHash,monitoredPatients,context,recyclerView);
+
+
+//        CholesterolData test = new CholesterolData();
+//        test.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
+//        NTimer nTimer = new NTimer();
+//        nTimer.addObserver(test);
+//        nTimer.startTimer();
 
     }
 

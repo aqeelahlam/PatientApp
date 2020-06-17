@@ -61,6 +61,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         final String chol = patientListHash.get(keys[position]).getCholesterol();
         final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
 
+
+        final String systolic = patientListHash.get(keys[position]).getSystolic();
+
+        holder.Systolic.setText(systolic);
+
         holder.patient.setText(patientname);
         holder.effectiveDate.setText(effectiveDate);
 
@@ -150,12 +155,18 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         private TextView cholLevel;
         private ImageView imageView;
 
+
+        private TextView Systolic;
+
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
             patient = itemView.findViewById(R.id.monitor_PatientName);
             effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
             cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
             imageView = itemView.findViewById(R.id.image_delete);
+
+            Systolic = itemView.findViewById(R.id.Systolic);
+
 
         }
     }

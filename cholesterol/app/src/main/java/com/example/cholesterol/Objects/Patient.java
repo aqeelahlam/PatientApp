@@ -14,6 +14,19 @@ public class Patient {
     private String state;
     private String country;
 
+//  BEGIN TEST
+    public String getSystolic() {
+        return Systolic;
+    }
+
+    public void setSystolic(String systolic) {
+        Systolic = systolic;
+    }
+
+    private String Systolic;
+
+
+//    END TEST
 
     /**
      * Constructor for Patient Object
@@ -102,6 +115,8 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
     public String getCountry() {
         return country;
     }
+
+
 
     public void setExtraDetails(String birthDate, String gender, String addressLine, String city,
                                 String postalCode, String state, String country) {
