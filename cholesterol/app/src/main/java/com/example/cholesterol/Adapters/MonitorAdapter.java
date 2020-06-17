@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.cholesterol.ServerCalls.BloodPressureData;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
@@ -60,16 +62,15 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         final String patientname = patientListHash.get(keys[position]).getName();
         final String chol = patientListHash.get(keys[position]).getCholesterol();
         final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
-
-
         final String systolic = patientListHash.get(keys[position]).getSystolic();
+        final String diastolic = patientListHash.get(keys[position]).getDiastolic();
 
-        holder.Systolic.setText(systolic);
 
         holder.patient.setText(patientname);
         holder.effectiveDate.setText(effectiveDate);
 
-        double AverageCholesterol = getAverageCholesterol(patientListHash);
+        // Cholesterol
+        double AverageCholesterol = getAverageReadings(patientListHash, "chol");
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
@@ -79,6 +80,30 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         } else{
             holder.cholLevel.setText(chol);
         }
+
+        // Diastolic BP
+//        double AverageSystolic = getAverageReadings(patientListHash, "sys");
+//        String numericSys = systolic.replaceAll("[^\\d\\.]", "");
+//        double finalSys = Double.parseDouble(numericSys);
+//
+//        if(finalSys>AverageSystolic){
+//            holder.cholLevel.setText(systolic);
+//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
+//        } else{
+//            holder.cholLevel.setText(systolic);
+//        }
+//
+//        // Systolic BP
+//        double AverageDiastolic = getAverageReadings(patientListHash, "dias");
+//        String numericDias = systolic.replaceAll("[^\\d\\.]", "");
+//        double finalDias = Double.parseDouble(numericDias);
+//
+//        if(finalSys>AverageDiastolic){
+//            holder.cholLevel.setText(diastolic);
+//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
+//        } else{
+//            holder.cholLevel.setText(diastolic);
+//        }
 
 //      This method is used to delete a patient from the list of monitored Patients
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -105,24 +130,41 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
      * @param patientListHash HashMap of Monitored Patients
      * @return Average Cholesterol Value
      */
-    private double getAverageCholesterol(HashMap<String, Patient> patientListHash){
-        ArrayList<Double> cholLevels = new ArrayList<>();
+    private double getAverageReadings(HashMap<String, Patient> patientListHash, String valueType){
+        ArrayList<Double> readingLevels = new ArrayList<>();
 
         final Object[] keys = patientListHash.keySet().toArray();
 
+        String readingLevel = "";
+
         for(int i = 0; i<patientListHash.size(); i++){
-            String cholLevel = patientListHash.get(keys[i]).getCholesterol().replaceAll("[^\\d\\.]","");
-            double numericChol = Double.parseDouble(cholLevel);
-            cholLevels.add(numericChol);
+            if (valueType.equals("chol")) {
+                readingLevel = patientListHash.get(keys[i]).getCholesterol();
+            }
+            else if (valueType.equals("sys")) {
+                readingLevel = patientListHash.get(keys[i]).getSystolic();
+            }
+            else if (valueType.equals("dias")) {
+                readingLevel = patientListHash.get(keys[i]).getDiastolic();
+            }
+
+            try {
+                readingLevel = readingLevel.replaceAll("[^\\d\\.]","");
+                double numericChol = Double.parseDouble(readingLevel);
+                readingLevels.add(numericChol);
+            } catch(Exception e) {
+
+            }
+
         }
 
         double total = 0.0;
 
-        for(int i = 0; i<cholLevels.size(); i++){
-            total += cholLevels.get(i);
+        for(int i = 0; i<readingLevels.size(); i++){
+            total += readingLevels.get(i);
         }
 
-        return total/cholLevels.size();
+        return total/readingLevels.size();
     }
 
     /**
@@ -142,7 +184,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
-        CholesterolData.getUpdate(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
+//        CholesterolData.getUpdateChol(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
+        BloodPressureData.getUpdateBP(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
     }
 
     /**

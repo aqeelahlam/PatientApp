@@ -180,7 +180,7 @@ public class CholesterolData {
      * @param context - Context
      *
      */
-    public static void getUpdate(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context) {
+    public static void getUpdateChol(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context) {
 
         resetUpdatedData();
 

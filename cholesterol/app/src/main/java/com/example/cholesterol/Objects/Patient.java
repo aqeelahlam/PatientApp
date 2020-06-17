@@ -6,6 +6,8 @@ public class Patient {
     private String name;
     private String cholesterol;
     private String effectiveDate;
+    private String effectiveDateChol;
+    private String effectiveDateBP;
     private String birthDate;
     private String gender;
     private String addressLine;
@@ -13,20 +15,10 @@ public class Patient {
     private String postalCode;
     private String state;
     private String country;
-
-//  BEGIN TEST
-    public String getSystolic() {
-        return Systolic;
-    }
-
-    public void setSystolic(String systolic) {
-        Systolic = systolic;
-    }
-
     private String Systolic;
+    private String Diastolic;
 
 
-//    END TEST
 
     /**
      * Constructor for Patient Object
@@ -88,6 +80,22 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
         return effectiveDate;
     }
 
+    public void setEffectiveDateChol(String effectiveDateChol) {
+        this.effectiveDateChol = effectiveDateChol;
+    }
+
+    public String getEffectiveDateChol() {
+        return effectiveDateChol;
+    }
+
+    public void setEffectiveDateBP(String effectiveDateBP) {
+        this.effectiveDateBP = effectiveDateBP;
+    }
+
+    public String getEffectiveDateBP() {
+        return effectiveDateBP;
+    }
+
     public String getBirthDate() {
         return birthDate;
     }
@@ -115,6 +123,26 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
     public String getCountry() {
         return country;
     }
+
+
+    //  BEGIN TEST
+    public String getSystolic() {
+        return Systolic;
+    }
+
+    public void setSystolic(String systolic) {
+        Systolic = systolic;
+    }
+
+    public String getDiastolic() {
+        return Diastolic;
+    }
+
+    public void setDiastolic(String diastolic) {
+        Diastolic = diastolic;
+    }
+
+//    END TEST
 
 
 

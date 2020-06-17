@@ -13,10 +13,16 @@ import android.widget.Toast;
 
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.BloodPressureData;
 import com.example.cholesterol.ServerCalls.CholesterolData;
+import com.example.cholesterol.ServerCalls.observationHandler;
+import com.example.cholesterol.ServerCalls.CholesterolTest;
 import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+
+import java.text.ParseException;
 import java.util.HashMap;
 
 /*
@@ -101,13 +107,16 @@ public class MainActivity extends AppCompatActivity {
      * This is function that will be invoked when the Monitor button is clicked
      * @param view viewObject: Monitor Button
      */
-    public void monitorBtn(View view) {
+    public void monitorBtn(View view) throws JSONException, ParseException {
 
 //      If we have not selected any Patients
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
             CholesterolData.getCholesterol(monitoredPatients, patientDetailsMap, this, patientRecyclerView);
+//            BloodPressureData.getBloodPressure(monitoredPatients, patientDetailsMap, this, patientRecyclerView);
+//            observationHandler.getObservation("Chol", monitoredPatients, patientDetailsMap, this, patientRecyclerView);
+
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);
             startActivity(intent);
