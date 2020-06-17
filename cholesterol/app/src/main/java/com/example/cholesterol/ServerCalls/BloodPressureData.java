@@ -27,63 +27,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class BloodPressureData {
+public class BloodPressureData extends MedicalObservations {
 
-
-
-    public static void getBloodPressure(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
-        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
-
-        final Object[] patientsBundle = patients.keySet().toArray();
-
-        assert patientsBundle != null;
-        for (final Object patientID : patientsBundle){
-            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=55284-4&patient=" + patientID +  "&_sort=-date&_format=json";
-
-            final String patientIDStr = patientID.toString();
-            Log.d("PatientID", patientIDStr);
-
-
-            try{
-                final JsonObjectRequest jsonObjectRequest =
-                        new JsonObjectRequest(Request.Method.GET, url, null,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            int total = response.getInt("total");
-                                            if (total > 0) {
-                                                Log.d("PeopleWithBP", patientIDStr);
-                                                cleanBP(response, patients, monitoredPatients, patientIDStr, recyclerView, context);
-                                            }
-                                            else {
-                                                patients.remove(patientID);
-                                            }
-                                        } catch (JSONException | ParseException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                        100000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                queue.start();
-                queue.add(jsonObjectRequest);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public BloodPressureData() {
+        super();
     }
 
 
-    public static void cleanBP(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, final RecyclerView recyclerView, final Context context) throws JSONException, ParseException {
+    @Override
+    public void cleanObservation(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context) throws JSONException, ParseException {
         JSONArray entry = response.getJSONArray("entry");
         double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
         String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
@@ -110,102 +62,8 @@ public class BloodPressureData {
         }
     }
 
-
-
-    private static ArrayList<JSONObject> updatedData = new ArrayList<>();
-
-
-    public static void addUpdatedData(JSONObject response) {
-        if (response != null) {
-            updatedData.add(response);
-        }
-    }
-
-
-    public static ArrayList<JSONObject> getUpdatedData() {
-        return updatedData;
-    }
-
-
-    public static void resetUpdatedData() {
-        updatedData = new ArrayList<>();
-    }
-
-
-    public static void getUpdateBP(final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context) {
-
-        resetUpdatedData();
-
-        final Object[] patientsBundle = monitoredPatients.keySet().toArray();
-
-        int counter = 0;
-        final int bundleLength = patientsBundle.length;
-
-
-        assert patientsBundle != null;
-        while (counter < bundleLength) {
-            counter++;
-            String patientId = String.valueOf(patientsBundle[counter-1]);
-
-            String url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=55284-4&patient=" + patientId +  "&_sort=-date&_format=json";
-
-            updateHandler(url, context, counter, new APIListener() {
-                @Override
-                public void onError(String message) {
-
-                }
-
-                @Override
-                public void onResponse(JSONObject response, int counter2) throws JSONException, ParseException, InterruptedException {
-                    addUpdatedData(response);
-                    ArrayList<JSONObject> results = getUpdatedData();
-                    Log.d("currentResultsSize", String.valueOf(results.size()));
-
-                    if (getUpdatedData().size() == monitoredPatients.size()) {
-                        cleanUpdatedBP(getUpdatedData(), patients, monitoredPatients, patientsBundle, context);
-                    }
-                }
-            });
-
-        }
-    }
-
-
-    public static void updateHandler(final String url, final Context context, final int counter, final APIListener listener) {
-        RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
-
-        try {
-
-            JsonObjectRequest jsonObjectRequest =
-                    new JsonObjectRequest(Request.Method.GET, url, null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        listener.onResponse(response, counter);
-                                    } catch (JSONException | ParseException | InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    100000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.start();
-            queue.add(jsonObjectRequest);
-
-        } catch (Exception e) {
-        }
-    }
-
-
-    public static void cleanUpdatedBP(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
+    @Override
+    public void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
 
         for(int i = 0; i < responseList.size(); i++) {
 

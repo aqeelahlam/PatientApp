@@ -13,10 +13,8 @@ import android.widget.Toast;
 
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
-import com.example.cholesterol.ServerCalls.BloodPressureData;
 import com.example.cholesterol.ServerCalls.CholesterolData;
-import com.example.cholesterol.ServerCalls.observationHandler;
-import com.example.cholesterol.ServerCalls.CholesterolTest;
+import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.ServerCalls.PatientList;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,9 +40,13 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     public static Context context;
-    RecyclerView patientRecyclerView;
+    public static RecyclerView patientRecyclerView;
 
     private static HashMap<String, Patient> patientDetailsMap = new HashMap<>();
+
+    public static RecyclerView getRecyclerView() {
+        return patientRecyclerView;
+    }
 
     /**
      * This method is used to get the patientDetailsMap HashMap
@@ -113,9 +115,7 @@ public class MainActivity extends AppCompatActivity {
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
-            CholesterolData.getCholesterol(monitoredPatients, patientDetailsMap, this, patientRecyclerView);
-//            BloodPressureData.getBloodPressure(monitoredPatients, patientDetailsMap, this, patientRecyclerView);
-//            observationHandler.getObservation("Chol", monitoredPatients, patientDetailsMap, this, patientRecyclerView);
+            ObservationHandler.getObservation("BP", monitoredPatients, patientDetailsMap, this, patientRecyclerView);
 
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);
