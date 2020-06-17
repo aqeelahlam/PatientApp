@@ -71,28 +71,28 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.effectiveDate.setText(effectiveDate);
 
         // Cholesterol
-//        double AverageCholesterol = getAverageReadings(patientListHash, "chol");
-//        String numericChol = chol.replaceAll("[^\\d\\.]", "");
-//        double finalChol = Double.parseDouble(numericChol);
-//
-//        if(finalChol>AverageCholesterol){
-//            holder.cholLevel.setText(chol);
-//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
-//        } else{
-//            holder.cholLevel.setText(chol);
-//        }
+        double AverageCholesterol = getAverageReadings(patientListHash, "chol");
+        String numericChol = chol.replaceAll("[^\\d\\.]", "");
+        double finalChol = Double.parseDouble(numericChol);
 
-        // Diastolic BP
-        double AverageSystolic = getAverageReadings(patientListHash, "sys");
-        String numericSys = systolic.replaceAll("[^\\d\\.]", "");
-        double finalSys = Double.parseDouble(numericSys);
-
-        if(finalSys>AverageSystolic){
-            holder.cholLevel.setText(systolic);
+        if(finalChol>AverageCholesterol){
+            holder.cholLevel.setText(chol);
             holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
         } else{
-            holder.cholLevel.setText(systolic);
+            holder.cholLevel.setText(chol);
         }
+
+        // Diastolic BP
+//        double AverageSystolic = getAverageReadings(patientListHash, "sys");
+//        String numericSys = systolic.replaceAll("[^\\d\\.]", "");
+//        double finalSys = Double.parseDouble(numericSys);
+//
+//        if(finalSys>AverageSystolic){
+//            holder.cholLevel.setText(systolic);
+//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
+//        } else{
+//            holder.cholLevel.setText(systolic);
+//        }
 //
 //        // Systolic BP
 //        double AverageDiastolic = getAverageReadings(patientListHash, "dias");
@@ -185,7 +185,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
-        ObservationHandler.getUpdatedObservation("BP", MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
+        ObservationHandler.getUpdatedObservation("Chol", MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
 
     }
 

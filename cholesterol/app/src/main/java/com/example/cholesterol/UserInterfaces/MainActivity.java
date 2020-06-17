@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         EditText keyword;
         keyword = findViewById(R.id.editText);
 //        String practitionerID = keyword.getText().toString();
-        String practitionerID = "1381208";
+        String practitionerID = "29175";
 //      This will make sure we have entered practitioner id
         if(practitionerID.isEmpty()){
             Toast.makeText(this, "Please Enter Practitioner ID", Toast.LENGTH_LONG).show();
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
-            ObservationHandler.getObservation("BP", monitoredPatients, patientDetailsMap, this, patientRecyclerView);
+            ObservationHandler.getObservation("Chol", monitoredPatients, patientDetailsMap, this, patientRecyclerView);
 
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);
