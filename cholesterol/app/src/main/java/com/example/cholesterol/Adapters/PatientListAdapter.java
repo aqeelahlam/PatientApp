@@ -67,7 +67,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
             @Override
             public void onClick(View v) {
 
-                Patient patient = new Patient(patientID, patientname, "0","0", "0");
+                Patient patient = new Patient(patientID, patientname, "0.0","0.0", "0.0");
 
 //              Here we move the selected Patients into a new HashMap
                 monitoredPatients.put(patientID, patient);

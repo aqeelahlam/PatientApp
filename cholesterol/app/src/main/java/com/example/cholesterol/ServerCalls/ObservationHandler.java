@@ -76,12 +76,6 @@ public class ObservationHandler {
                                                     bloodPressureData.cleanLatestXObservations(job, totalObservationTypes, 5, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                                 }
                                             }
-//                                            else {
-//
-////                                              WE replace the values here
-//                                                patients.remove(patientID);
-////                                                patients.remove(patientID);
-//                                            }
 
                                         } catch (JSONException | ParseException e) {
                                         }

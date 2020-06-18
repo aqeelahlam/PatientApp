@@ -8,7 +8,6 @@ public class Patient {
     private String patientID;
     private String name;
     private String cholesterol;
-    private String effectiveDate;
     private String effectiveDateChol;
     private String effectiveDateBP;
     private String birthDate;
@@ -76,14 +75,6 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
 
     public String getCholesterol() {
         return cholesterol;
-    }
-
-    public void setEffectiveDate(String effectiveDate) {
-        this.effectiveDate = effectiveDate;
-    }
-
-    public String getEffectiveDate() {
-        return effectiveDate;
     }
 
     public void setEffectiveDateChol(String effectiveDateChol) {

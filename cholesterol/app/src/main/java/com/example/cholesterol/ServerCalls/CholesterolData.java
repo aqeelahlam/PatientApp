@@ -52,7 +52,7 @@ public class CholesterolData extends MedicalObservations {
 
 //      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
         monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
-        monitoredPatients.get(patientID).setEffectiveDate(result);
+        monitoredPatients.get(patientID).setEffectiveDateChol(result);
 
 
 //        Log.d("job", job)

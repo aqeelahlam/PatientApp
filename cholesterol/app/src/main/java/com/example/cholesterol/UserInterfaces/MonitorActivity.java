@@ -33,6 +33,28 @@ public class MonitorActivity extends AppCompatActivity {
     private static TextView gender;
     private static TextView address;
     private static EditText NRefresh;
+    private static EditText SystolicBP;
+    private static EditText DiastolicBP;
+
+    public static double getSYSTOLICBP() {
+        return SYSTOLICBP;
+    }
+
+    public static void setSYSTOLICBP(double SYSTOLICBP) {
+        MonitorActivity.SYSTOLICBP = SYSTOLICBP;
+    }
+
+    public static double getDIASTOLICBP() {
+        return DIASTOLICBP;
+    }
+
+    public static void setDIASTOLICBP(double DIASTOLICBP) {
+        MonitorActivity.DIASTOLICBP = DIASTOLICBP;
+    }
+
+    private static double SYSTOLICBP;
+    private static double DIASTOLICBP;
+
 
 
     @Override
@@ -54,6 +76,8 @@ public class MonitorActivity extends AppCompatActivity {
         gender = findViewById(R.id.gender);
         address = findViewById(R.id.address);
         NRefresh = findViewById(R.id.refresh);
+        SystolicBP = findViewById(R.id.systolicBP);
+        DiastolicBP = findViewById(R.id.diastolicBP);
 
     }
 
@@ -77,15 +101,27 @@ public class MonitorActivity extends AppCompatActivity {
 //        FOR TESTING PURPOSES
         String N_Value = "10";
 
+        String SystolicEdit = SystolicBP.getText().toString();
+        String DiastolicEdit = DiastolicBP.getText().toString();
+
+
+
+
 //      If we don't put a value for:
         if(N_Value.isEmpty()){
             Toast.makeText(this, "Please enter a Refresh Value", Toast.LENGTH_SHORT).show();
             return;
         }
+        else if(SystolicEdit.isEmpty() || DiastolicEdit.isEmpty()){
+            Toast.makeText(this, "Please enter a BP Value", Toast.LENGTH_SHORT).show();
+            return;
+        }
         else {
 //          Obtaining the HashMap of Monitored Patients from MainActivity
             monitored = MainActivity.getMonitoredPatients();
+
             Log.d("monitor length", String.valueOf(monitored.size()));
+
 //          Passing the HashMap to the MonitorAdapter to populate the RecyclerView
             final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
             monitorRecyclerView.setAdapter(monitorAdapter);
@@ -96,6 +132,13 @@ public class MonitorActivity extends AppCompatActivity {
             NTimer nTimer = new NTimer();
             nTimer.addObserver(monitorAdapter);
             nTimer.startTimer();
+
+
+            double Systolic = Double.parseDouble(SystolicEdit);
+            double Diastolic = Double.parseDouble(DiastolicEdit);
+
+            setSYSTOLICBP(Systolic);
+            setDIASTOLICBP(Diastolic);
         }
     }
 

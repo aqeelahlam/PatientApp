@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +29,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
 
-
     /**
      * Constructor for MonitorAdapter
      * @param monitoredHash HashMap of Patients
@@ -46,9 +44,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public MonitorListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-
-        EditText systolicEditText = parent.findViewById(R.id.systolicBP);
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View monitorPatient = inflater.inflate(R.layout.monitor_patients, parent, false);
         MonitorListView view = new MonitorListView(monitorPatient);
@@ -64,50 +59,52 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
         final String patientname = monitoredPatientListHash.get(keys[position]).getName();
         final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDate();
-        final String systolic = monitoredPatientListHash.get(keys[position]).getSystolic();
-        final String diastolic = monitoredPatientListHash.get(keys[position]).getDiastolic();
+        final String effectiveDateChol = monitoredPatientListHash.get(keys[position]).getEffectiveDateChol();
 
-        holder.Systolic.setText(systolic);
+        final String systolicHash = monitoredPatientListHash.get(keys[position]).getSystolic();
+        final String diastolicHash = monitoredPatientListHash.get(keys[position]).getDiastolic();
+        final String effectiveDateBP = monitoredPatientListHash.get(keys[position]).getEffectiveDateBP();
 
-        holder.patient.setText(patientname);
-        holder.effectiveDate.setText(effectiveDate);
+        double systolicHashParse = Double.parseDouble(systolicHash.replaceAll("[^\\d\\.]", ""));
+        double diastolicHashParse = Double.parseDouble(diastolicHash.replaceAll("[^\\d\\.]", ""));
+
+        holder.patientTV.setText(patientname);
 
         // Cholesterol
         double AverageCholesterol = getAverageReadings(monitoredPatientListHash, "chol");
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
+        holder.CholEffectiveDateTV.setText(effectiveDateChol);
+        holder.BPEffectiveDateTV.setText(effectiveDateBP);
+
         if(finalChol > AverageCholesterol){
-            holder.cholLevel.setText(chol);
-            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
+            holder.CholLevelTV.setText(chol);
+            holder.CholLevelTV.setTextColor(Color.parseColor("#FF0000"));
         } else{
-            holder.cholLevel.setText(chol);
+            holder.CholLevelTV.setText(chol);
         }
 
-        // Systolic BP
-//        double AverageSystolic = getAverageReadings(patientListHash, "sys");
-//        String numericSys = systolic.replaceAll("[^\\d\\.]", "");
-//        double finalSys = Double.parseDouble(numericSys);
-//
-//        if(finalSys>AverageSystolic){
-//            holder.cholLevel.setText(systolic);
-//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
-//        } else{
-//            holder.cholLevel.setText(systolic);
-//        }
-//
-//        // Diastolic BP
-//        double AverageDiastolic = getAverageReadings(patientListHash, "dias");
-//        String numericDias = systolic.replaceAll("[^\\d\\.]", "");
-//        double finalDias = Double.parseDouble(numericDias);
-//
-//        if(finalSys>AverageDiastolic){
-//            holder.cholLevel.setText(diastolic);xw
-//            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
-//        } else{
-//            holder.cholLevel.setText(diastolic);
-//        }
+        // Blood Pressure
+
+        if(systolicHashParse > MonitorActivity.getSYSTOLICBP()){
+            holder.SystolicTV.setText(systolicHash);
+            holder.SystolicTV.setTextColor(Color.parseColor("#800080"));
+        }
+        else {
+            holder.SystolicTV.setText(systolicHash);
+        }
+
+        if(diastolicHashParse > MonitorActivity.getDIASTOLICBP()){
+            holder.DiastolicTV.setText(diastolicHash);
+            holder.DiastolicTV.setTextColor(Color.parseColor("#800080"));
+        }
+        else {
+            holder.DiastolicTV.setText(diastolicHash);
+        }
+
+
+
 
 //      This method is used to delete a patient from the list of monitored Patients
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -197,20 +194,23 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
      */
     public class MonitorListView extends RecyclerView.ViewHolder{
 
-        private TextView patient;
-        private TextView effectiveDate;
-        private TextView cholLevel;
+        private TextView patientTV;
+        private TextView CholLevelTV;
+        private TextView CholEffectiveDateTV;
         private ImageView imageView;
-        private TextView Systolic;
+        private TextView SystolicTV;
+        private TextView DiastolicTV;
+        private TextView BPEffectiveDateTV;
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
-            patient = itemView.findViewById(R.id.monitor_PatientName);
-            effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
-            cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
+            patientTV = itemView.findViewById(R.id.monitor_PatientName);
+            CholLevelTV = itemView.findViewById(R.id.monitor_cholLevel);
+            CholEffectiveDateTV = itemView.findViewById(R.id.cholEffectiveDateTV);
             imageView = itemView.findViewById(R.id.image_delete);
-            Systolic = itemView.findViewById(R.id.Systolic);
-
+            SystolicTV = itemView.findViewById(R.id.systolicTV);
+            DiastolicTV = itemView.findViewById(R.id.diastolicTV);
+            BPEffectiveDateTV = itemView.findViewById(R.id.BPeffectiveDateTV);
 
         }
     }

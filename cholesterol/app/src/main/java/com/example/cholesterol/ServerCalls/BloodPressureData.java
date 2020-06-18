@@ -60,7 +60,8 @@ public class BloodPressureData extends MedicalObservations {
         }
 
         monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-        monitoredPatients.get(patientID).setEffectiveDate(result);
+        monitoredPatients.get(patientID).setDiastolic(diasystolicBP + diasystolicBPUnit);
+        monitoredPatients.get(patientID).setEffectiveDateBP(result);
 
 //        Log.d("job", job);
         if (job.equals("Update") && counter == max_length) {
@@ -68,7 +69,6 @@ public class BloodPressureData extends MedicalObservations {
             MonitorActivity.refresh(monitorAdapter);
         }
         else {
-
             try {
                 MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
             } catch (Exception e) {

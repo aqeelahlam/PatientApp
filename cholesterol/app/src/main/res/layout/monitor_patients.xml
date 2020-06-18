@@ -21,27 +21,24 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/monitor_effectiveDate"
+                android:id="@+id/cholEffectiveDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:layout_marginEnd="127dp"
                 android:text="@string/issue_date"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/monitor_effectiveDate2"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline31"
+                app:layout_constraintEnd_toStartOf="@+id/guideline29"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
-                app:layout_constraintTop_toTopOf="@+id/guideline22"
-                app:layout_constraintVertical_bias="0.076" />
+                app:layout_constraintTop_toTopOf="@+id/guideline27" />
 
             <TextView
-                android:id="@+id/monitor_effectiveDate2"
+                android:id="@+id/BPeffectiveDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/issue_date"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -53,29 +50,26 @@
                 android:id="@+id/monitor_PatientName"
                 android:layout_width="181dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="16dp"
                 android:text="@string/patient"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline22"
-                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintBottom_toTopOf="@+id/guideline23"
+                app:layout_constraintEnd_toStartOf="@+id/guideline29"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/monitor_cholLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="135dp"
                 android:text="@string/chol_level"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/systolic"
+                app:layout_constraintBottom_toTopOf="@+id/guideline26"
+                app:layout_constraintEnd_toStartOf="@+id/guideline29"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
-                app:layout_constraintTop_toTopOf="@+id/guideline22"
+                app:layout_constraintTop_toTopOf="@+id/guideline25"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -96,10 +90,11 @@
                 app:layout_constraintGuide_begin="217dp" />
 
             <TextView
-                android:id="@+id/Systolic"
+                android:id="@+id/systolicTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:text="Systolic"
                 app:layout_constraintBottom_toTopOf="@+id/guideline24"
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -107,10 +102,11 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
             <TextView
-                android:id="@+id/systolic"
+                android:id="@+id/diastolicTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:text="Diastolic"
                 app:layout_constraintBottom_toTopOf="@+id/guideline26"
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -121,10 +117,9 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
                 android:text="Total Cholesterol:"
-                app:layout_constraintBottom_toTopOf="@+id/monitor_cholLevel"
-                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintBottom_toTopOf="@+id/guideline30"
+                app:layout_constraintEnd_toStartOf="@+id/guideline29"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
                 app:layout_constraintTop_toTopOf="@+id/guideline22"
@@ -134,15 +129,13 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
-                android:layout_marginEnd="166dp"
                 android:text="Time:"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView7"
+                app:layout_constraintBottom_toTopOf="@+id/guideline27"
+                app:layout_constraintEnd_toStartOf="@+id/guideline29"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
-                app:layout_constraintTop_toTopOf="@+id/guideline22"
-                app:layout_constraintVertical_bias="0.048" />
+                app:layout_constraintTop_toTopOf="@+id/guideline26"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -154,7 +147,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="@+id/guideline26" />
+                app:layout_constraintTop_toTopOf="@+id/guideline26"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -236,6 +230,27 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="149dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="204dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="76dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="173dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
