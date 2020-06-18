@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
         if(monitoredPatients.isEmpty()){
             Snackbar.make(view, "You have not chosen any patients", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
-            ObservationHandler.getObservation("firstCall", "Chol", monitoredPatients, this, patientRecyclerView);
-            ObservationHandler.getObservation("firstCall", "BP", monitoredPatients, this, patientRecyclerView);
+            ObservationHandler.getObservation("firstCall", 2, "Chol", monitoredPatients, this, patientRecyclerView);
+            ObservationHandler.getObservation("firstCall", 2, "BP", monitoredPatients, this, patientRecyclerView);
 
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);

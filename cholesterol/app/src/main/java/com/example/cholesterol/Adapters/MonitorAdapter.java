@@ -184,10 +184,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
-        ObservationHandler.getObservation("Update", "Chol", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
-        ObservationHandler.getObservation("Update", "BP", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
-//        MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
-//        MonitorActivity.refresh(monitorAdapter);
+        ObservationHandler.getObservation("Update", 2, "Chol", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
+        ObservationHandler.getObservation("Update", 2, "BP", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
     }
 
     /**

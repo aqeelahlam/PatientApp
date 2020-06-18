@@ -32,7 +32,7 @@ public class CholesterolData extends MedicalObservations {
     }
 
     @Override
-    public void cleanObservation(final String job, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context) throws JSONException, ParseException {
+    public void cleanObservation(final String job, final int totalObservationTypes, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
 //      We use the response
         JSONArray entry = response.getJSONArray("entry");
         double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
@@ -52,15 +52,26 @@ public class CholesterolData extends MedicalObservations {
 
 //      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
         monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
-        monitoredPatients.get(patientID).setEffectiveDate(result.toString());
+        monitoredPatients.get(patientID).setEffectiveDate(result);
 
 
-        Log.d("job", job);
+//        Log.d("job", job)
 
-        try {
-            MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
-        } catch (Exception e) {
+        // if it is an update api call
+        if (job.equals("Update")) {
+            // display values only if totalObservationTypes == 1. > 1 means that there are other api calls to make
+            if (totalObservationTypes == 1 && counter == max_length) {
+                MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+                MonitorActivity.refresh(monitorAdapter);
+            }
+        }
+        else {
 
+            try {
+                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
+            } catch (Exception e) {
+
+            }
         }
     }
 

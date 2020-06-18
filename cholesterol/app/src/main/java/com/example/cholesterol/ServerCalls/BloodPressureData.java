@@ -35,7 +35,7 @@ public class BloodPressureData extends MedicalObservations {
 
 
     @Override
-    public void cleanObservation(final String job, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context) throws JSONException, ParseException {
+    public void cleanObservation(final String job, final int totalObservationTypes, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
         JSONArray entry = response.getJSONArray("entry");
         double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
         String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
@@ -62,12 +62,18 @@ public class BloodPressureData extends MedicalObservations {
         monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
         monitoredPatients.get(patientID).setEffectiveDate(result);
 
-        Log.d("job", job);
+//        Log.d("job", job);
+        if (job.equals("Update") && counter == max_length) {
+            MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+            MonitorActivity.refresh(monitorAdapter);
+        }
+        else {
 
-        try {
-            MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
-        } catch (Exception e) {
+            try {
+                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
+            } catch (Exception e) {
 
+            }
         }
     }
 

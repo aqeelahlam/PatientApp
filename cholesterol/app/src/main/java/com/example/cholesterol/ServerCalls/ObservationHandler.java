@@ -30,7 +30,7 @@ import java.util.HashMap;
 public class ObservationHandler {
 
 
-    public static void getObservation(final String job, final String observationType, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
+    public static void getObservation(final String job, final int totalObservationTypes, final String observationType, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         final Object[] patientsBundle = monitoredPatients.keySet().toArray();
@@ -48,10 +48,12 @@ public class ObservationHandler {
             }
 
             final String patientID = patientsBundle[i].toString();
-            Log.d("PatientID", patientID);
+//            Log.d("PatientID", patientID);
 
             try {
 
+                final int counter = i;
+                final int max_length = patientsBundle.length - 1;
                 JsonObjectRequest jsonObjectRequest =
                         new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
@@ -60,14 +62,14 @@ public class ObservationHandler {
                                         try {
                                             int total = response.getInt("total");
                                             if (total > 0){
-                                                Log.d("PeopleWithobservation", patientID);
+//                                                Log.d("PeopleWithobservation", patientID);
                                                 if (observationType.equals("Chol")){
                                                     CholesterolData cholesterolData = new CholesterolData();
-                                                    cholesterolData.cleanObservation(job, response, monitoredPatients, patientID ,recyclerView, context);
+                                                    cholesterolData.cleanObservation(job, totalObservationTypes, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                                 }
                                                 else if (observationType.equals("BP")) {
                                                     BloodPressureData bloodPressureData = new BloodPressureData();
-                                                    bloodPressureData.cleanObservation(job,response, monitoredPatients, patientID ,recyclerView, context);
+                                                    bloodPressureData.cleanObservation(job, totalObservationTypes, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                                 }
                                             }
 //                                            else {
@@ -96,7 +98,6 @@ public class ObservationHandler {
             } catch (Exception e) {
             }
         }
-
     }
 
 
