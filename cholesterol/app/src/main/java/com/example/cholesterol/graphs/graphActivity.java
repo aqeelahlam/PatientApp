@@ -29,6 +29,8 @@ public class graphActivity extends AppCompatActivity {
 
     AnyChartView anyChartView;
     Cartesian column;
+    Handler handler;
+
 
 
     private static HashMap<String, Patient> monitoredPatientsObtainedMap = new HashMap<>();
@@ -52,6 +54,7 @@ public class graphActivity extends AppCompatActivity {
         }
 
         column = AnyChart.column();
+        handler = new Handler();
 
 
         List<DataEntry> data = new ArrayList<>();
@@ -84,7 +87,7 @@ public class graphActivity extends AppCompatActivity {
         column.title("Total Cholesterol mg/dL");
 
         final int delayMillis = 10000;
-        final Handler handler = new Handler();
+//        final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             public void run() {
                 updateBarChart();
@@ -118,6 +121,14 @@ public class graphActivity extends AppCompatActivity {
 
         column.data(data);
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        handler.removeCallbacksAndMessages(null);
     }
 
 }
