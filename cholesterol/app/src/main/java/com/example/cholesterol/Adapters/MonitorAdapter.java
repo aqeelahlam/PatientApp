@@ -71,7 +71,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.patientTV.setText(patientname);
 
         // Cholesterol
-        double AverageCholesterol = getAverageReadings(monitoredPatientListHash, "chol");
+        double AverageCholesterol = getAverageReadings(monitoredPatientListHash);
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
@@ -131,7 +131,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
      * @param patientListHash HashMap of Monitored Patients
      * @return Average Cholesterol Value
      */
-    private double getAverageReadings(HashMap<String, Patient> patientListHash, String valueType){
+    private double getAverageReadings(HashMap<String, Patient> patientListHash){
         ArrayList<Double> readingLevels = new ArrayList<>();
 
         final Object[] keys = patientListHash.keySet().toArray();
@@ -139,24 +139,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         String readingLevel = "";
 
         for(int i = 0; i<patientListHash.size(); i++){
-            if (valueType.equals("chol")) {
                 readingLevel = patientListHash.get(keys[i]).getCholesterol();
-            }
-            else if (valueType.equals("sys")) {
-                readingLevel = patientListHash.get(keys[i]).getSystolic();
-            }
-            else if (valueType.equals("dias")) {
-                readingLevel = patientListHash.get(keys[i]).getDiastolic();
-            }
 
-            try {
                 readingLevel = readingLevel.replaceAll("[^\\d\\.]","");
                 double numericChol = Double.parseDouble(readingLevel);
                 readingLevels.add(numericChol);
-            } catch(Exception e) {
-
-            }
-
         }
 
         double total = 0.0;
