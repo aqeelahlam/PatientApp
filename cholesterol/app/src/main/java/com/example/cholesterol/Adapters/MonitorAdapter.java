@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
 
+
     /**
      * Constructor for MonitorAdapter
      * @param monitoredHash HashMap of Patients
@@ -45,6 +47,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     public MonitorListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
+        EditText systolicEditText = parent.findViewById(R.id.systolicBP);
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View monitorPatient = inflater.inflate(R.layout.monitor_patients, parent, false);
         MonitorListView view = new MonitorListView(monitorPatient);
@@ -60,7 +64,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
         final String patientname = monitoredPatientListHash.get(keys[position]).getName();
         final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDateChol();
+        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDate();
         final String systolic = monitoredPatientListHash.get(keys[position]).getSystolic();
         final String diastolic = monitoredPatientListHash.get(keys[position]).getDiastolic();
 
@@ -74,7 +78,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
-        if(finalChol>AverageCholesterol){
+        if(finalChol > AverageCholesterol){
             holder.cholLevel.setText(chol);
             holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
         } else{
@@ -197,8 +201,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         private TextView effectiveDate;
         private TextView cholLevel;
         private ImageView imageView;
-
-
         private TextView Systolic;
 
         public MonitorListView(@NonNull View itemView) {
@@ -207,7 +209,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
             cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
             imageView = itemView.findViewById(R.id.image_delete);
-
             Systolic = itemView.findViewById(R.id.Systolic);
 
 
