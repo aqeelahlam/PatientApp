@@ -30,7 +30,7 @@ import java.util.HashMap;
 public class ObservationHandler {
 
 
-    public static void getObservation(final String job, final int totalObservationTypes, final String observationType, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
+    public static void getObservation(final String job, final int totalObservationTypes, final String observationType, final boolean graphView, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         final Object[] patientsBundle = monitoredPatients.keySet().toArray();
@@ -65,11 +65,11 @@ public class ObservationHandler {
 //                                                Log.d("PeopleWithobservation", patientID);
                                                 if (observationType.equals("Chol")){
                                                     CholesterolData cholesterolData = new CholesterolData();
-                                                    cholesterolData.cleanObservation(job, totalObservationTypes, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
+                                                    cholesterolData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                                 }
                                                 else if (observationType.equals("BP")) {
                                                     BloodPressureData bloodPressureData = new BloodPressureData();
-                                                    bloodPressureData.cleanObservation(job, totalObservationTypes, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
+                                                    bloodPressureData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                                 }
                                                 else if (observationType.equals("XBP")) {
                                                     BloodPressureData bloodPressureData = new BloodPressureData();

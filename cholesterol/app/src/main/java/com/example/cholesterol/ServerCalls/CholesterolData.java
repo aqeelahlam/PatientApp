@@ -32,7 +32,7 @@ public class CholesterolData extends MedicalObservations {
     }
 
     @Override
-    public void cleanObservation(final String job, final int totalObservationTypes, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
+    public void cleanObservation(final String job, final int totalObservationTypes, boolean graphView, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
 //      We use the response
         JSONArray entry = response.getJSONArray("entry");
         double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
@@ -55,14 +55,15 @@ public class CholesterolData extends MedicalObservations {
         monitoredPatients.get(patientID).setEffectiveDateChol(result);
 
 
-//        Log.d("job", job)
 
         // if it is an update api call
         if (job.equals("Update")) {
             // display values only if totalObservationTypes == 1. > 1 means that there are other api calls to make
-            if (totalObservationTypes == 1 && counter == max_length) {
-                MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
-                MonitorActivity.refresh(monitorAdapter);
+            if (!graphView) {
+                if (totalObservationTypes == 1 && counter == max_length) {
+                    MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+                    MonitorActivity.refresh(monitorAdapter);
+                }
             }
         }
         else {
