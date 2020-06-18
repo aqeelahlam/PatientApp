@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ObservationHandler.getObservation("firstCall", 2, "Chol", false, monitoredPatients, this, patientRecyclerView);
             ObservationHandler.getObservation("firstCall", 2, "BP", false, monitoredPatients, this, patientRecyclerView);
-//            ObservationHandler.getObservation("firstCall", 2, "XBP", monitoredPatients, this, patientRecyclerView);
 
 //          We move to the next activity to monitor the patients:
             Intent intent = new Intent(this, MonitorActivity.class);

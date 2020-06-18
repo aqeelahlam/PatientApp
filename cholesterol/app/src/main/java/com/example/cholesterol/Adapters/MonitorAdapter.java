@@ -18,6 +18,7 @@ import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -28,6 +29,16 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
     private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
+    private static HashMap<String, Patient> highSystolicHash = new HashMap<>();
+
+
+    public static HashMap<String, Patient> getHighSystolic() {
+        return highSystolicHash;
+    }
+
+//    public static void resetHighSystolic() {
+//        highSystolic = new ArrayList<>();
+//    }
 
     /**
      * Constructor for MonitorAdapter
@@ -103,6 +114,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         if(systolicHashParse > MonitorActivity.getSYSTOLICBP()){
             holder.SystolicTV.setText(systolicHash);
             holder.SystolicTV.setTextColor(Color.parseColor("#800080"));
+            highSystolicHash.put(patientID, monitoredPatientListHash.get(patientID));
         }
         else {
             holder.SystolicTV.setText(systolicHash);

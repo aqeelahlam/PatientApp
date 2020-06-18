@@ -11,8 +11,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.Adapters.BPMonitorAdapter;
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Objects.Patient;
+import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
 
@@ -21,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -111,19 +114,12 @@ public class BloodPressureData extends MedicalObservations {
             Log.d("effectiveDateTime", currentEffectiveDateTime);
             Log.d("BP", currentSystolicBP);
         }
+
 //        Log.d("job", job);
-//        if (job.equals("Update") && counter == max_length) {
-//            MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
-//            MonitorActivity.refresh(monitorAdapter);
-//        }
-//        else {
-//
-//            try {
-//                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
-//            } catch (Exception e) {
-//
-//            }
-//        }
+        if (job.equals("Update") && counter == max_length) {
+            BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), BPMonitorActivity.context);
+            BPMonitorActivity.refresh(bpMonitorAdapter);
+        }
     }
 
 //    @Override

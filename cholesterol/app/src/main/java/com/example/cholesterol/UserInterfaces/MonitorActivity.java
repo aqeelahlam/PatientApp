@@ -19,6 +19,7 @@ import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.ServerCalls.PatientData;
 import com.example.cholesterol.graphs.graphActivity;
 
@@ -32,7 +33,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static TextView birthdate;
     private static TextView gender;
     private static TextView address;
-    private static EditText NRefresh;
+    public static EditText NRefresh;
     private static EditText SystolicBP;
     private static EditText DiastolicBP;
     private static Switch cholesterolSwitch;
@@ -114,7 +115,6 @@ public class MonitorActivity extends AppCompatActivity {
 
 
     public void BPMonitorButton(View view){
-
         Intent intent = new Intent(this, BPMonitorActivity.class);
         startActivity(intent);
 

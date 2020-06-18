@@ -1,5 +1,6 @@
 package com.example.cholesterol.Objects;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -151,6 +152,13 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
 
     public ArrayList<String> getXLatestBP(int key) {
         return XLatestBP.get(key);
+    }
+
+
+    public String getFormattedXLatestBP(int key) {
+        ArrayList<String> XLatest = XLatestBP.get(key);
+        String formattedBP = XLatest.get(1) + " (" + XLatest.get(0) + ")";
+        return formattedBP;
     }
 
 

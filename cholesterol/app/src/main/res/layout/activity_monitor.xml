@@ -323,7 +323,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="BPMonitorButton"
-        android:text="Button"
+        android:text="Systolic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintHorizontal_bias="0.0"
