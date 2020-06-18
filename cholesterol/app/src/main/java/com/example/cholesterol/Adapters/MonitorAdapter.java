@@ -60,7 +60,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
         final String patientname = monitoredPatientListHash.get(keys[position]).getName();
         final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDate();
+        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDateChol();
         final String systolic = monitoredPatientListHash.get(keys[position]).getSystolic();
         final String diastolic = monitoredPatientListHash.get(keys[position]).getDiastolic();
 

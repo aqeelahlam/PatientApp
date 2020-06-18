@@ -2,6 +2,8 @@
     <string name="app_name">Cholesterol</string>
     <string name="monitor">Monitor</string>
     <string name="patient">Patient Name</string>
+    <string name="systolicBp">Systolic BP:</string>
+    <string name="diastolicBP">Diastolic BP:</string>
     <string name="patient_id">Patient ID</string>
     <string name="issue_date">Issued Date</string>
     <string name="enter_prac">Practitioner ID:</string>
