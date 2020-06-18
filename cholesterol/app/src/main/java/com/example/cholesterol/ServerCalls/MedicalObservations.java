@@ -32,5 +32,8 @@ public abstract class MedicalObservations {
 
 
 //    public abstract void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException;
+
+    public abstract void cleanLatestXObservations(String job, int totalObservationTypes, int X, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, final RecyclerView recyclerView, final Context context, int counter, int max_length) throws JSONException, ParseException;
+
 }
 

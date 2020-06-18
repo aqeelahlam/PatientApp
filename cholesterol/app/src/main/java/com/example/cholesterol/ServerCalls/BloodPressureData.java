@@ -77,6 +77,56 @@ public class BloodPressureData extends MedicalObservations {
         }
     }
 
+    @Override
+    public void cleanLatestXObservations(String job, int totalObservationTypes, int X, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
+        JSONArray entry = response.getJSONArray("entry");
+
+        String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
+        systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]","");
+
+        double systolicBP = 0;
+        String effectiveDate;
+        String result = "";
+        for (int i=0; i < X; i++) {
+            systolicBP = entry.getJSONObject(i).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
+            effectiveDate = entry.getJSONObject(i).getJSONObject("resource").getString("effectiveDateTime");
+
+            if (job.equals("Update")) {
+                systolicBP = Math.random()*100;
+            }
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            Date d = df.parse(effectiveDate);
+            df.applyPattern("dd-M-yyyy hh:mm:ss");
+            result = df.format(d);
+
+            monitoredPatients.get(patientID).setXLatestBP(i, result, systolicBP + systolicBPUnit);
+        }
+
+        Log.d("job", job);
+        ArrayList<String> latestX;
+        for (int i=0; i < X; i++) {
+            latestX = monitoredPatients.get(patientID).getXLatestBP(i);
+            String currentEffectiveDateTime = latestX.get(0);
+            String currentSystolicBP = latestX.get(1);
+            Log.d("effectiveDateTime", currentEffectiveDateTime);
+            Log.d("BP", currentSystolicBP);
+        }
+//        Log.d("job", job);
+//        if (job.equals("Update") && counter == max_length) {
+//            MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+//            MonitorActivity.refresh(monitorAdapter);
+//        }
+//        else {
+//
+//            try {
+//                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
+//            } catch (Exception e) {
+//
+//            }
+//        }
+    }
+
 //    @Override
 //    public void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
 //

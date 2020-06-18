@@ -1,5 +1,8 @@
 package com.example.cholesterol.Objects;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Patient {
 
     private String patientID;
@@ -17,6 +20,7 @@ public class Patient {
     private String country;
     private String Systolic;
     private String Diastolic;
+    private HashMap<Integer, ArrayList<String>> XLatestBP = new HashMap<>();
 
 
 
@@ -145,6 +149,18 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
     }
 
 //    END TEST
+
+
+    public void setXLatestBP(int key, String effectiveDate, String systolicBP) {
+        ArrayList<String> tempList = new ArrayList<>();
+        tempList.add(effectiveDate);
+        tempList.add(systolicBP);
+        XLatestBP.put(key, tempList);
+    }
+
+    public ArrayList<String> getXLatestBP(int key) {
+        return XLatestBP.get(key);
+    }
 
 
 
