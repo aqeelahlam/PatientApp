@@ -88,6 +88,13 @@ public class MonitorActivity extends AppCompatActivity {
 
     }
 
+    public void BPMonitorButton(View view){
+
+        Intent intent = new Intent(this, BPMonitorActivity.class);
+        startActivity(intent);
+
+    }
+
 
 
 
