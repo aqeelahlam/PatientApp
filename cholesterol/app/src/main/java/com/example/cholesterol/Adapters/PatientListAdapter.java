@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.cholesterol.Objects.Patient;
@@ -15,7 +17,9 @@ import java.util.HashMap;
 
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListView> {
 
+//  This hashmap holds a list of all patients
     private HashMap<String, Patient> patientListHash;
+//  This hashmap holds a list of selected patients
     private HashMap<String, Patient> monitoredPatients;
 
     /**
@@ -50,8 +54,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
         final String patientname = patientListHash.get(keys[position]).getName();
         final String patientID = patientListHash.get(keys[position]).getPatientID();
-        final String chol = patientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
 
         holder.patientID.setText(patientID);
         holder.patientName.setText(patientname);
@@ -64,7 +66,10 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
              */
             @Override
             public void onClick(View v) {
-                Patient patient = new Patient(patientID, patientname, chol, effectiveDate);
+
+                Patient patient = new Patient(patientID, patientname, "0","0", "0");
+
+//              Here we move the selected Patients into a new HashMap
                 monitoredPatients.put(patientID, patient);
 
                 Snackbar.make(v,"You have Selected: " + monitoredPatients.get(keys[position]).getName(), Snackbar.LENGTH_LONG).setAction("Action", null).show();

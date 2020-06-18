@@ -29,7 +29,8 @@ import java.util.HashMap;
 
 public class ObservationHandler {
 
-    public static void getObservation(final String observtionType, final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
+
+    public static void getObservation(final String observationType, final HashMap<String, Patient> patients, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 
         final Object[] patientsBundle = patients.keySet().toArray();
@@ -38,10 +39,10 @@ public class ObservationHandler {
         for(int i = 0; i < patientsBundle.length; i++){
 
             String url = "";
-            if (observtionType.equals("Chol")) {
+            if (observationType.equals("Chol")) {
                 url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=2093-3&patient=" + patientsBundle[i] + "&_sort=-date&_format=json";
             }
-            else if (observtionType.equals("BP")) {
+            else if (observationType.equals("BP")) {
                 url = "https://fhir.monash.edu/hapi-fhir-jpaserver/fhir/Observation?_count=13&code=55284-4&patient=" + patientsBundle[i] +  "&_sort=-date&_format=json";
 
             }
@@ -60,18 +61,21 @@ public class ObservationHandler {
                                             int total = response.getInt("total");
                                             if (total > 0){
                                                 Log.d("PeopleWithobservation", patientID);
-                                                if (observtionType.equals("Chol")){
+                                                if (observationType.equals("Chol")){
                                                     CholesterolData cholesterolData = new CholesterolData();
                                                     cholesterolData.cleanObservation(response, patients, monitoredPatients, patientID ,recyclerView, context);
                                                 }
-                                                else if (observtionType.equals("BP")) {
+                                                else if (observationType.equals("BP")) {
                                                     BloodPressureData bloodPressureData = new BloodPressureData();
                                                     bloodPressureData.cleanObservation(response, patients, monitoredPatients, patientID ,recyclerView, context);
                                                 }
                                             }
-                                            else {
-                                                patients.remove(patientID);
-                                            }
+//                                            else {
+//
+////                                              WE replace the values here
+//                                                patients.remove(patientID);
+////                                                patients.remove(patientID);
+//                                            }
 
                                         } catch (JSONException | ParseException e) {
                                         }
@@ -191,7 +195,7 @@ public class ObservationHandler {
      * @param url - The url to call
      * @param context - Context
      * @param counter - a counter
-     * @param listner - the APIListener
+     * @param listener - the APIListener
      *
      */
     public static void updateHandler(final String url, final Context context, final int counter, final APIListener listener) {

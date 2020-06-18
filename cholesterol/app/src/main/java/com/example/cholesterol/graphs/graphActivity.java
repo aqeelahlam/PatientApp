@@ -3,6 +3,8 @@ package com.example.cholesterol.graphs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -19,16 +21,13 @@ import com.example.cholesterol.UserInterfaces.MainActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class graphActivity extends AppCompatActivity {
 
     AnyChartView anyChartView;
 
-    private static HashMap<String, Patient> patientDetailsMap = new HashMap<>();
-
-
-    String[] months = {"Jan", "Feb", "Mar"};
-    int[] earnings = {500, 800, 2000};
+    private static HashMap<String, Patient> monitoredPatientsObtainedMap = new HashMap<>();
 
 
     @Override
@@ -42,28 +41,42 @@ public class graphActivity extends AppCompatActivity {
 
     public void setupBarChart(){
 
-        patientDetailsMap = MainActivity.getMonitoredPatients();
+        monitoredPatientsObtainedMap = MainActivity.getMonitoredPatients();
 
-        Cartesian column = AnyChart.column();
+        if(monitoredPatientsObtainedMap.isEmpty()){
+            Toast.makeText(this, "No patients to Monitor", Toast.LENGTH_LONG).show();
+        }
+
+        final Cartesian column = AnyChart.column();
 
         List<DataEntry> data = new ArrayList<>();
 
-        final Object[] keys = patientDetailsMap.keySet().toArray();
+        final Object[] keys = monitoredPatientsObtainedMap.keySet().toArray();
 
-        for(int i=0; i<patientDetailsMap.size(); i++){
-            final String chol = patientDetailsMap.get(keys[i]).getCholesterol();
+        for(int i=0; i<monitoredPatientsObtainedMap.size(); i++){
+            final String chol = monitoredPatientsObtainedMap.get(keys[i]).getCholesterol();
             String numericChol = chol.replaceAll("[^\\d\\.]", "");
             double finalChol = Double.parseDouble(numericChol);
-            String name = patientDetailsMap.get(keys[i]).getName();
+            final String name = monitoredPatientsObtainedMap.get(keys[i]).getName();
 
             data.add(new ValueDataEntry(name, finalChol));
+
+            final int delayMillis = 10000;
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                public void run() {
+                    List<DataEntry> data = new ArrayList<>();
+                    data.add(new ValueDataEntry(name, new Random().nextDouble() * 140d));
+                    data.add(new ValueDataEntry(name, new Random().nextDouble() * 140d));
+                    column.data(data);
+
+                    handler.postDelayed(this, delayMillis);
+                }
+            };
+            handler.postDelayed(runnable, delayMillis);
+
+
         }
-
-
-//
-//        data.add(new ValueDataEntry("Rouge", 80540));
-//        data.add(new ValueDataEntry("Foundation", 94190));
-//        data.add(new ValueDataEntry("Mascara", 102610));
 
 
 
@@ -74,6 +87,21 @@ public class graphActivity extends AppCompatActivity {
 
         column.data(data);
         anyChartView.setChart(column);
+
+
+
+
+
+
+//        column.labels().enabled(true).format("{%y}");
+        column.labels().enabled(true);
+//        column.tooltip().format("Patient Name: {%y}");
+
+//      Padding Between Graphs
+        column.barGroupsPadding(2);
+
+//        column.animation(true);
+        column.height();
         column.title("Total Cholesterol mg/dL");
 
 

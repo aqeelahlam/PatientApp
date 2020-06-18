@@ -72,14 +72,18 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view viewObject: Start Button
      */
     public void startBtn(View view) {
-        String N_Value = NRefresh.getText().toString();
+//        String N_Value = NRefresh.getText().toString();
+
+//        FOR TESTING PURPOSES
+        String N_Value = "10";
+
 //      If we don't put a value for:
         if(N_Value.isEmpty()){
             Toast.makeText(this, "Please enter a Refresh Value", Toast.LENGTH_SHORT).show();
             return;
         }
         else {
-//          Obtaining the HashMap of Monitored Patients
+//          Obtaining the HashMap of Monitored Patients from MainActivity
             monitored = MainActivity.getMonitoredPatients();
             Log.d("monitor length", String.valueOf(monitored.size()));
 //          Passing the HashMap to the MonitorAdapter to populate the RecyclerView

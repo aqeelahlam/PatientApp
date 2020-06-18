@@ -28,16 +28,16 @@ import java.util.Observer;
 
 public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer {
 
-    private HashMap<String, Patient> patientListHash;
+    private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
 
     /**
      * Constructor for MonitorAdapter
-     * @param patientListHashA HashMap of Patients
+     * @param monitoredHash HashMap of Patients
      * @param context Context
      */
-    public MonitorAdapter(HashMap<String, Patient> patientListHashA, Context context) {
-        this.patientListHash = patientListHashA;
+    public MonitorAdapter(HashMap<String, Patient> monitoredHash, Context context) {
+        this.monitoredPatientListHash = monitoredHash;
         this.context = context;
     }
 
@@ -57,21 +57,22 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 //  This method binds data to viewholder(Each Card in the recycler view)
     @Override
     public void onBindViewHolder(@NonNull final MonitorListView holder, final int position) {
-        final Object[] keys = patientListHash.keySet().toArray();
+        final Object[] keys = monitoredPatientListHash.keySet().toArray();
 
-        final String patientID = patientListHash.get(keys[position]).getPatientID();
-        final String patientname = patientListHash.get(keys[position]).getName();
-        final String chol = patientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
-        final String systolic = patientListHash.get(keys[position]).getSystolic();
-        final String diastolic = patientListHash.get(keys[position]).getDiastolic();
+        final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
+        final String patientname = monitoredPatientListHash.get(keys[position]).getName();
+        final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
+        final String effectiveDate = monitoredPatientListHash.get(keys[position]).getEffectiveDate();
+        final String systolic = monitoredPatientListHash.get(keys[position]).getSystolic();
+        final String diastolic = monitoredPatientListHash.get(keys[position]).getDiastolic();
 
+        holder.Systolic.setText(systolic);
 
         holder.patient.setText(patientname);
         holder.effectiveDate.setText(effectiveDate);
 
         // Cholesterol
-        double AverageCholesterol = getAverageReadings(patientListHash, "chol");
+        double AverageCholesterol = getAverageReadings(monitoredPatientListHash, "chol");
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
@@ -100,7 +101,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 //        double finalDias = Double.parseDouble(numericDias);
 //
 //        if(finalSys>AverageDiastolic){
-//            holder.cholLevel.setText(diastolic);
+//            holder.cholLevel.setText(diastolic);xw
 //            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
 //        } else{
 //            holder.cholLevel.setText(diastolic);
@@ -111,7 +112,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "Stopped Monitoring "+ patientname +", click Refresh", Toast.LENGTH_SHORT).show();
-                removeItem(patientListHash, patientID);
+                removeItem(monitoredPatientListHash, patientID);
             }
         });
 
@@ -179,7 +180,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
     @Override
     public int getItemCount() {
-        return patientListHash.size();
+        return monitoredPatientListHash.size();
     }
 
     @Override

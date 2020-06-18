@@ -31,17 +31,19 @@ public class Patient {
     }
 
     /**
-     * Constructor for Patient Object
+     *
      * @param patientID Patient Identification
      * @param name Patient Name
      * @param cholesterol Patient Cholesterol
-     * @param effectiveDate Patient Effective Date
+     * @param Systolic Patient Systolic Pressure
+     * @param Diastolic Patient Diastolic Pressure
      */
-    public Patient(String patientID, String name, String cholesterol, String effectiveDate){
+    public Patient(String patientID, String name, String cholesterol, String Systolic, String Diastolic){
         this.patientID = patientID;
         this.name = name;
         this.cholesterol = cholesterol;
-        this.effectiveDate = effectiveDate;
+        this.Systolic = Systolic;
+        this.Diastolic = Diastolic;
     }
 
 /*
