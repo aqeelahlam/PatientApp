@@ -33,26 +33,29 @@ public class CholesterolData extends MedicalObservations {
 
     @Override
     public void cleanObservation(final String job, final int totalObservationTypes, boolean graphView, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
-//      We use the response
-        JSONArray entry = response.getJSONArray("entry");
-        double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
-        String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
-        String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
+        int total = response.getInt("total");
+        if (total > 0) {
+//          We use the response
+            JSONArray entry = response.getJSONArray("entry");
+            double cholValue = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getDouble("value");
+            String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
+            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-        String result;
+            String result;
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-        Date d = df.parse(effectiveDate);
-        df.applyPattern("dd-M-yyyy hh:mm:ss");
-        result = df.format(d);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            Date d = df.parse(effectiveDate);
+            df.applyPattern("dd-M-yyyy hh:mm:ss");
+            result = df.format(d);
 
-        if (job.equals("Update")) {
-            cholValue = Math.random()*100;
+            if (job.equals("Update")) {
+                cholValue = Math.random() * 100;
+            }
+
+//          Here we set the latest cholesterol values for each patient with record of cholesterol Level.
+            monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
+            monitoredPatients.get(patientID).setEffectiveDateChol(result);
         }
-
-//      Here we set the latest cholesterol values for each patient with record of cholesterol Level.
-        monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
-        monitoredPatients.get(patientID).setEffectiveDateChol(result);
 
 
 
@@ -64,14 +67,6 @@ public class CholesterolData extends MedicalObservations {
                     MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
                     MonitorActivity.refresh(monitorAdapter);
                 }
-            }
-        }
-        else {
-
-            try {
-                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
-            } catch (Exception e) {
-
             }
         }
     }

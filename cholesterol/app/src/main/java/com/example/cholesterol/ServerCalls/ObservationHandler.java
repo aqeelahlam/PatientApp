@@ -60,21 +60,18 @@ public class ObservationHandler {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            int total = response.getInt("total");
-                                            if (total > 0){
-//                                                Log.d("PeopleWithobservation", patientID);
-                                                if (observationType.equals("Chol")){
-                                                    CholesterolData cholesterolData = new CholesterolData();
-                                                    cholesterolData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
-                                                }
-                                                else if (observationType.equals("BP")) {
-                                                    BloodPressureData bloodPressureData = new BloodPressureData();
-                                                    bloodPressureData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
-                                                }
-                                                else if (observationType.equals("XBP")) {
-                                                    BloodPressureData bloodPressureData = new BloodPressureData();
-                                                    bloodPressureData.cleanLatestXObservations(job, totalObservationTypes, 5, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
-                                                }
+//                                            Log.d("PeopleWithobservation", patientID);
+                                            if (observationType.equals("Chol")){
+                                                CholesterolData cholesterolData = new CholesterolData();
+                                                cholesterolData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
+                                            }
+                                            else if (observationType.equals("BP")) {
+                                                BloodPressureData bloodPressureData = new BloodPressureData();
+                                                bloodPressureData.cleanObservation(job, totalObservationTypes, graphView, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
+                                            }
+                                            else if (observationType.equals("XBP")) {
+                                                BloodPressureData bloodPressureData = new BloodPressureData();
+                                                bloodPressureData.cleanLatestXObservations(job, totalObservationTypes, 5, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                             }
 
                                         } catch (JSONException | ParseException e) {

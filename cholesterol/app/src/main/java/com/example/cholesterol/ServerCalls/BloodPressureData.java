@@ -36,44 +36,43 @@ public class BloodPressureData extends MedicalObservations {
 
     @Override
     public void cleanObservation(final String job, final int totalObservationTypes, boolean graphView, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
-        JSONArray entry = response.getJSONArray("entry");
-        double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
-        String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
-        systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]","");
+        int total = response.getInt("total");
+        if (total > 0) {
 
-        double diasystolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getInt("value");
-        String diasystolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getString("unit");
-        diasystolicBPUnit = diasystolicBPUnit.replaceAll("[^A-Za-z]","");
+            JSONArray entry = response.getJSONArray("entry");
+            double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
+            String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
+            systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]", "");
 
-        String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
+            double diasystolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getInt("value");
+            String diasystolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getString("unit");
+            diasystolicBPUnit = diasystolicBPUnit.replaceAll("[^A-Za-z]", "");
 
-        String result;
+            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-        Date d = df.parse(effectiveDate);
-        df.applyPattern("dd-M-yyyy hh:mm:ss");
-        result = df.format(d);
+            String result;
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            Date d = df.parse(effectiveDate);
+            df.applyPattern("dd-M-yyyy hh:mm:ss");
+            result = df.format(d);
 
 
-        if (job.equals("Update")) {
-            systolicBP = Math.random()*100;
+            if (job.equals("Update")) {
+                systolicBP = Math.random() * 100;
+                diasystolicBP = Math.random() * 100;
+
+            }
+
+            monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
+            monitoredPatients.get(patientID).setDiastolic(diasystolicBP + diasystolicBPUnit);
+            monitoredPatients.get(patientID).setEffectiveDateBP(result);
         }
-
-        monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-        monitoredPatients.get(patientID).setDiastolic(diasystolicBP + diasystolicBPUnit);
-        monitoredPatients.get(patientID).setEffectiveDateBP(result);
 
 //        Log.d("job", job);
         if (job.equals("Update") && counter == max_length) {
             MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
             MonitorActivity.refresh(monitorAdapter);
-        }
-        else {
-            try {
-                MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
-            } catch (Exception e) {
-
-            }
         }
     }
 
