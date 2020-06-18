@@ -3,15 +3,15 @@ package com.example.cholesterol.UserInterfaces;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +35,28 @@ public class MonitorActivity extends AppCompatActivity {
     private static EditText NRefresh;
     private static EditText SystolicBP;
     private static EditText DiastolicBP;
+    private static Switch cholesterolSwitch;
+    private static Switch BloodPressureSwitch;
+
+    private static boolean BPSwitch;
+    public static boolean isBPSwitch() {
+        return BPSwitch;
+    }
+    public static void setBPSwitch(boolean BPSwitch) {
+        MonitorActivity.BPSwitch = BPSwitch;
+    }
+
+    private static boolean cholSwitch;
+    public static boolean isCholSwitch() {
+        return cholSwitch;
+    }
+    public static void setCholSwitch(boolean cholSwitch) {
+        MonitorActivity.cholSwitch = cholSwitch;
+    }
+
+
+    private static double SYSTOLICBP;
+    private static double DIASTOLICBP;
 
     public static double getSYSTOLICBP() {
         return SYSTOLICBP;
@@ -52,8 +74,7 @@ public class MonitorActivity extends AppCompatActivity {
         MonitorActivity.DIASTOLICBP = DIASTOLICBP;
     }
 
-    private static double SYSTOLICBP;
-    private static double DIASTOLICBP;
+
 
 
 
@@ -79,6 +100,8 @@ public class MonitorActivity extends AppCompatActivity {
         SystolicBP = findViewById(R.id.systolicBP);
         DiastolicBP = findViewById(R.id.diastolicBP);
 
+        cholesterolSwitch = findViewById(R.id.cholSwitch);
+        BloodPressureSwitch = findViewById(R.id.BPSwitch);
     }
 
     public void graphButton(View view){
@@ -87,6 +110,8 @@ public class MonitorActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+
 
     public void BPMonitorButton(View view){
 
@@ -111,6 +136,29 @@ public class MonitorActivity extends AppCompatActivity {
         String SystolicEdit = SystolicBP.getText().toString();
         String DiastolicEdit = DiastolicBP.getText().toString();
 
+        cholesterolSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    setCholSwitch(true);
+                }
+                else{
+                    setCholSwitch(false);
+                }
+            }
+        });
+
+        BloodPressureSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    setBPSwitch(true);
+                }
+                else {
+                    setBPSwitch(false);
+                }
+            }
+        });
 
 
 

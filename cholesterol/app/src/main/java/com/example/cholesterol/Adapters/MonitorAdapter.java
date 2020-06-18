@@ -78,6 +78,19 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         holder.CholEffectiveDateTV.setText(effectiveDateChol);
         holder.BPEffectiveDateTV.setText(effectiveDateBP);
 
+
+//      This is where we hide the view if not required by practitioner
+        if(!MonitorActivity.isCholSwitch()){
+            holder.CholLevelTV.setVisibility(View.GONE);
+            holder.CholEffectiveDateTV.setVisibility(View.GONE);
+        }
+
+        if(!MonitorActivity.isBPSwitch()){
+            holder.SystolicTV.setVisibility(View.GONE);
+            holder.DiastolicTV.setVisibility(View.GONE);
+            holder.BPEffectiveDateTV.setVisibility(View.GONE);
+        }
+
         if(finalChol > AverageCholesterol){
             holder.CholLevelTV.setText(chol);
             holder.CholLevelTV.setTextColor(Color.parseColor("#FF0000"));
@@ -176,6 +189,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         ObservationHandler.getObservation("Update", 2, "BP", false, MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
     }
 
+
+
     /**
      * Inner Class that will be used to obtain references to the views
      */
@@ -200,5 +215,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             BPEffectiveDateTV = itemView.findViewById(R.id.BPeffectiveDateTV);
 
         }
+
     }
 }
