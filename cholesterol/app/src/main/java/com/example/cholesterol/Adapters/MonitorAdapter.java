@@ -12,12 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cholesterol.ServerCalls.BloodPressureData;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
-import com.example.cholesterol.ServerCalls.CholesterolData;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
 
 import java.util.ArrayList;
@@ -83,7 +81,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.cholLevel.setText(chol);
         }
 
-        // Diastolic BP
+        // Systolic BP
 //        double AverageSystolic = getAverageReadings(patientListHash, "sys");
 //        String numericSys = systolic.replaceAll("[^\\d\\.]", "");
 //        double finalSys = Double.parseDouble(numericSys);
@@ -95,7 +93,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 //            holder.cholLevel.setText(systolic);
 //        }
 //
-//        // Systolic BP
+//        // Diastolic BP
 //        double AverageDiastolic = getAverageReadings(patientListHash, "dias");
 //        String numericDias = systolic.replaceAll("[^\\d\\.]", "");
 //        double finalDias = Double.parseDouble(numericDias);
@@ -171,11 +169,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
     /**
      * This function is used to remove a patient from the HashMap of Monitored Patients
-     * @param patientListHash HashMap of Monitored Patients
+     * @param monitoredPatients HashMap of Monitored Patients
      * @param patientID Patient ID
      */
-    private void removeItem(HashMap<String, Patient> patientListHash, String patientID){
-        patientListHash.remove(patientID);
+    private void removeItem(HashMap<String, Patient> monitoredPatients, String patientID){
+        monitoredPatients.remove(patientID);
     }
 
     @Override
@@ -186,8 +184,10 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
-        ObservationHandler.getUpdatedObservation("Chol", MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
-
+        ObservationHandler.getObservation("Update", "Chol", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
+        ObservationHandler.getObservation("Update", "BP", MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
+//        MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+//        MonitorActivity.refresh(monitorAdapter);
     }
 
     /**

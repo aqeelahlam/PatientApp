@@ -90,12 +90,12 @@ public class MonitorActivity extends AppCompatActivity {
             final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
             monitorRecyclerView.setAdapter(monitorAdapter);
 //          This is used to update the cholesterol levels at N_value (second(s)) intervals
-            int NValue = Integer.parseInt(N_Value);
-            NTimer.setN(NValue);
-            NTimer.resetN();
-            NTimer nTimer = new NTimer();
-            nTimer.addObserver(monitorAdapter);
-            nTimer.startTimer();
+//            int NValue = Integer.parseInt(N_Value);
+//            NTimer.setN(NValue);
+//            NTimer.resetN();
+//            NTimer nTimer = new NTimer();
+//            nTimer.addObserver(monitorAdapter);
+//            nTimer.startTimer();
         }
     }
 

@@ -35,7 +35,7 @@ public class BloodPressureData extends MedicalObservations {
 
 
     @Override
-    public void cleanObservation(JSONObject response, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context) throws JSONException, ParseException {
+    public void cleanObservation(final String job, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context) throws JSONException, ParseException {
         JSONArray entry = response.getJSONArray("entry");
         double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
         String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
@@ -48,60 +48,68 @@ public class BloodPressureData extends MedicalObservations {
         String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+//        DateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
         Date result;
 
         result = df.parse(effectiveDate);
 
-        patientHashMap.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-        patientHashMap.get(patientID).setEffectiveDate(result.toString());
+        if (job.equals("Update")) {
+            systolicBP = Math.random()*100;
+        }
+
+        monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
+        monitoredPatients.get(patientID).setEffectiveDate(result.toString());
+
+        Log.d("job", job);
 
         try {
-            MainActivity.setMonitoredPatients(patientID, patientHashMap.get(patientID));
-        } catch ( Exception e) {
+            MainActivity.setMonitoredPatients(patientID, monitoredPatients.get(patientID));
+        } catch (Exception e) {
 
         }
     }
 
-    @Override
-    public void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
-
-        for(int i = 0; i < responseList.size(); i++) {
-
-            JSONArray entry = responseList.get(i).getJSONArray("entry");
-//            double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
-            String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
-            systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]","");
-
-            double diasystolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getInt("value");
-            String diasystolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getString("unit");
-            diasystolicBPUnit = diasystolicBPUnit.replaceAll("[^A-Za-z]","");
-
-            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
-
-
-//          If you want to see the observer changing, UnComment this line below and comment the above 'systolicBP'
-            double systolicBP = Math.random()*100;
-
-            // Change to appropriate format
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-            Date result;
-
-            result = df.parse(effectiveDate);
-
-            String patientID = patientsBundle[i].toString();
-
-            patientHashMap.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-            patientHashMap.get(patientID).setEffectiveDate(result.toString());
-
-            monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-            monitoredPatients.get(patientID).setEffectiveDate(result.toString());
-
-        }
-
-
-        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients, context);
-        MonitorActivity.refresh(monitorAdapter);
-
-    }
+//    @Override
+//    public void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
+//
+//        for(int i = 0; i < responseList.size(); i++) {
+//
+//            JSONArray entry = responseList.get(i).getJSONArray("entry");
+////            double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
+//            String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
+//            systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]","");
+//
+//            double diasystolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getInt("value");
+//            String diasystolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getString("unit");
+//            diasystolicBPUnit = diasystolicBPUnit.replaceAll("[^A-Za-z]","");
+//
+//            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
+//
+//
+////          If you want to see the observer changing, UnComment this line below and comment the above 'systolicBP'
+//            double systolicBP = Math.random()*100;
+//
+//            // Change to appropriate format
+//            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+//            Date result;
+//
+//            result = df.parse(effectiveDate);
+//
+//            String patientID = patientsBundle[i].toString();
+//
+//            patientHashMap.get(patientID).setSystolic(systolicBP + systolicBPUnit);
+//            patientHashMap.get(patientID).setEffectiveDate(result.toString());
+//
+//            monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
+//            monitoredPatients.get(patientID).setEffectiveDate(result.toString());
+//
+//        }
+//
+//
+//        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients, context);
+//        MonitorActivity.refresh(monitorAdapter);
+//
+//    }
 
 }
