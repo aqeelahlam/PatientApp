@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.anychart.AnyChart;
@@ -16,6 +17,7 @@ import com.anychart.core.gauge.pointers.Bar;
 import com.anychart.enums.Position;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import java.util.Random;
 public class graphActivity extends AppCompatActivity {
 
     AnyChartView anyChartView;
+    Cartesian column;
+
 
     private static HashMap<String, Patient> monitoredPatientsObtainedMap = new HashMap<>();
 
@@ -47,7 +51,8 @@ public class graphActivity extends AppCompatActivity {
             Toast.makeText(this, "No patients to Monitor", Toast.LENGTH_LONG).show();
         }
 
-        final Cartesian column = AnyChart.column();
+        column = AnyChart.column();
+
 
         List<DataEntry> data = new ArrayList<>();
 
@@ -61,37 +66,11 @@ public class graphActivity extends AppCompatActivity {
 
             data.add(new ValueDataEntry(name, finalChol));
 
-            final int delayMillis = 10000;
-            final Handler handler = new Handler();
-            final Runnable runnable = new Runnable() {
-                public void run() {
-                    List<DataEntry> data = new ArrayList<>();
-                    data.add(new ValueDataEntry(name, new Random().nextDouble() * 140d));
-                    data.add(new ValueDataEntry(name, new Random().nextDouble() * 140d));
-                    column.data(data);
-
-                    handler.postDelayed(this, delayMillis);
-                }
-            };
-            handler.postDelayed(runnable, delayMillis);
-
-
         }
 
 
-
-//        for (int i = 0; i < months.length; i++){
-//
-//            dataEntries.add(new ValueDataEntry(months[i], earnings[i]));
-//        }
-
         column.data(data);
         anyChartView.setChart(column);
-
-
-
-
-
 
 //        column.labels().enabled(true).format("{%y}");
         column.labels().enabled(true);
@@ -104,6 +83,40 @@ public class graphActivity extends AppCompatActivity {
         column.height();
         column.title("Total Cholesterol mg/dL");
 
+        final int delayMillis = 10000;
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            public void run() {
+                updateBarChart();
+
+                handler.postDelayed(this, delayMillis);
+            }
+        };
+        handler.postDelayed(runnable, delayMillis);
+
+    }
+
+    public void updateBarChart() {
+
+        ObservationHandler.getObservation("Update", 1, "Chol", true, monitoredPatientsObtainedMap, MainActivity.context, MainActivity.getRecyclerView());
+
+        List<DataEntry> data = new ArrayList<>();
+
+        final Object[] keys = monitoredPatientsObtainedMap.keySet().toArray();
+
+        for(int i=0; i<monitoredPatientsObtainedMap.size(); i++){
+            final String chol = monitoredPatientsObtainedMap.get(keys[i]).getCholesterol();
+            String numericChol = chol.replaceAll("[^\\d\\.]", "");
+            double finalChol = Double.parseDouble(numericChol);
+            final String name = monitoredPatientsObtainedMap.get(keys[i]).getName();
+
+            Log.d("chol", String.valueOf(finalChol));
+
+            data.add(new ValueDataEntry(name, finalChol));
+
+        }
+
+        column.data(data);
 
     }
 
