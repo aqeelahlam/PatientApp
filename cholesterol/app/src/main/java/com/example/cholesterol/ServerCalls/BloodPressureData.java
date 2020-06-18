@@ -47,19 +47,20 @@ public class BloodPressureData extends MedicalObservations {
 
         String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-//        DateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String result;
 
-        Date result;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+        Date d = df.parse(effectiveDate);
+        df.applyPattern("dd-M-yyyy hh:mm:ss");
+        result = df.format(d);
 
-        result = df.parse(effectiveDate);
 
         if (job.equals("Update")) {
             systolicBP = Math.random()*100;
         }
 
         monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-        monitoredPatients.get(patientID).setEffectiveDate(result.toString());
+        monitoredPatients.get(patientID).setEffectiveDate(result);
 
         Log.d("job", job);
 

@@ -39,13 +39,12 @@ public class CholesterolData extends MedicalObservations {
         String cholUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONObject("valueQuantity").getString("unit");
         String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
 
-//      Change to appropriate format
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-//        DateFormat df = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String result;
 
-        Date result;
-
-        result = df.parse(effectiveDate);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+        Date d = df.parse(effectiveDate);
+        df.applyPattern("dd-M-yyyy hh:mm:ss");
+        result = df.format(d);
 
         if (job.equals("Update")) {
             cholValue = Math.random()*100;
