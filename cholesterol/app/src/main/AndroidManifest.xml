@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".graphs.GraphMonitorBP"></activity>
+        <activity android:name=".UserInterfaces.BPMonitorActivity"></activity>
+        <activity android:name=".graphs.GraphMonitorBP" />
         <activity android:name=".graphs.graphActivity" />
         <activity android:name=".UserInterfaces.MonitorActivity" />
         <activity android:name=".UserInterfaces.MainActivity">
