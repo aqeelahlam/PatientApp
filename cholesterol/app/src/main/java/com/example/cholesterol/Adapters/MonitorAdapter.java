@@ -18,7 +18,6 @@ import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -29,9 +28,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
     private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
+
     private static HashMap<String, Patient> highSystolicHash = new HashMap<>();
-
-
     public static HashMap<String, Patient> getHighSystolic() {
         return highSystolicHash;
     }
@@ -69,19 +67,24 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
         final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
         final String patientname = monitoredPatientListHash.get(keys[position]).getName();
+
+//      This is to get the Cholesterol Levels from the list of monitored patients
         final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
         final String effectiveDateChol = monitoredPatientListHash.get(keys[position]).getEffectiveDateChol();
 
+//      This is to get the Blood Pressure values from the list of monitored patients
         final String systolicHash = monitoredPatientListHash.get(keys[position]).getSystolic();
         final String diastolicHash = monitoredPatientListHash.get(keys[position]).getDiastolic();
         final String effectiveDateBP = monitoredPatientListHash.get(keys[position]).getEffectiveDateBP();
 
+//      This is to perform a comparison and set the color for high levels of Blood Pressure
         double systolicHashParse = Double.parseDouble(systolicHash.replaceAll("[^\\d\\.]", ""));
         double diastolicHashParse = Double.parseDouble(diastolicHash.replaceAll("[^\\d\\.]", ""));
 
-        holder.patientTV.setText(patientname);
+//      This will set the Patient Name
+        holder.PatientTV.setText(patientname);
 
-        // Cholesterol
+//      This is to perform a comparison and set the color for high levels of Cholesterol
         double AverageCholesterol = getAverageReadings(monitoredPatientListHash);
         String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
@@ -102,15 +105,23 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.BPEffectiveDateTV.setVisibility(View.GONE);
         }
 
+/*
+        This is where we highlight the cholesterol Values that is above the average of the monitored
+        patients.
+*/
         if(finalChol > AverageCholesterol){
             holder.CholLevelTV.setText(chol);
             holder.CholLevelTV.setTextColor(Color.parseColor("#FF0000"));
-        } else{
+        }
+        else {
             holder.CholLevelTV.setText(chol);
         }
 
-        // Blood Pressure
-
+/*
+        This is where we highlight the Blood pressure values if it is above than the value specified
+        by the Health Practitioner.
+*/
+//      Systolic Blood Pressure
         if(systolicHashParse > MonitorActivity.getSYSTOLICBP()){
             holder.SystolicTV.setText(systolicHash);
             holder.SystolicTV.setTextColor(Color.parseColor("#800080"));
@@ -120,6 +131,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.SystolicTV.setText(systolicHash);
         }
 
+//      Diastolic Blood Pressure
         if(diastolicHashParse > MonitorActivity.getDIASTOLICBP()){
             holder.DiastolicTV.setText(diastolicHash);
             holder.DiastolicTV.setTextColor(Color.parseColor("#800080"));
@@ -129,10 +141,8 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         }
 
 
-
-
 //      This method is used to delete a patient from the list of monitored Patients
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.DeleteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "Stopped Monitoring "+ patientname +", click Refresh", Toast.LENGTH_SHORT).show();
@@ -202,26 +212,25 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     }
 
 
-
     /**
      * Inner Class that will be used to obtain references to the views
      */
     public class MonitorListView extends RecyclerView.ViewHolder{
 
-        private TextView patientTV;
+        private TextView PatientTV;
         private TextView CholLevelTV;
         private TextView CholEffectiveDateTV;
-        private ImageView imageView;
+        private ImageView DeleteView;
         private TextView SystolicTV;
         private TextView DiastolicTV;
         private TextView BPEffectiveDateTV;
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
-            patientTV = itemView.findViewById(R.id.monitor_PatientName);
+            PatientTV = itemView.findViewById(R.id.monitor_PatientName);
             CholLevelTV = itemView.findViewById(R.id.monitor_cholLevel);
             CholEffectiveDateTV = itemView.findViewById(R.id.cholEffectiveDateTV);
-            imageView = itemView.findViewById(R.id.image_delete);
+            DeleteView = itemView.findViewById(R.id.image_delete);
             SystolicTV = itemView.findViewById(R.id.systolicTV);
             DiastolicTV = itemView.findViewById(R.id.diastolicTV);
             BPEffectiveDateTV = itemView.findViewById(R.id.BPeffectiveDateTV);

@@ -3,7 +3,6 @@ package com.example.cholesterol.UserInterfaces;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +13,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
-import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.ServerCalls.PatientData;
 import com.example.cholesterol.graphs.graphActivity;
 
@@ -39,6 +36,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static Switch cholesterolSwitch;
     private static Switch BloodPressureSwitch;
 
+//  This is to get the status of the switch
     private static boolean BPSwitch;
     public static boolean isBPSwitch() {
         return BPSwitch;
@@ -54,7 +52,6 @@ public class MonitorActivity extends AppCompatActivity {
     public static void setCholSwitch(boolean cholSwitch) {
         MonitorActivity.cholSwitch = cholSwitch;
     }
-
 
     private static double SYSTOLICBP;
     private static double DIASTOLICBP;
@@ -76,9 +73,6 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,13 +87,13 @@ public class MonitorActivity extends AppCompatActivity {
         monitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 //      This is used to obtain the TextViews
-        name = findViewById(R.id.name);
-        birthdate = findViewById(R.id.birthdate);
-        gender = findViewById(R.id.gender);
-        address = findViewById(R.id.address);
+        name = findViewById(R.id.monitor_name);
+        birthdate = findViewById(R.id.monitor_birthdate);
+        gender = findViewById(R.id.monitor_gender);
+        address = findViewById(R.id.monitor_address);
         NRefresh = findViewById(R.id.refresh);
-        SystolicBP = findViewById(R.id.systolicBP);
-        DiastolicBP = findViewById(R.id.diastolicBP);
+        SystolicBP = findViewById(R.id.monitor_systolicBP);
+        DiastolicBP = findViewById(R.id.monitor_diastolicBP);
 
         cholesterolSwitch = findViewById(R.id.cholSwitch);
         BloodPressureSwitch = findViewById(R.id.BPSwitch);
@@ -113,7 +107,6 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
 
-
     public void BPMonitorButton(View view){
         Intent intent = new Intent(this, BPMonitorActivity.class);
         startActivity(intent);
@@ -121,21 +114,26 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * This is function that will be invoked when the start button is clicked
      * @param view viewObject: Start Button
      */
-    public void startBtn(View view) {
+    public void RefreshBtn(View view) {
+
 //        String N_Value = NRefresh.getText().toString();
+//        String SystolicEdit = SystolicBP.getText().toString();
+//        String DiastolicEdit = DiastolicBP.getText().toString();
 
-//        FOR TESTING PURPOSES
+//      FOR TESTING PURPOSES
         String N_Value = "10";
+        String SystolicEdit = "2";
+        String DiastolicEdit = "20";
 
-        String SystolicEdit = SystolicBP.getText().toString();
-        String DiastolicEdit = DiastolicBP.getText().toString();
 
+/*
+        Here is where we set the state of the switch, Afterwards we can use this to display values
+        of Cholesterol or Blood Pressure Interchangeably.
+ */
         cholesterolSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -161,7 +159,6 @@ public class MonitorActivity extends AppCompatActivity {
         });
 
 
-
 //      If we don't put a value for:
         if(N_Value.isEmpty()){
             Toast.makeText(this, "Please enter a Refresh Value", Toast.LENGTH_SHORT).show();
@@ -180,6 +177,7 @@ public class MonitorActivity extends AppCompatActivity {
 //          Passing the HashMap to the MonitorAdapter to populate the RecyclerView
             final MonitorAdapter monitorAdapter = new MonitorAdapter(monitored, this);
             monitorRecyclerView.setAdapter(monitorAdapter);
+
 //          This is used to update the cholesterol levels at N_value (second(s)) intervals
             int NValue = Integer.parseInt(N_Value);
             NTimer.setN(NValue);
@@ -188,10 +186,10 @@ public class MonitorActivity extends AppCompatActivity {
             nTimer.addObserver(monitorAdapter);
             nTimer.startTimer();
 
-
             double Systolic = Double.parseDouble(SystolicEdit);
             double Diastolic = Double.parseDouble(DiastolicEdit);
 
+//          Here we set the Systolic & Diastolic BP values which was entered by the Practitioner.
             setSYSTOLICBP(Systolic);
             setDIASTOLICBP(Diastolic);
         }
@@ -237,7 +235,7 @@ public class MonitorActivity extends AppCompatActivity {
             address.setText(fullAddress);
 
         } else {
-            String Waiting = "waiting for server";
+            String Waiting = "Waiting for server";
             name.setText(Waiting);
             birthdate.setText(Waiting);
             gender.setText(Waiting);

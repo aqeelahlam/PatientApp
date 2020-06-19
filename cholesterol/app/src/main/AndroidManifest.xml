@@ -14,8 +14,10 @@
         <activity android:name=".UserInterfaces.BPMonitorActivity"></activity>
         <activity android:name=".graphs.GraphMonitorBP" />
         <activity android:name=".graphs.graphActivity" />
-        <activity android:name=".UserInterfaces.MonitorActivity" />
-        <activity android:name=".UserInterfaces.MainActivity">
+        <activity android:name=".UserInterfaces.MonitorActivity"
+                  android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".UserInterfaces.MainActivity"
+                  android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

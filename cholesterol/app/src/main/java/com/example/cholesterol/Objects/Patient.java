@@ -1,6 +1,5 @@
 package com.example.cholesterol.Objects;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -86,14 +85,6 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
         return effectiveDateChol;
     }
 
-    public void setEffectiveDateBP(String effectiveDateBP) {
-        this.effectiveDateBP = effectiveDateBP;
-    }
-
-    public String getEffectiveDateBP() {
-        return effectiveDateBP;
-    }
-
     public String getBirthDate() {
         return birthDate;
     }
@@ -122,8 +113,6 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
         return country;
     }
 
-
-    //  BEGIN TEST
     public String getSystolic() {
         return Systolic;
     }
@@ -140,7 +129,13 @@ Below are the Accessors and Mutators required to update or get an item from a Pa
         Diastolic = diastolic;
     }
 
-//    END TEST
+    public void setEffectiveDateBP(String effectiveDateBP) {
+        this.effectiveDateBP = effectiveDateBP;
+    }
+
+    public String getEffectiveDateBP() {
+        return effectiveDateBP;
+    }
 
 
     public void setXLatestBP(int key, String effectiveDate, String systolicBP) {
