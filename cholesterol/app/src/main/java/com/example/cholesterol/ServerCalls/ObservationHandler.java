@@ -16,7 +16,18 @@ import java.util.HashMap;
 
 public class ObservationHandler {
 
-
+    /**
+     * This function is used to make the API calls, It is catered to run for both Cholesterol &
+     * Blood Pressure Values
+     * @param job This string indicates if we have to make the initial call to the API or Update
+     *           the Relevant values
+     * @param totalObservationTypes This is used when we have multiple observations
+     * @param observationType This is String is used to pull either "Chol" or "BP" or "XBP"
+     * @param graphView Used when populating the Graphs
+     * @param monitoredPatients Hashmap of Monitored Patients
+     * @param context Activity's Context
+     * @param recyclerView The View used to populate
+     */
     public static void getObservation(final String job, final int totalObservationTypes, final String observationType, final boolean graphView, final HashMap<String, Patient> monitoredPatients, final Context context, final RecyclerView recyclerView){
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
 

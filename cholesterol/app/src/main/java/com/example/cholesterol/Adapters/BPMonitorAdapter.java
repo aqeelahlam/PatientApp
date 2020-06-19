@@ -23,6 +23,11 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
     private Context context;
     private HashMap<String, Patient> highSystolic;
 
+    /**
+     * Constructor for BP Monitor Adapter
+     * @param highSystolic Hashmap of patients with High Systolic Pressure
+     * @param context Activity Context
+     */
     public BPMonitorAdapter(HashMap<String, Patient> highSystolic, Context context) {
         this.context = context;
         this.highSystolic = highSystolic;
@@ -48,8 +53,6 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
 
         final String patientname = highSystolic.get(keys[position]).getName();
 
-
-//      These sometimes become NULL ?
         final String systolic1 = highSystolic.get(keys[position]).getFormattedXLatestBP(0);
         final String systolic2= highSystolic.get(keys[position]).getFormattedXLatestBP(1);
         final String systolic3 = highSystolic.get(keys[position]).getFormattedXLatestBP(2);
@@ -62,8 +65,6 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         holder.SystolicValue3.setText(systolic3);
         holder.SystolicValue4.setText(systolic4);
         holder.SystolicValue5.setText(systolic5);
-
-
     }
 
     @Override
@@ -72,13 +73,21 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
 
     }
 
+    /**
+     * This method is used to update the values
+     * @param o Observable
+     * @param arg Argument
+     */
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
         ObservationHandler.getObservation("Update", 1, "XBP", false, MonitorAdapter.getHighSystolic(), BPMonitorActivity.context, BPMonitorActivity.getBPMonitorRecyclerView());
-
     }
 
+
+    /**
+     * Inner Class that will be used to obtain references to the views
+     */
     public class BPMonitorListView extends RecyclerView.ViewHolder{
         TextView patientName;
         TextView SystolicValue1;
@@ -86,8 +95,6 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         TextView SystolicValue3;
         TextView SystolicValue4;
         TextView SystolicValue5;
-
-
 
         public BPMonitorListView(@NonNull View itemView) {
             super(itemView);

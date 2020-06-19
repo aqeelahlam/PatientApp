@@ -99,18 +99,22 @@ public class MonitorActivity extends AppCompatActivity {
         BloodPressureSwitch = findViewById(R.id.BPSwitch);
     }
 
+    /**
+     * This is function that will be invoked when the "Visualize" button is clicked
+     * @param view
+     */
     public void graphButton(View view){
-
         Intent intent = new Intent(this, graphActivity.class);
         startActivity(intent);
-
     }
 
-
+    /**
+     * This is function that will be invoked when the "Systolic" button is clicked
+     * @param view
+     */
     public void BPMonitorButton(View view){
         Intent intent = new Intent(this, BPMonitorActivity.class);
         startActivity(intent);
-
     }
 
 
@@ -130,10 +134,10 @@ public class MonitorActivity extends AppCompatActivity {
         String DiastolicEdit = "2000";
 
 
-/*
+        /*
         Here is where we set the state of the switch, Afterwards we can use this to display values
         of Cholesterol or Blood Pressure Interchangeably.
- */
+        */
         cholesterolSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

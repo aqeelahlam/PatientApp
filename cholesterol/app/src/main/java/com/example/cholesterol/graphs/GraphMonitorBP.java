@@ -42,49 +42,63 @@ public class GraphMonitorBP extends AppCompatActivity {
         cartesian.yAxis(0).title("Number of Food Sold");
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
-        Set set = Set.instantiate();
-        set.data(getData());
-        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-        Line series1 = cartesian.line(series1Mapping);
+//        Set set = Set.instantiate();
+//        set.data(getData());
+//        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+//        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+//        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+
+        ArrayList<DataEntry> entries = new ArrayList<>();
+        entries.add(new ValueDataEntry("2012", 324));
+        entries.add(new ValueDataEntry("2013", 123));
+        entries.add(new ValueDataEntry("2014", 22));
+        entries.add(new ValueDataEntry("2015", 123));
+
+        Line series1 = cartesian.line(entries);
+//        Line series1 = cartesian.line(series1Mapping);
+
         series1.name("Pizza");
         series1.hovered().markers().enabled(true);
         series1.hovered().markers()
                 .type(MarkerType.CIRCLE)
                 .size(4d);
-        series1.tooltip()
-                .position("right")
-                .offsetX(5d)
-                .offsetY(5d);
-        Line series2 = cartesian.line(series2Mapping);
-        series2.name("Hotdog");
-        series2.hovered().markers().enabled(true);
-        series2.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series2.tooltip()
-                .position("right")
-                .offsetX(5d)
-                .offsetY(5d);
-        Line series3 = cartesian.line(series3Mapping);
-        series3.name("Icecream");
-        series3.hovered().markers().enabled(true);
-        series3.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series3.tooltip()
-                .position("right")
-                .offsetX(5d)
-                .offsetY(5d);
+//        series1.tooltip()
+//                .position("right")
+//                .offsetX(5d)
+//                .offsetY(5d);
+//        Line series2 = cartesian.line(series2Mapping);
+//        series2.name("Hotdog");
+//        series2.hovered().markers().enabled(true);
+//        series2.hovered().markers()
+//                .type(MarkerType.CIRCLE)
+//                .size(4d);
+//        series2.tooltip()
+//                .position("right")
+//                .offsetX(5d)
+//                .offsetY(5d);
+//        Line series3 = cartesian.line(series3Mapping);
+//        series3.name("Icecream");
+//        series3.hovered().markers().enabled(true);
+//        series3.hovered().markers()
+//                .type(MarkerType.CIRCLE)
+//                .size(4d);
+//        series3.tooltip()
+//                .position("right")
+//                .offsetX(5d)
+//                .offsetY(5d);
+
         cartesian.legend().enabled(true);
+
         cartesian.legend().fontSize(13d);
+
         cartesian.legend().padding(0d, 0d, 10d, 0d);
         lineChart.setChart(cartesian);
     }
 
     private ArrayList getData(){
         ArrayList<DataEntry> entries = new ArrayList<>();
+//        entries.add(new DataEntry("2012", 3.4));
+
         entries.add(new CustomDataEntry("2012", 3.6, 2.3, 2.8));
         entries.add(new CustomDataEntry("2013", 7.1, 4.0, 4.1));
         entries.add(new CustomDataEntry("2014", 8.5, 6.2, 5.1));

@@ -23,7 +23,7 @@ import org.json.JSONException;
 import java.text.ParseException;
 import java.util.HashMap;
 
-/*
+/**
 * Android: 9.0 (Pie)
 * API Level: 28
 *
@@ -34,6 +34,7 @@ import java.util.HashMap;
 * We have used Volley to perform the relevant network requests.
 * https://developer.android.com/training/volley
 *
+* @Author: Aqeel Ahlam & Bee Khee Siang
 *
 * */
 

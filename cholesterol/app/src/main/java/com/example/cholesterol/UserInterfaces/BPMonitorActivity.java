@@ -36,7 +36,7 @@ public class BPMonitorActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Blood Pressure Monitor");
 
-//        This is used to obtain the recyclerView
+//      This is used to obtain the recyclerView
         bpMonitorRecyclerView = findViewById(R.id.bp_recycler);
         bpMonitorRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -44,6 +44,11 @@ public class BPMonitorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function will be invoked when the start button is clicked. It is used to Monitor
+     * patients that have high "Systolic" blood Pressures.
+     * @param view viewObject: Start Button
+     */
     public void systolicStartBtn(View view){
 
         if (MonitorAdapter.getHighSystolic().isEmpty()){
@@ -62,7 +67,6 @@ public class BPMonitorActivity extends AppCompatActivity {
             nTimer.startTimer();
         }
     }
-
 
     public static void refresh(BPMonitorAdapter bpMonitorAdapter) {
         bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);

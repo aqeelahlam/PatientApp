@@ -48,7 +48,10 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         this.context = context;
     }
 
-//  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below)
+    /**
+     * This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below)
+     * @param parent Parent object of the Layout
+     */
     @NonNull
     @Override
     public MonitorListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,7 +63,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         return view;
     }
 
-//  This method binds data to viewholder(Each Card in the recycler view)
+    /**
+     * This method binds data to view holder (Each Card in the recycler view)
+     * @param holder UI Element
+     * @param position Current Position of the card
+     */
     @Override
     public void onBindViewHolder(@NonNull final MonitorListView holder, final int position) {
         final Object[] keys = monitoredPatientListHash.keySet().toArray();
@@ -105,10 +112,10 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.BPEffectiveDateTV.setVisibility(View.GONE);
         }
 
-/*
-        This is where we highlight the cholesterol Values that is above the average of the monitored
-        patients.
-*/
+        /*
+         * This is where we highlight the cholesterol Values that is above the average of the monitored
+         * patients.
+         */
         if(finalChol > AverageCholesterol){
             holder.CholLevelTV.setText(chol);
             holder.CholLevelTV.setTextColor(Color.parseColor("#FF0000"));
@@ -117,10 +124,10 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.CholLevelTV.setText(chol);
         }
 
-/*
-        This is where we highlight the Blood pressure values if it is above than the value specified
-        by the Health Practitioner.
-*/
+        /*
+         * This is where we highlight the Blood pressure values if it is above than the value specified
+         * by the Health Practitioner.
+         */
 //      Systolic Blood Pressure
         if(systolicHashParse > MonitorActivity.getSYSTOLICBP()){
             holder.SystolicTV.setText(systolicHash);
@@ -131,7 +138,7 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             holder.SystolicTV.setText(systolicHash);
         }
 
-//      Diastolic Blood Pressure
+        // Diastolic Blood Pressure
         if(diastolicHashParse > MonitorActivity.getDIASTOLICBP()){
             holder.DiastolicTV.setText(diastolicHash);
             holder.DiastolicTV.setTextColor(Color.parseColor("#800080"));
@@ -141,7 +148,10 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         }
 
 
-//      This method is used to delete a patient from the list of monitored Patients
+
+        /*
+         * This method is used to delete a patient from the list of monitored Patients
+         */
         holder.DeleteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +160,9 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             }
         });
 
-//      This method is used to obtain the details of each patient upon click
+        /*
+         * This method is used to obtain the details of each patient upon click
+         */
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +216,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         return monitoredPatientListHash.size();
     }
 
+    /**
+     * This method is used to update the values
+     * @param o Observable
+     * @param arg Argument
+     */
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");

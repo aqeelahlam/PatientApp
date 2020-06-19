@@ -23,9 +23,7 @@ public class PatientData {
      * Request Type: Obtain Cholesterol Level of Patients
      * @param patients - This holds the HashMap of the Patients
      * @param context - Context
-     *
      */
-
     public static void getDetailedPatient(final HashMap<String, Patient> patients, final String patientID, final Context context) {
 
         RequestQueue queue = VolleyHandler.getInstance(context).getQueue();
