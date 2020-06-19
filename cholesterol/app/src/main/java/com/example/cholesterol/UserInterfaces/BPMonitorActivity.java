@@ -28,6 +28,8 @@ public class BPMonitorActivity extends AppCompatActivity {
         return bpMonitorRecyclerView;
     }
 
+    public static NTimer nTimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class BPMonitorActivity extends AppCompatActivity {
             Toast.makeText(this, "Patients don't have high Systolic blood Pressure", Toast.LENGTH_LONG).show();
         }
         else {
+            stopTimer();
             final BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), this);
             bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
 
@@ -62,7 +65,8 @@ public class BPMonitorActivity extends AppCompatActivity {
 //        NTimer.setN(NValue);
             NTimer.setN(10);
             NTimer.resetN();
-            NTimer nTimer = new NTimer();
+//            NTimer nTimer = new NTimer();
+            nTimer = new NTimer();
             nTimer.addObserver(bpMonitorAdapter);
             nTimer.startTimer();
         }
@@ -71,16 +75,32 @@ public class BPMonitorActivity extends AppCompatActivity {
     public static void refresh(BPMonitorAdapter bpMonitorAdapter) {
         bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
         NTimer.resetN();
-        NTimer nTimer = new NTimer();
+//        NTimer nTimer = new NTimer();
+        nTimer = new NTimer();
         nTimer.addObserver(bpMonitorAdapter);
         nTimer.startTimer();
     }
 
-    public void visualizeBloodPressureBtn(View view){
+    public static void stopTimer() {
+        if (nTimer != null) {
+            nTimer.task.cancel();
+        }
+    }
 
+    public void visualizeBloodPressureBtn(View view){
+        stopTimer();
         Intent intent = new Intent(this, GraphMonitorBP.class);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        stopTimer();
+        MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+        MonitorActivity.refresh(monitorAdapter);
     }
 
 

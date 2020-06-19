@@ -35,6 +35,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static EditText DiastolicBP;
     private static Switch cholesterolSwitch;
     private static Switch BloodPressureSwitch;
+    public static NTimer nTimer;
 
 //  This is to get the status of the switch
     private static boolean BPSwitch;
@@ -104,6 +105,7 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view
      */
     public void graphButton(View view){
+        stopTimer();
         Intent intent = new Intent(this, graphActivity.class);
         startActivity(intent);
     }
@@ -113,6 +115,7 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view
      */
     public void BPMonitorButton(View view){
+        stopTimer();
         Intent intent = new Intent(this, BPMonitorActivity.class);
         startActivity(intent);
     }
@@ -123,6 +126,7 @@ public class MonitorActivity extends AppCompatActivity {
      * @param view viewObject: Start Button
      */
     public void RefreshBtn(View view) {
+        stopTimer();
 
 //        String N_Value = NRefresh.getText().toString();
 //        String SystolicEdit = SystolicBP.getText().toString();
@@ -186,7 +190,8 @@ public class MonitorActivity extends AppCompatActivity {
             int NValue = Integer.parseInt(N_Value);
             NTimer.setN(NValue);
             NTimer.resetN();
-            NTimer nTimer = new NTimer();
+//            NTimer nTimer = new NTimer();
+            nTimer = new NTimer();
             nTimer.addObserver(monitorAdapter);
             nTimer.startTimer();
 
@@ -206,9 +211,17 @@ public class MonitorActivity extends AppCompatActivity {
     public static void refresh(MonitorAdapter monitorAdapter) {
         monitorRecyclerView.setAdapter(monitorAdapter);
         NTimer.resetN();
-        NTimer nTimer = new NTimer();
+//        NTimer nTimer = new NTimer();
+        nTimer = new NTimer();
         nTimer.addObserver(monitorAdapter);
         nTimer.startTimer();
+    }
+
+
+    public static void stopTimer() {
+        if (nTimer != null) {
+            nTimer.task.cancel();
+        }
     }
 
     /**

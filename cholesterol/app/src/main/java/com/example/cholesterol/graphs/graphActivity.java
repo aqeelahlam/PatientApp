@@ -15,10 +15,12 @@ import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
 import com.anychart.core.gauge.pointers.Bar;
 import com.anychart.enums.Position;
+import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.MainActivity;
+import com.example.cholesterol.UserInterfaces.MonitorActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,6 +131,8 @@ public class graphActivity extends AppCompatActivity {
         super.onBackPressed();
         this.finish();
         handler.removeCallbacksAndMessages(null);
+        MonitorAdapter monitorAdapter = new MonitorAdapter(MainActivity.getMonitoredPatients(), MainActivity.context);
+        MonitorActivity.refresh(monitorAdapter);
     }
 
 }

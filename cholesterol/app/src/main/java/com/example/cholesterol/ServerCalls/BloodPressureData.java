@@ -64,6 +64,7 @@ public class BloodPressureData extends MedicalObservations {
             if (job.equals("Update")) {
                 systolicBP = Math.random() * 100;
                 diasystolicBP = Math.random() * 100;
+                Log.d("updateBP", String.valueOf(systolicBP));
 
             }
 
@@ -105,63 +106,13 @@ public class BloodPressureData extends MedicalObservations {
             monitoredPatients.get(patientID).setXLatestBP(i, result, systolicBP + systolicBPUnit);
         }
 
-        Log.d("job", job);
-        ArrayList<String> latestX;
-        for (int i=0; i < X; i++) {
-            latestX = monitoredPatients.get(patientID).getXLatestBP(i);
-            String currentEffectiveDateTime = latestX.get(0);
-            String currentSystolicBP = latestX.get(1);
-            Log.d("effectiveDateTime", currentEffectiveDateTime);
-            Log.d("BP", currentSystolicBP);
-        }
+        Log.d("XBP", job);
 
-//        Log.d("job", job);
         if (job.equals("Update") && counter == max_length) {
             BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), BPMonitorActivity.context);
             BPMonitorActivity.refresh(bpMonitorAdapter);
         }
     }
 
-//    @Override
-//    public void cleanUpdatedObservation(ArrayList<JSONObject> responseList, HashMap<String, Patient> patientHashMap, HashMap<String, Patient> monitoredPatients, Object[] patientsBundle, Context context) throws JSONException, ParseException, InterruptedException {
-//
-//        for(int i = 0; i < responseList.size(); i++) {
-//
-//            JSONArray entry = responseList.get(i).getJSONArray("entry");
-////            double systolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
-//            String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
-//            systolicBPUnit = systolicBPUnit.replaceAll("[^A-Za-z]","");
-//
-//            double diasystolicBP = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getInt("value");
-//            String diasystolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(0).getJSONObject("valueQuantity").getString("unit");
-//            diasystolicBPUnit = diasystolicBPUnit.replaceAll("[^A-Za-z]","");
-//
-//            String effectiveDate = entry.getJSONObject(0).getJSONObject("resource").getString("effectiveDateTime");
-//
-//
-////          If you want to see the observer changing, UnComment this line below and comment the above 'systolicBP'
-//            double systolicBP = Math.random()*100;
-//
-//            // Change to appropriate format
-//            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-//            Date result;
-//
-//            result = df.parse(effectiveDate);
-//
-//            String patientID = patientsBundle[i].toString();
-//
-//            patientHashMap.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-//            patientHashMap.get(patientID).setEffectiveDate(result.toString());
-//
-//            monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
-//            monitoredPatients.get(patientID).setEffectiveDate(result.toString());
-//
-//        }
-//
-//
-//        MonitorAdapter monitorAdapter = new MonitorAdapter(monitoredPatients, context);
-//        MonitorActivity.refresh(monitorAdapter);
-//
-//    }
 
 }
