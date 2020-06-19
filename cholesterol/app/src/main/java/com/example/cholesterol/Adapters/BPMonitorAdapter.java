@@ -6,22 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
-import com.example.cholesterol.UserInterfaces.MainActivity;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMonitorListView> implements Observer {
 
+    private Context context;
+    private HashMap<String, Patient> highSystolic;
+
+    public BPMonitorAdapter(HashMap<String, Patient> highSystolic, Context context) {
+        this.context = context;
+        this.highSystolic = highSystolic;
+    }
 
     @NonNull
     @Override
@@ -36,26 +41,20 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
 
     }
 
-    private Context context;
-    private HashMap<String, Patient> highSystolic;
-
-    public BPMonitorAdapter(HashMap<String, Patient> highSystolic, Context context) {
-        this.context = context;
-        this.highSystolic = highSystolic;
-    }
-
     @Override
     public void onBindViewHolder(@NonNull BPMonitorListView holder, int position) {
-//        Here is where you bind the view with the data
+//      Here is where you bind the view with the data
         final Object[] keys = highSystolic.keySet().toArray();
 
         final String patientname = highSystolic.get(keys[position]).getName();
+
+
+//      These sometimes become NULL ?
         final String systolic1 = highSystolic.get(keys[position]).getFormattedXLatestBP(0);
         final String systolic2= highSystolic.get(keys[position]).getFormattedXLatestBP(1);
         final String systolic3 = highSystolic.get(keys[position]).getFormattedXLatestBP(2);
         final String systolic4 = highSystolic.get(keys[position]).getFormattedXLatestBP(3);
         final String systolic5 = highSystolic.get(keys[position]).getFormattedXLatestBP(4);
-
 
         holder.patientName.setText(patientname);
         holder.SystolicValue1.setText(systolic1);
@@ -63,11 +62,12 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         holder.SystolicValue3.setText(systolic3);
         holder.SystolicValue4.setText(systolic4);
         holder.SystolicValue5.setText(systolic5);
+
+
     }
 
     @Override
     public int getItemCount() {
-//      Change this to the list.size()
         return highSystolic.size();
 
     }

@@ -126,8 +126,8 @@ public class MonitorActivity extends AppCompatActivity {
 
 //      FOR TESTING PURPOSES
         String N_Value = "10";
-        String SystolicEdit = "2";
-        String DiastolicEdit = "20";
+        String SystolicEdit = "1";
+        String DiastolicEdit = "2000";
 
 
 /*

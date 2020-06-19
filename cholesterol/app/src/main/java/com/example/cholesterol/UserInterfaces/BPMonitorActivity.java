@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.cholesterol.Adapters.BPMonitorAdapter;
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
+import com.example.cholesterol.graphs.GraphMonitorBP;
 import com.example.cholesterol.graphs.graphActivity;
 
 public class BPMonitorActivity extends AppCompatActivity {
@@ -43,17 +45,22 @@ public class BPMonitorActivity extends AppCompatActivity {
     }
 
     public void systolicStartBtn(View view){
-        final BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), this);
-        bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
+
+        if (MonitorAdapter.getHighSystolic().isEmpty()){
+            Toast.makeText(this, "Patients don't have high Systolic blood Pressure", Toast.LENGTH_LONG).show();
+        }
+        else {
+            final BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), this);
+            bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
 
 //        int NValue = Integer.parseInt(MonitorActivity.NRefresh.getText().toString());
 //        NTimer.setN(NValue);
-        NTimer.setN(10);
-        NTimer.resetN();
-        NTimer nTimer = new NTimer();
-        nTimer.addObserver(bpMonitorAdapter);
-        nTimer.startTimer();
-
+            NTimer.setN(10);
+            NTimer.resetN();
+            NTimer nTimer = new NTimer();
+            nTimer.addObserver(bpMonitorAdapter);
+            nTimer.startTimer();
+        }
     }
 
 
@@ -64,4 +71,13 @@ public class BPMonitorActivity extends AppCompatActivity {
         nTimer.addObserver(bpMonitorAdapter);
         nTimer.startTimer();
     }
+
+    public void visualizeBloodPressureBtn(View view){
+
+        Intent intent = new Intent(this, GraphMonitorBP.class);
+        startActivity(intent);
+
+    }
+
+
 }
