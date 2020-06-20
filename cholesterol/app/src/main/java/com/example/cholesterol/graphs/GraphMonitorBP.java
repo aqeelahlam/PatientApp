@@ -3,6 +3,7 @@ package com.example.cholesterol.graphs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -16,19 +17,51 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.example.cholesterol.Adapters.BPMonitorAdapter;
+import com.example.cholesterol.Adapters.MonitorAdapter;
+import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class GraphMonitorBP extends AppCompatActivity {
     private AnyChartView lineChart;
 
+    HashMap<String, Patient> SystolicBP = new HashMap<>();
+    HashMap<Integer, ArrayList<String>> XlatestBP = new HashMap<>();
+    Object[] keySetSystolic;
+    Object[] keySetXlatest;
+    ArrayList<String> value = new ArrayList<>();
+    String PatientName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_monitor_b_p);
-
+//        lineChart = findViewById(R.id.any_chart_view_BP);
         lineChart = findViewById(R.id.any_chart_view_BP);
+
+        ArrayList<DataEntry> entries = new ArrayList<>();
+
+        SystolicBP = MonitorAdapter.getHighSystolic();
+
+        keySetSystolic = SystolicBP.keySet().toArray();
+
+
+        assert keySetSystolic != null;
+        for (Object KeySystol : keySetSystolic) {
+//            XlatestBP = SystolicBP.get(KeySystol).getXLatestBP();
+            XlatestBP = BPMonitorAdapter.getTest1();
+            PatientName = SystolicBP.get(KeySystol).getName();
+
+            for (int i = 0; i < XlatestBP.size(); i++) {
+                keySetXlatest = XlatestBP.keySet().toArray();
+                value = XlatestBP.get(keySetXlatest[i]);
+                Double BP = Double.parseDouble(value.get(1).replaceAll("[^\\d\\.]", ""));
+                entries.add(new ValueDataEntry(String.valueOf(i), BP));
+            }
+        }
 
         Cartesian cartesian = AnyChart.line();
         cartesian.animation(true);
@@ -38,8 +71,8 @@ public class GraphMonitorBP extends AppCompatActivity {
                 .yLabel(true)
                 .yStroke((Stroke) null, null, null, (String) null, (String) null);
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.title("Inducesmile");
-        cartesian.yAxis(0).title("Number of Food Sold");
+        cartesian.title(PatientName);
+        cartesian.yAxis(0).title("Blood Pressure");
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
 //        Set set = Set.instantiate();
@@ -48,11 +81,7 @@ public class GraphMonitorBP extends AppCompatActivity {
 //        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
 //        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
-        ArrayList<DataEntry> entries = new ArrayList<>();
-        entries.add(new ValueDataEntry("2012", 324));
-        entries.add(new ValueDataEntry("2013", 123));
-        entries.add(new ValueDataEntry("2014", 22));
-        entries.add(new ValueDataEntry("2015", 123));
+
 
         Line series1 = cartesian.line(entries);
 //        Line series1 = cartesian.line(series1Mapping);

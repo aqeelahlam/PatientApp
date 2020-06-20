@@ -14,14 +14,32 @@ import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
+import com.example.cholesterol.UserInterfaces.MonitorActivity;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMonitorListView> implements Observer {
 
+    private static HashMap<Integer, ArrayList<String>> test1;
     private Context context;
     private HashMap<String, Patient> highSystolic;
+
+    public static HashMap<Integer, ArrayList<String>> getTest1() {
+        return test1;
+    }
+
+    public void setTest1(HashMap<Integer, ArrayList<String>> test1) {
+        this.test1 = test1;
+    }
+
+//    HashMap<Integer, ArrayList<String>> test1 = new HashMap<>();
+
+
+
+    private HashMap<String, Patient> test2;
 
     /**
      * Constructor for BP Monitor Adapter
@@ -29,8 +47,8 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
      * @param context Activity Context
      */
     public BPMonitorAdapter(HashMap<String, Patient> highSystolic, Context context) {
-        this.context = context;
         this.highSystolic = highSystolic;
+        this.context = context;
     }
 
     @NonNull
@@ -52,9 +70,12 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         final Object[] keys = highSystolic.keySet().toArray();
 
         final String patientname = highSystolic.get(keys[position]).getName();
+        final String patientID = highSystolic.get(keys[position]).getPatientID();
+
+
 
         final String systolic1 = highSystolic.get(keys[position]).getFormattedXLatestBP(0);
-        final String systolic2= highSystolic.get(keys[position]).getFormattedXLatestBP(1);
+        final String systolic2 = highSystolic.get(keys[position]).getFormattedXLatestBP(1);
         final String systolic3 = highSystolic.get(keys[position]).getFormattedXLatestBP(2);
         final String systolic4 = highSystolic.get(keys[position]).getFormattedXLatestBP(3);
         final String systolic5 = highSystolic.get(keys[position]).getFormattedXLatestBP(4);
@@ -65,6 +86,14 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         holder.SystolicValue3.setText(systolic3);
         holder.SystolicValue4.setText(systolic4);
         holder.SystolicValue5.setText(systolic5);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTest1(highSystolic.get(patientID).getXLatestBP());
+            }
+        });
+
     }
 
     @Override

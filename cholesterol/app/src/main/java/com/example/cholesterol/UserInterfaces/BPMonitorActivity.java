@@ -91,7 +91,6 @@ public class BPMonitorActivity extends AppCompatActivity {
         stopTimer();
         Intent intent = new Intent(this, GraphMonitorBP.class);
         startActivity(intent);
-
     }
 
     @Override

@@ -19,7 +19,16 @@ public class Patient {
     private String country;
     private String Systolic;
     private String Diastolic;
+
     private HashMap<Integer, ArrayList<String>> XLatestBP = new HashMap<>();
+
+    public HashMap<Integer, ArrayList<String>> getXLatestBP() {
+        return XLatestBP;
+    }
+
+//    public void setXLatestBP(HashMap<Integer, ArrayList<String>> XLatestBP) {
+//        this.XLatestBP = XLatestBP;
+//    }
 
 
 
@@ -49,9 +58,9 @@ public class Patient {
         this.Diastolic = Diastolic;
     }
 
-/*
-Below are the Accessors and Mutators required to update or get an item from a Patient Object
- */
+    /*
+    Below are the Accessors and Mutators required to update or get an item from a Patient Object
+     */
 
     public void setName(String name) {
         this.name = name;
