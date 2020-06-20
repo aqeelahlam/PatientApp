@@ -11,13 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -33,10 +31,6 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
     public static HashMap<String, Patient> getHighSystolic() {
         return highSystolicHash;
     }
-
-//    public static void resetHighSystolic() {
-//        highSystolic = new ArrayList<>();
-//    }
 
     /**
      * Constructor for MonitorAdapter

@@ -2,31 +2,18 @@ package com.example.cholesterol.ServerCalls;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cholesterol.Adapters.BPMonitorAdapter;
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -81,7 +68,7 @@ public class BloodPressureData extends MedicalObservations {
     }
 
     @Override
-    public void cleanLatestXObservations(String job, int totalObservationTypes, int X, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
+    public void cleanLatestXObservations(String job, int totalObservationTypes, boolean graphView, int X, JSONObject response, HashMap<String, Patient> monitoredPatients, String patientID, RecyclerView recyclerView, Context context, int counter, int max_length) throws JSONException, ParseException {
         JSONArray entry = response.getJSONArray("entry");
 
         String systolicBPUnit = entry.getJSONObject(0).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getString("unit");
@@ -108,9 +95,13 @@ public class BloodPressureData extends MedicalObservations {
 
         Log.d("XBP", job);
 
-        if (job.equals("Update") && counter == max_length) {
-            BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), BPMonitorActivity.context);
-            BPMonitorActivity.refresh(bpMonitorAdapter);
+        if (job.equals("Update")) {
+            if (! graphView){
+                if (counter == max_length) {
+                    BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), BPMonitorActivity.context);
+                    BPMonitorActivity.refresh(bpMonitorAdapter);
+                }
+            }
         }
     }
 

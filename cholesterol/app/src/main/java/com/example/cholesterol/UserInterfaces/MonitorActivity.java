@@ -35,7 +35,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static EditText DiastolicBP;
     private static Switch cholesterolSwitch;
     private static Switch BloodPressureSwitch;
-    public static NTimer nTimer;
+    private static NTimer nTimer;
 
 //  This is to get the status of the switch
     private static boolean BPSwitch;

@@ -3,6 +3,7 @@ package com.example.cholesterol.graphs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.anychart.AnyChart;
@@ -21,12 +22,21 @@ import com.example.cholesterol.Adapters.BPMonitorAdapter;
 import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
+import com.example.cholesterol.ServerCalls.ObservationHandler;
+import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
+import com.example.cholesterol.UserInterfaces.MainActivity;
+import com.example.cholesterol.UserInterfaces.MonitorActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class GraphMonitorBP extends AppCompatActivity {
     private AnyChartView lineChart;
+    Handler handler;
+    Cartesian cartesian;
+    Line series1;
 
     HashMap<String, Patient> SystolicBP = new HashMap<>();
     HashMap<Integer, ArrayList<String>> XlatestBP = new HashMap<>();
@@ -35,9 +45,12 @@ public class GraphMonitorBP extends AppCompatActivity {
     ArrayList<String> value = new ArrayList<>();
     String PatientName;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new Handler();
+
         setContentView(R.layout.activity_graph_monitor_b_p);
 //        lineChart = findViewById(R.id.any_chart_view_BP);
         lineChart = findViewById(R.id.any_chart_view_BP);
@@ -63,7 +76,7 @@ public class GraphMonitorBP extends AppCompatActivity {
             }
         }
 
-        Cartesian cartesian = AnyChart.line();
+        cartesian = AnyChart.line();
         cartesian.animation(true);
         cartesian.padding(10d, 20d, 5d, 20d);
         cartesian.crosshair().enabled(true);
@@ -82,11 +95,10 @@ public class GraphMonitorBP extends AppCompatActivity {
 //        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
 
-
-        Line series1 = cartesian.line(entries);
+        series1 = cartesian.line(entries);
 //        Line series1 = cartesian.line(series1Mapping);
 
-        series1.name("Pizza");
+        series1.name("Systolic BP");
         series1.hovered().markers().enabled(true);
         series1.hovered().markers()
                 .type(MarkerType.CIRCLE)
@@ -122,6 +134,50 @@ public class GraphMonitorBP extends AppCompatActivity {
 
         cartesian.legend().padding(0d, 0d, 10d, 0d);
         lineChart.setChart(cartesian);
+
+        final int delayMillis = 10000;
+//        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            public void run() {
+                updateLineGraph();
+
+                handler.postDelayed(this, delayMillis);
+            }
+        };
+        handler.postDelayed(runnable, delayMillis);
+    }
+
+
+
+    public void updateLineGraph() {
+
+        ObservationHandler.getObservation("Update", 1, "XBP", true, MonitorAdapter.getHighSystolic(), BPMonitorActivity.context, BPMonitorActivity.getBPMonitorRecyclerView());
+
+        ArrayList<DataEntry> entries = new ArrayList<>();
+        SystolicBP = MonitorAdapter.getHighSystolic();
+        keySetSystolic = SystolicBP.keySet().toArray();
+
+        assert keySetSystolic != null;
+        for (Object KeySystol : keySetSystolic) {
+//            XlatestBP = SystolicBP.get(KeySystol).getXLatestBP();
+            XlatestBP = BPMonitorAdapter.getTest1();
+            PatientName = SystolicBP.get(KeySystol).getName();
+
+            for (int i = 0; i < XlatestBP.size(); i++) {
+                keySetXlatest = XlatestBP.keySet().toArray();
+                value = XlatestBP.get(keySetXlatest[i]);
+                Double BP = Double.parseDouble(value.get(1).replaceAll("[^\\d\\.]", ""));
+                entries.add(new ValueDataEntry(String.valueOf(i), BP));
+            }
+        }
+        cartesian.removeAllSeries();
+        series1 = cartesian.line(entries);
+        series1.name("Systolic BP");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+
     }
 
     private ArrayList getData(){
@@ -145,5 +201,14 @@ public class GraphMonitorBP extends AppCompatActivity {
             setValue("value2", value2);
             setValue("value3", value3);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+        handler.removeCallbacksAndMessages(null);
+        BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), this);
+        BPMonitorActivity.refresh(bpMonitorAdapter);
     }
 }

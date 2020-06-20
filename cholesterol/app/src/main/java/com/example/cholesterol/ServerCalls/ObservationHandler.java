@@ -69,7 +69,7 @@ public class ObservationHandler {
                                             }
                                             else if (observationType.equals("XBP")) {
                                                 BloodPressureData bloodPressureData = new BloodPressureData();
-                                                bloodPressureData.cleanLatestXObservations(job, totalObservationTypes, 5, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
+                                                bloodPressureData.cleanLatestXObservations(job, totalObservationTypes, graphView, 5, response, monitoredPatients, patientID ,recyclerView, context, counter, max_length);
                                             }
 
                                         } catch (JSONException | ParseException e) {

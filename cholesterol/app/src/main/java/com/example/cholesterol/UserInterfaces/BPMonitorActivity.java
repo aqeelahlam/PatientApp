@@ -16,7 +16,7 @@ import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.graphs.GraphMonitorBP;
-import com.example.cholesterol.graphs.graphActivity;
+
 
 public class BPMonitorActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class BPMonitorActivity extends AppCompatActivity {
         return bpMonitorRecyclerView;
     }
 
-    public static NTimer nTimer;
+    private static NTimer nTimer;
 
 
     @Override
@@ -65,7 +65,6 @@ public class BPMonitorActivity extends AppCompatActivity {
 //        NTimer.setN(NValue);
             NTimer.setN(10);
             NTimer.resetN();
-//            NTimer nTimer = new NTimer();
             nTimer = new NTimer();
             nTimer.addObserver(bpMonitorAdapter);
             nTimer.startTimer();
@@ -75,7 +74,6 @@ public class BPMonitorActivity extends AppCompatActivity {
     public static void refresh(BPMonitorAdapter bpMonitorAdapter) {
         bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
         NTimer.resetN();
-//        NTimer nTimer = new NTimer();
         nTimer = new NTimer();
         nTimer.addObserver(bpMonitorAdapter);
         nTimer.startTimer();

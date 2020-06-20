@@ -103,7 +103,7 @@ public class graphActivity extends AppCompatActivity {
 
     public void updateBarChart() {
 
-        ObservationHandler.getObservation("Update", 1, "Chol", true, monitoredPatientsObtainedMap, MainActivity.context, MainActivity.getRecyclerView());
+        ObservationHandler.getObservation("Update", 1, "Chol", true, MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
 
         List<DataEntry> data = new ArrayList<>();
 
