@@ -12,6 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cholesterol.Adapters.PatientListAdapter;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 
@@ -341,8 +342,9 @@ public class PatientList {
             }
         }
 
-        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
-
+//        CholesterolData.getCholesterol(patientListHash, monitoredPatients, context, recyclerView);
+        PatientListAdapter patientListAdapter = new PatientListAdapter(patientListHash, monitoredPatients);
+        recyclerView.setAdapter(patientListAdapter);
 
     }
 

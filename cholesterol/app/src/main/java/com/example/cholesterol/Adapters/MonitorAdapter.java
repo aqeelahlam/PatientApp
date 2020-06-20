@@ -11,12 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.MainActivity;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
-import com.example.cholesterol.ServerCalls.CholesterolData;
 import com.example.cholesterol.UserInterfaces.MonitorActivity;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -25,25 +24,32 @@ import java.util.Observer;
 
 public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorListView> implements Observer {
 
-    private HashMap<String, Patient> patientListHash;
+    private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
+
+    private static HashMap<String, Patient> highSystolicHash = new HashMap<>();
+    public static HashMap<String, Patient> getHighSystolic() {
+        return highSystolicHash;
+    }
 
     /**
      * Constructor for MonitorAdapter
-     * @param patientListHashA HashMap of Patients
+     * @param monitoredHash HashMap of Patients
      * @param context Context
      */
-    public MonitorAdapter(HashMap<String, Patient> patientListHashA, Context context) {
-        this.patientListHash = patientListHashA;
+    public MonitorAdapter(HashMap<String, Patient> monitoredHash, Context context) {
+        this.monitoredPatientListHash = monitoredHash;
         this.context = context;
     }
 
-//  This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below)
+    /**
+     * This method will be called whenever a ViewHolder is created(An Instance of ViewHolder class below)
+     * @param parent Parent object of the Layout
+     */
     @NonNull
     @Override
     public MonitorListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View monitorPatient = inflater.inflate(R.layout.monitor_patients, parent, false);
         MonitorListView view = new MonitorListView(monitorPatient);
@@ -51,40 +57,106 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         return view;
     }
 
-//  This method binds data to viewholder(Each Card in the recycler view)
+    /**
+     * This method binds data to view holder (Each Card in the recycler view)
+     * @param holder UI Element
+     * @param position Current Position of the card
+     */
     @Override
     public void onBindViewHolder(@NonNull final MonitorListView holder, final int position) {
-        final Object[] keys = patientListHash.keySet().toArray();
+        final Object[] keys = monitoredPatientListHash.keySet().toArray();
 
-        final String patientID = patientListHash.get(keys[position]).getPatientID();
-        final String patientname = patientListHash.get(keys[position]).getName();
-        final String chol = patientListHash.get(keys[position]).getCholesterol();
-        final String effectiveDate = patientListHash.get(keys[position]).getEffectiveDate();
+        final String patientID = monitoredPatientListHash.get(keys[position]).getPatientID();
+        final String patientname = monitoredPatientListHash.get(keys[position]).getName();
 
-        holder.patient.setText(patientname);
-        holder.effectiveDate.setText(effectiveDate);
+//      This is to get the Cholesterol Levels from the list of monitored patients
+        final String chol = monitoredPatientListHash.get(keys[position]).getCholesterol();
+        final String effectiveDateChol = monitoredPatientListHash.get(keys[position]).getEffectiveDateChol();
 
-        double AverageCholesterol = getAverageCholesterol(patientListHash);
-        String numericChol = chol.replaceAll("[^\\d\\.]","");
+//      This is to get the Blood Pressure values from the list of monitored patients
+        final String systolicHash = monitoredPatientListHash.get(keys[position]).getSystolic();
+        final String diastolicHash = monitoredPatientListHash.get(keys[position]).getDiastolic();
+        final String effectiveDateBP = monitoredPatientListHash.get(keys[position]).getEffectiveDateBP();
+
+//      This is to perform a comparison and set the color for high levels of Blood Pressure
+        double systolicHashParse = Double.parseDouble(systolicHash.replaceAll("[^\\d\\.]", ""));
+        double diastolicHashParse = Double.parseDouble(diastolicHash.replaceAll("[^\\d\\.]", ""));
+
+//      This will set the Patient Name
+        holder.PatientTV.setText(patientname);
+
+//      This is to perform a comparison and set the color for high levels of Cholesterol
+        double AverageCholesterol = getAverageReadings(monitoredPatientListHash);
+        String numericChol = chol.replaceAll("[^\\d\\.]", "");
         double finalChol = Double.parseDouble(numericChol);
 
-        if(finalChol>AverageCholesterol){
-            holder.cholLevel.setText(chol);
-            holder.cholLevel.setTextColor(Color.parseColor("#FF0000"));
-        } else{
-            holder.cholLevel.setText(chol);
+        holder.CholEffectiveDateTV.setText(effectiveDateChol);
+        holder.BPEffectiveDateTV.setText(effectiveDateBP);
+
+
+//      This is where we hide the view if not required by practitioner
+        if(!MonitorActivity.isCholSwitch()){
+            holder.CholLevelTV.setVisibility(View.GONE);
+            holder.CholEffectiveDateTV.setVisibility(View.GONE);
         }
 
-//      This method is used to delete a patient from the list of monitored Patients
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        if(!MonitorActivity.isBPSwitch()){
+            holder.SystolicTV.setVisibility(View.GONE);
+            holder.DiastolicTV.setVisibility(View.GONE);
+            holder.BPEffectiveDateTV.setVisibility(View.GONE);
+        }
+
+        /*
+         * This is where we highlight the cholesterol Values that is above the average of the monitored
+         * patients.
+         */
+        if(finalChol > AverageCholesterol){
+            holder.CholLevelTV.setText(chol);
+            holder.CholLevelTV.setTextColor(Color.parseColor("#FF0000"));
+        }
+        else {
+            holder.CholLevelTV.setText(chol);
+        }
+
+        /*
+         * This is where we highlight the Blood pressure values if it is above than the value specified
+         * by the Health Practitioner.
+         */
+//      Systolic Blood Pressure
+        if(systolicHashParse > MonitorActivity.getSYSTOLICBP()){
+            holder.SystolicTV.setText(systolicHash);
+            holder.SystolicTV.setTextColor(Color.parseColor("#800080"));
+            highSystolicHash.put(patientID, monitoredPatientListHash.get(patientID));
+        }
+        else {
+            holder.SystolicTV.setText(systolicHash);
+        }
+
+        // Diastolic Blood Pressure
+        if(diastolicHashParse > MonitorActivity.getDIASTOLICBP()){
+            holder.DiastolicTV.setText(diastolicHash);
+            holder.DiastolicTV.setTextColor(Color.parseColor("#800080"));
+        }
+        else {
+            holder.DiastolicTV.setText(diastolicHash);
+        }
+
+
+
+        /*
+         * This method is used to delete a patient from the list of monitored Patients
+         */
+        holder.DeleteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "Stopped Monitoring "+ patientname +", click Refresh", Toast.LENGTH_SHORT).show();
-                removeItem(patientListHash, patientID);
+                removeItem(monitoredPatientListHash, patientID);
             }
         });
 
-//      This method is used to obtain the details of each patient upon click
+        /*
+         * This method is used to obtain the details of each patient upon click
+         */
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,63 +172,81 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
      * @param patientListHash HashMap of Monitored Patients
      * @return Average Cholesterol Value
      */
-    private double getAverageCholesterol(HashMap<String, Patient> patientListHash){
-        ArrayList<Double> cholLevels = new ArrayList<>();
+    private double getAverageReadings(HashMap<String, Patient> patientListHash){
+        ArrayList<Double> readingLevels = new ArrayList<>();
 
         final Object[] keys = patientListHash.keySet().toArray();
 
+        String readingLevel = "";
+
         for(int i = 0; i<patientListHash.size(); i++){
-            String cholLevel = patientListHash.get(keys[i]).getCholesterol().replaceAll("[^\\d\\.]","");
-            double numericChol = Double.parseDouble(cholLevel);
-            cholLevels.add(numericChol);
+                readingLevel = patientListHash.get(keys[i]).getCholesterol();
+
+                readingLevel = readingLevel.replaceAll("[^\\d\\.]","");
+                double numericChol = Double.parseDouble(readingLevel);
+                readingLevels.add(numericChol);
         }
 
         double total = 0.0;
 
-        for(int i = 0; i<cholLevels.size(); i++){
-            total += cholLevels.get(i);
+        for(int i = 0; i<readingLevels.size(); i++){
+            total += readingLevels.get(i);
         }
 
-        return total/cholLevels.size();
+        return total/readingLevels.size();
     }
 
     /**
      * This function is used to remove a patient from the HashMap of Monitored Patients
-     * @param patientListHash HashMap of Monitored Patients
+     * @param monitoredPatients HashMap of Monitored Patients
      * @param patientID Patient ID
      */
-    private void removeItem(HashMap<String, Patient> patientListHash, String patientID){
-        patientListHash.remove(patientID);
+    private void removeItem(HashMap<String, Patient> monitoredPatients, String patientID){
+        monitoredPatients.remove(patientID);
     }
 
     @Override
     public int getItemCount() {
-        return patientListHash.size();
+        return monitoredPatientListHash.size();
     }
 
+    /**
+     * This method is used to update the values
+     * @param o Observable
+     * @param arg Argument
+     */
     @Override
     public void update(Observable o, Object arg) {
         Log.d("timer", "time is up!");
-        CholesterolData.getUpdate(MainActivity.getPatientDetailsMap(), MainActivity.getMonitoredPatients(), MainActivity.context);
+        ObservationHandler.getObservation("Update", 2, "Chol", false, MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
+        ObservationHandler.getObservation("Update", 2, "BP", false, MainActivity.getMonitoredPatients(), MainActivity.context, MainActivity.getRecyclerView());
     }
+
 
     /**
      * Inner Class that will be used to obtain references to the views
      */
     public class MonitorListView extends RecyclerView.ViewHolder{
 
-        private TextView patient;
-        private TextView effectiveDate;
-        private TextView cholLevel;
-        private ImageView imageView;
+        private TextView PatientTV;
+        private TextView CholLevelTV;
+        private TextView CholEffectiveDateTV;
+        private ImageView DeleteView;
+        private TextView SystolicTV;
+        private TextView DiastolicTV;
+        private TextView BPEffectiveDateTV;
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
-            patient = itemView.findViewById(R.id.monitor_PatientName);
-            effectiveDate = itemView.findViewById(R.id.monitor_effectiveDate);
-            cholLevel = itemView.findViewById(R.id.monitor_cholLevel);
-            imageView = itemView.findViewById(R.id.image_delete);
+            PatientTV = itemView.findViewById(R.id.monitor_PatientName);
+            CholLevelTV = itemView.findViewById(R.id.monitor_cholLevel);
+            CholEffectiveDateTV = itemView.findViewById(R.id.cholEffectiveDateTV);
+            DeleteView = itemView.findViewById(R.id.image_delete);
+            SystolicTV = itemView.findViewById(R.id.systolicTV);
+            DiastolicTV = itemView.findViewById(R.id.diastolicTV);
+            BPEffectiveDateTV = itemView.findViewById(R.id.BPeffectiveDateTV);
 
         }
+
     }
 }
