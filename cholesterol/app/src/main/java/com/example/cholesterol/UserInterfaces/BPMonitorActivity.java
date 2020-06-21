@@ -61,9 +61,8 @@ public class BPMonitorActivity extends AppCompatActivity {
             final BPMonitorAdapter bpMonitorAdapter = new BPMonitorAdapter(MonitorAdapter.getHighSystolic(), this);
             bpMonitorRecyclerView.setAdapter(bpMonitorAdapter);
 
-//        int NValue = Integer.parseInt(MonitorActivity.NRefresh.getText().toString());
-//        NTimer.setN(NValue);
-            NTimer.setN(10);
+            int NValue = Integer.parseInt(MonitorActivity.NRefresh.getText().toString());
+            NTimer.setN(NValue);
             NTimer.resetN();
             nTimer = new NTimer();
             nTimer.addObserver(bpMonitorAdapter);

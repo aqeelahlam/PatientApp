@@ -48,16 +48,16 @@ public class BloodPressureData extends MedicalObservations {
             result = df.format(d);
 
 
-            if (job.equals("Update")) {
-                //FOR DEMONSTRATION PURPOSES
-                systolicBP = Math.random() * 100;
-                systolicBP = Math.round(systolicBP * 00d);
-
-                diasystolicBP = Math.random() * 100;
-                diasystolicBP = Math.round(diasystolicBP * 100d);
-                Log.d("updateBP", String.valueOf(systolicBP));
-
-            }
+//            if (job.equals("Update")) {
+//                //FOR DEMONSTRATION PURPOSES
+//                systolicBP = Math.random() * 100;
+//                systolicBP = Math.round(systolicBP * 00d);
+//
+//                diasystolicBP = Math.random() * 100;
+//                diasystolicBP = Math.round(diasystolicBP * 100d);
+//                Log.d("updateBP", String.valueOf(systolicBP));
+//
+//            }
 
             monitoredPatients.get(patientID).setSystolic(systolicBP + systolicBPUnit);
             monitoredPatients.get(patientID).setDiastolic(diasystolicBP + diasystolicBPUnit);
@@ -85,9 +85,9 @@ public class BloodPressureData extends MedicalObservations {
             systolicBP = entry.getJSONObject(i).getJSONObject("resource").getJSONArray("component").getJSONObject(1).getJSONObject("valueQuantity").getInt("value");
             effectiveDate = entry.getJSONObject(i).getJSONObject("resource").getString("effectiveDateTime");
 
-            if (job.equals("Update")) {
-                systolicBP = Math.random()*100;
-            }
+//            if (job.equals("Update")) {
+//                systolicBP = Math.random()*100;
+//            }
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
             Date d = df.parse(effectiveDate);
