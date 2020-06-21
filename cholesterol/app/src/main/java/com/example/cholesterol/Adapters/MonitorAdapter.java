@@ -26,8 +26,11 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
 
     private HashMap<String, Patient> monitoredPatientListHash;
     private Context context;
-
     private static HashMap<String, Patient> highSystolicHash = new HashMap<>();
+
+    /**
+     * Accessors & Mutator for Variables that will be used/needed by other classes
+     */
     public static HashMap<String, Patient> getHighSystolic() {
         return highSystolicHash;
     }
@@ -98,12 +101,18 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         if(!MonitorActivity.isCholSwitch()){
             holder.CholLevelTV.setVisibility(View.GONE);
             holder.CholEffectiveDateTV.setVisibility(View.GONE);
+            holder.CholTV1.setVisibility(View.GONE);
+            holder.CholTV2.setVisibility(View.GONE);
         }
 
         if(!MonitorActivity.isBPSwitch()){
             holder.SystolicTV.setVisibility(View.GONE);
             holder.DiastolicTV.setVisibility(View.GONE);
             holder.BPEffectiveDateTV.setVisibility(View.GONE);
+            holder.BPTV1.setVisibility(View.GONE);
+            holder.BPTV2.setVisibility(View.GONE);
+            holder.BPTV3.setVisibility(View.GONE);
+
         }
 
         /*
@@ -235,6 +244,12 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
         private TextView SystolicTV;
         private TextView DiastolicTV;
         private TextView BPEffectiveDateTV;
+        private TextView CholTV1;
+        private TextView CholTV2;
+        private TextView BPTV1;
+        private TextView BPTV2;
+        private TextView BPTV3;
+
 
         public MonitorListView(@NonNull View itemView) {
             super(itemView);
@@ -245,6 +260,12 @@ public class MonitorAdapter extends RecyclerView.Adapter<MonitorAdapter.MonitorL
             SystolicTV = itemView.findViewById(R.id.systolicTV);
             DiastolicTV = itemView.findViewById(R.id.diastolicTV);
             BPEffectiveDateTV = itemView.findViewById(R.id.BPeffectiveDateTV);
+            CholTV1 = itemView.findViewById(R.id.textView3);
+            CholTV2 = itemView.findViewById(R.id.textView4);
+            BPTV1 = itemView.findViewById(R.id.textView5);
+            BPTV2 = itemView.findViewById(R.id.textView6);
+            BPTV3 = itemView.findViewById(R.id.textView7);
+
 
         }
 

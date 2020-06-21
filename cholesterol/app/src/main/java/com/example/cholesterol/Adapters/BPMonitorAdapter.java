@@ -12,6 +12,7 @@ import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
 import com.example.cholesterol.UserInterfaces.BPMonitorActivity;
+import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -19,23 +20,44 @@ import java.util.Observer;
 
 public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMonitorListView> implements Observer {
 
-    private static HashMap<Integer, ArrayList<String>> test1;
+
     private Context context;
     private HashMap<String, Patient> highSystolic;
 
-    public static HashMap<Integer, ArrayList<String>> getTest1() {
-        return test1;
+    private static HashMap<Integer, ArrayList<String>> XLatestBP;
+
+    private static String patientName;
+
+    private static boolean ClickListener = false;
+
+    /**
+     * Accessors & Mutator for Variables that will be used/needed by other classes
+     */
+
+    public static String getPatientName() {
+        return patientName;
     }
 
-    public void setTest1(HashMap<Integer, ArrayList<String>> test1) {
-        this.test1 = test1;
+    public static void setPatientName(String patientName) {
+        BPMonitorAdapter.patientName = patientName;
     }
 
-//    HashMap<Integer, ArrayList<String>> test1 = new HashMap<>();
+    public static boolean getClickListener(){
+        return ClickListener;
+    }
 
+    public void setClickListener(boolean clickListener){
+        ClickListener = clickListener;
+    }
 
+    public static HashMap<Integer, ArrayList<String>> getXLatestBP() {
+        return XLatestBP;
+    }
 
-    private HashMap<String, Patient> test2;
+    public void setXLatestBP(HashMap<Integer, ArrayList<String>> test1) {
+        this.XLatestBP = test1;
+    }
+
 
     /**
      * Constructor for BP Monitor Adapter
@@ -68,8 +90,6 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         final String patientname = highSystolic.get(keys[position]).getName();
         final String patientID = highSystolic.get(keys[position]).getPatientID();
 
-
-
         final String systolic1 = highSystolic.get(keys[position]).getFormattedXLatestBP(0);
         final String systolic2 = highSystolic.get(keys[position]).getFormattedXLatestBP(1);
         final String systolic3 = highSystolic.get(keys[position]).getFormattedXLatestBP(2);
@@ -86,7 +106,10 @@ public class BPMonitorAdapter extends RecyclerView.Adapter<BPMonitorAdapter.BPMo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTest1(highSystolic.get(patientID).getXLatestBP());
+                Snackbar.make(v, "Preparing Visualization for: " + patientname + ", Click Visualize to begin", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                setXLatestBP(highSystolic.get(patientID).getXLatestBP());
+                setPatientName(patientname);
+                setClickListener(true);
             }
         });
 

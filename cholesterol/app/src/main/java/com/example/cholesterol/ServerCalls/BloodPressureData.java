@@ -49,8 +49,12 @@ public class BloodPressureData extends MedicalObservations {
 
 
             if (job.equals("Update")) {
+                //FOR DEMONSTRATION PURPOSES
                 systolicBP = Math.random() * 100;
+                systolicBP = Math.round(systolicBP * 00d);
+
                 diasystolicBP = Math.random() * 100;
+                diasystolicBP = Math.round(diasystolicBP * 100d);
                 Log.d("updateBP", String.valueOf(systolicBP));
 
             }
