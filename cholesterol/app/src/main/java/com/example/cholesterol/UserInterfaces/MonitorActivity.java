@@ -211,7 +211,6 @@ public class MonitorActivity extends AppCompatActivity {
     public static void refresh(MonitorAdapter monitorAdapter) {
         monitorRecyclerView.setAdapter(monitorAdapter);
         NTimer.resetN();
-//        NTimer nTimer = new NTimer();
         nTimer = new NTimer();
         nTimer.addObserver(monitorAdapter);
         nTimer.startTimer();

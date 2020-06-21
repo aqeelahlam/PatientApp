@@ -38,11 +38,11 @@ public class CholesterolData extends MedicalObservations {
             df.applyPattern("dd-M-yyyy hh:mm:ss");
             result = df.format(d);
 
-            if (job.equals("Update")) {
-                //FOR DEMONSTRATION PURPOSES
-                cholValue = Math.random() * 100;
-                cholValue = Math.round(cholValue * 100d);
-            }
+//            if (job.equals("Update")) {
+//                //FOR DEMONSTRATION PURPOSES
+//                cholValue = Math.random() * 100;
+//                cholValue = Math.round(cholValue * 100d);
+//            }
 
 //          Here we set the latest cholesterol values for each patient with record of cholesterol Level.
             monitoredPatients.get(patientID).setCholesterol(cholValue + cholUnit);
