@@ -15,7 +15,7 @@ import com.example.cholesterol.Adapters.MonitorAdapter;
 import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.ObservationHandler;
-import com.example.cholesterol.graphs.GraphMonitorBP;
+import com.example.cholesterol.graphs.BPGraphActivity;
 
 
 public class BPMonitorActivity extends AppCompatActivity {
@@ -86,9 +86,14 @@ public class BPMonitorActivity extends AppCompatActivity {
     }
 
     public void visualizeBloodPressureBtn(View view){
-        stopTimer();
-        Intent intent = new Intent(this, GraphMonitorBP.class);
-        startActivity(intent);
+        if(!BPMonitorAdapter.getClickListener()){
+            Toast.makeText(this, "Please Select a patient to monitor", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            stopTimer();
+            Intent intent = new Intent(this, BPGraphActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override

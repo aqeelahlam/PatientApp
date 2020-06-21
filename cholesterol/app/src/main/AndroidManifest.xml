@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UserInterfaces.BPMonitorActivity"></activity>
-        <activity android:name=".graphs.GraphMonitorBP" />
-        <activity android:name=".graphs.graphActivity" />
+        <activity android:name=".graphs.BPGraphActivity" />
+        <activity android:name=".graphs.CholGraphActivity" />
         <activity android:name=".UserInterfaces.MonitorActivity"
                   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".UserInterfaces.MainActivity"

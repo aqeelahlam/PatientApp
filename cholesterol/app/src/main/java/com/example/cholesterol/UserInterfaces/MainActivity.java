@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //      Inflates the layout:
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("Patient Monitor");
 
 //      This is used to obtain a reference of the recyclerView located in the MainActivity Layout
         patientRecyclerView = findViewById(R.id.recycler_view);

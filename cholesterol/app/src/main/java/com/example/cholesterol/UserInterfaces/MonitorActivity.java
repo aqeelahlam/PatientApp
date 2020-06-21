@@ -18,7 +18,7 @@ import com.example.cholesterol.Observable.NTimer;
 import com.example.cholesterol.Objects.Patient;
 import com.example.cholesterol.R;
 import com.example.cholesterol.ServerCalls.PatientData;
-import com.example.cholesterol.graphs.graphActivity;
+import com.example.cholesterol.graphs.CholGraphActivity;
 
 import java.util.HashMap;
 
@@ -38,7 +38,7 @@ public class MonitorActivity extends AppCompatActivity {
     private static NTimer nTimer;
 
 //  This is to get the status of the switch
-    private static boolean BPSwitch;
+    private static boolean BPSwitch = true;
     public static boolean isBPSwitch() {
         return BPSwitch;
     }
@@ -46,7 +46,7 @@ public class MonitorActivity extends AppCompatActivity {
         MonitorActivity.BPSwitch = BPSwitch;
     }
 
-    private static boolean cholSwitch;
+    private static boolean cholSwitch = true;
     public static boolean isCholSwitch() {
         return cholSwitch;
     }
@@ -106,7 +106,7 @@ public class MonitorActivity extends AppCompatActivity {
      */
     public void graphButton(View view){
         stopTimer();
-        Intent intent = new Intent(this, graphActivity.class);
+        Intent intent = new Intent(this, CholGraphActivity.class);
         startActivity(intent);
     }
 
