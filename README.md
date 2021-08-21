@@ -1,6 +1,4 @@
-# project
-
-FIT3077 project repository
+# Patient Monitor
 
 Requirements:
 
